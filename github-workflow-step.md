@@ -1,5 +1,3 @@
-GitHub
-
 1.Clone the project first time only
 
 git clone <repo-link>
