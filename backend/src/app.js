@@ -16,6 +16,7 @@ app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
+      connectSrc: ["'self'", "https://api.serveease.com"],
       styleSrc: ["'self'", "'unsafe-inline'"],
       scriptSrc: ["'self'"],
       imgSrc: ["'self'", "data:", "https:"],
@@ -77,6 +78,6 @@ app.get('/health', (req, res) => {
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, 'localhost', () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Production server running on port ${PORT}`);
 });
