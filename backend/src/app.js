@@ -9,7 +9,7 @@ import authRoutes from './routes/authRoutes.js';
 import errorHandler from './middleware/errorHandler.js';
 import { securityHeaders } from './middleware/securityHeaders.js';
 
-dotenv.config({ path: './.env' }); // Fixed path
+dotenv.config({ path: './.env' }); 
 
 const app = express();
 
