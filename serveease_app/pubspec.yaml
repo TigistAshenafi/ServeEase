@@ -32,6 +32,7 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^9.1.0
   dio: ^5.2.1
+  http: ^1.1.0
   equatable: ^2.0.7
   flutter_secure_storage: ^9.1.0 # For storing tokens securely
   shared_preferences: ^2.1.0
