@@ -18,6 +18,11 @@ class ServeEaseApp extends StatelessWidget {
       initialRoute: '/login',
       routes: {
         '/login': (context) => const LoginScreen(),
+        '/signup': (context) => const SignupScreen(),
+        '/forgot-password': (context) => const ForgotPasswordScreen(),
+        '/reset-password': (context) => const ResetPasswordScreen(),
+        '/email-verification': (context) => const EmailVerificationScreen(),
+        
       },
     );
   }
