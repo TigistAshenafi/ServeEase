@@ -6,8 +6,8 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import rateLimit from 'express-rate-limit';
 import authRoutes from './routes/authRoutes.js';
-import errorHandler from './middleware/errorHandler.js';
-import { securityHeaders } from './middleware/securityHeaders.js';
+import errorHandler from '../src/middlewares/errorHandler.js';
+import { securityHeaders } from './middlewares/securityHeaders.js';
 
 dotenv.config({ path: './.env' }); 
 
@@ -47,7 +47,7 @@ const generalLimiter = rateLimit({
 
 // CORS Configuration
 app.use(cors({
-  origin: process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : ['http://localhost:3000'],
+  origin:'*',
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
@@ -83,6 +83,7 @@ app.get('/', (req, res) => {
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
+const MODE = process.env.NODE_ENV || 'development'; 
 app.listen(PORT, () => {
-  console.log(`Server running in ${process.env.NODE_ENV} mode on http://localhost:${PORT}`);
+  console.log(`Server running in ${MODE} mode on http://localhost:${PORT}`);
 });

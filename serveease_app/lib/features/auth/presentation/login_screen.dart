@@ -1,7 +1,7 @@
+// ignore_for_file: use_build_context_synchronously, unused_local_variable
+
 import 'package:flutter/material.dart';
-import '../data/auth_service.dart';
-import 'signup_screen.dart';
-import 'forgot_password_screen.dart';
+import '../../../core/services/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -23,7 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
         _emailController.text.trim(),
         _passwordController.text.trim(),
       );
-      // TODO: store token and navigate to dashboard
+
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('Login Successful')));
     } catch (e) {
