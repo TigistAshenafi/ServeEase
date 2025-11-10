@@ -30,7 +30,7 @@ git push -u origin ur_branch_name
 // make fixes
 git add .
 git commit -m "Fixed login button alignment"
-git push
+git push -u origin ur_branch_name
 
 //When everything looks good → click Merge on GitHub.
 
