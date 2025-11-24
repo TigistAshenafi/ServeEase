@@ -8,6 +8,9 @@ import rateLimit from 'express-rate-limit';
 import authRoutes from './routes/authRoutes.js';
 import errorHandler from '../src/middlewares/errorHandler.js';
 import { securityHeaders } from './middlewares/securityHeaders.js';
+import providerRoutes from "./routes/providerRoutes.js";
+import adminProviderRoutes from "./routes/adminProviderRoutes.js";
+import serviceRoutes from "./routes/serviceRoutes.js";
 
 dotenv.config({ path: './.env' }); 
 
@@ -30,7 +33,7 @@ app.use(securityHeaders);
 // Rate Limiting
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // 5 attempts per window
+  max: 25, // 5 attempts per window
   message: {
     success: false,
     message: 'Too many login attempts, please try again later.'
@@ -74,6 +77,10 @@ app.get('/health', (req, res) => {
     environment: process.env.NODE_ENV 
   });
 });
+
+app.use("/api/providers", providerRoutes);
+app.use("/api/admin/providers", adminProviderRoutes);
+app.use("/api/services", serviceRoutes);
 
 app.get('/', (req, res) => {
   res.send('Server is running!');
