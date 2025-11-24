@@ -2,6 +2,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:serveease_app/shared/widgets/custom_button.dart';
 
 import '../../../core/services/auth_service.dart';
 import '../../../core/utils/validators.dart';
@@ -258,7 +259,6 @@ class _SignupScreenState extends State<SignupScreen> {
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 }
