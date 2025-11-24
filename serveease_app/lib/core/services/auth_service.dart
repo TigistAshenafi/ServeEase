@@ -1,8 +1,9 @@
 // ignore_for_file: unused_field
 
 import 'package:dio/dio.dart';
-import 'api_service.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+import 'api_service.dart';
 
 class AuthService {
   final ApiService _api = ApiService();
