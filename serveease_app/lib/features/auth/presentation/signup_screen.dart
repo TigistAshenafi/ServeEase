@@ -216,7 +216,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             ),
                           ),
                           child: const Text(
-                            "Sign Up",
+                            "Sign Up",  // to sign up page
                             style:
                                 TextStyle(fontSize: 18, color: Colors.white),
                           ),
@@ -225,9 +225,9 @@ class _SignupScreenState extends State<SignupScreen> {
 
                 const SizedBox(height: 16),
 
-
                 // LOGIN LINK
                 GestureDetector(
+                  
                   onTap: () => Navigator.pushReplacementNamed(context, '/login'),
                   child: const Text.rich(
                     TextSpan(
@@ -235,12 +235,13 @@ class _SignupScreenState extends State<SignupScreen> {
                       style: TextStyle(color: Colors.grey),
                       children: [
                         TextSpan(
-                          text: "Log In",
+                          text: "To Log In",
                           style: TextStyle(
                               color: Colors.blue,
                               fontWeight: FontWeight.bold),
                         ),
                       ],
+                      
                     ),
                   ),
                 ),

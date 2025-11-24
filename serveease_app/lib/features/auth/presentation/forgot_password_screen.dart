@@ -22,23 +22,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     setState(() => _loading = true);
     try {
       await _auth.requestPasswordReset(_email.text.trim());
-
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Password reset link sent via your email.')));
-      Navigator.pushNamed(
-        context,
-        '/reset-password',
-        arguments: {'email': _email.text.trim()},
-      );
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('If account exists we sent instructions')));
     } catch (e) {
-      if(!mounted) return;
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Error: $e')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
     } finally {
-      if (mounted) {
-        setState(() => _loading = false);
-      }
+      setState(() => _loading = false);
     }
   }
 
@@ -52,65 +40,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           key: _formKey,
           child: Column(
             children: [
-              const Text('Enter your email to receive a password reset code.'),
+              const Text('Enter your email to receive a password reset link.'),
               const SizedBox(height: 12),
-              TextFormField(
-                  controller: _email,
-                  keyboardType: TextInputType.emailAddress,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  decoration: const InputDecoration(
-                    labelText: 'Email',
-                    hintText: "you@example.com",
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.email_outlined),
-                    ),
-                  validator: (v) => Validators.validateEmail(v)),
-              const SizedBox(height: 24),
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: _loading
-                  ? const Center(child: CircularProgressIndicator())
-                  : ElevatedButton(
-                      onPressed: _submit,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      child: const Text(
-                        'Send Reset Code',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-              ),
-
-              const SizedBox(height: 16),
-
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushReplacementNamed(context, '/login');
-                },
-                child: const Text.rich(
-                  TextSpan(
-                    text: "Remembered your password? ",
-                    style: TextStyle(color: Colors.grey),
-                    children: [
-                      TextSpan(
-                        text: 'Back to Login',
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              TextFormField(controller: _email, decoration: const InputDecoration(labelText: 'Email'), validator: (v) => Validators.validateEmail(v)),
+              const SizedBox(height: 18),
+              _loading ? const CircularProgressIndicator() : ElevatedButton(onPressed: _submit, child: const Text('Send reset link')),
             ],
           ),
         ),
