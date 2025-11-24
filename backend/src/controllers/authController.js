@@ -8,6 +8,10 @@ dotenv.config();
 
 const COOKIE_NAME = 'refreshToken';
 
+function generateVerificationCode() {
+  return Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit code
+}
+
 // helper to set refresh cookie
 function setRefreshCookie(res, token, expiresInDays = 7) {
   const maxAge = 1000 * 60 * 60 * 24 * parseInt(process.env.REFRESH_TOKEN_EXPIRES_IN_DAYS || (expiresInDays));
@@ -38,7 +42,7 @@ export const register = async (req, res, next) => {
     const user = userRes.rows[0];
 
     // Create verification code (simple random uuid here)
-    const code = uuidv4();
+    const code = generateVerificationCode();
     const expires = new Date(Date.now() + 1000 * 60 * 60 * 24); // 24h
     await pool.query('INSERT INTO email_verifications(user_id, code, expires_at) VALUES($1,$2,$3)', [user.id, code, expires]);
 
@@ -155,25 +159,24 @@ export const requestPasswordReset = async (req, res, next) => {
 
     // Generate unique ID for this password reset entry
     const resetId = uuidv4(); 
-    const rawToken = uuidv4(); // actual token to send to user
-    const tokenHash = await hashToken(rawToken);
+    // const rawToken = uuidv4(); // actual token to send to user
+    // const tokenHash = await hashToken(rawToken);
+    const reserCode = generateVerificationCode();
+    const codeHash = await hashToken(reserCode);
     const expires = new Date(Date.now() + 1000 * 60 * 60); // expires in 1 hour
 
     // Save to DB (use resetId as the row id)
     await pool.query(
       `INSERT INTO password_resets(id, user_id, token_hash, expires_at)
        VALUES($1, $2, $3, $4)`,
-      [resetId, userId, tokenHash, expires]
+      [resetId, userId, codeHash, expires]
     );
 
-    // Create the password reset link (frontend URL)
-    const resetLink = `http://localhost:4200/reset-password/${rawToken}`;
-
     // Send email
-    await sendPasswordResetEmail(email, resetLink);
+    await sendPasswordResetEmail(email, resetCode);
 
     // Respond success
-    res.status(200).json({ message: 'If account exists we sent instructions' });
+    res.status(200).json({ message: 'The reset cose is sent.' });
   } catch (err) {
     console.error('Password reset error:', err);
     next(err);
@@ -182,8 +185,8 @@ export const requestPasswordReset = async (req, res, next) => {
 
 export const resetPassword = async (req, res, next) => {
   try {
-    const { email, token, newPassword } = req.body;
-    if (!email || !token || !newPassword) return res.status(400).json({ message: 'Missing' });
+    const { email, code, newPassword } = req.body;
+    if (!email || !code || !newPassword) return res.status(400).json({ message: 'Missing' });
     const userRes = await pool.query('SELECT id FROM users WHERE email=$1', [email]);
     if (!userRes.rows.length) return res.status(400).json({ message: 'Invalid' });
 
@@ -193,14 +196,16 @@ export const resetPassword = async (req, res, next) => {
 
     let matched = null;
     for (const r of rows) {
-      const ok = await compareTokenHash(token, r.token_hash);
+      const ok = await compareTokenHash(code, r.token_hash);
       if (ok) { matched = r; break; }
     }
-    if (!matched) return res.status(400).json({ message: 'Invalid token' });
+    if (!matched) return res.status(400).json({ message: 'Invalid code' });
 
     const newHash = await bcrypt.hash(newPassword, 10);
     await pool.query('UPDATE users SET password_hash=$1 WHERE id=$2', [newHash, userId]);
     await pool.query('DELETE FROM password_resets WHERE id=$1', [matched.id]);
     res.json({ message: 'Password changed' });
-  } catch (err) { next(err); }
+  } catch (err) { next(err);
+    
+   }
 };
