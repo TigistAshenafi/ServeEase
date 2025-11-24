@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, deprecated_member_use
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -110,18 +110,16 @@ class _SignupScreenState extends State<SignupScreen> {
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.person_outline),
                   ),
-                  const SizedBox(height: 12),
-                  TextFormField(
-                    controller: _email,
-                    decoration:
-                        const InputDecoration(labelText: 'Email Address'),
-                    validator: (v) => Validators.validateEmail(v),
-                  ),
+                ),
+                const SizedBox(height: 12),
+                TextFormField(
+                  controller: _email,
+                  decoration:
+                      const InputDecoration(labelText: 'Email Address'),
                   validator: (v) => Validators.validateEmail(v),
                 ),
 
                 const SizedBox(height: 16),
-
 
                 // PASSWORD
                 TextFormField(
@@ -129,13 +127,14 @@ class _SignupScreenState extends State<SignupScreen> {
                   obscureText: !_isPasswordVisible,
                   decoration: InputDecoration(
                     labelText: "Password",
-                    border: const OutlineInputBorder(),
+                    border: const OutlineInputBorder(), 
                     prefixIcon: const Icon(Icons.lock_outline),
                     suffixIcon: IconButton(
                       icon: Icon(_isPasswordVisible
                           ? Icons.visibility_off
                           : Icons.visibility),
                       onPressed: () {
+
                         setState(() {
                           _isPasswordVisible = !_isPasswordVisible;
                         });
@@ -144,7 +143,6 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                   validator: (v) => Validators.validatePassword(v),
                 ),
-
                 const SizedBox(height: 16),
 
                 // CONFIRM PASSWORD
@@ -152,14 +150,14 @@ class _SignupScreenState extends State<SignupScreen> {
                   controller: _confirm,
                   obscureText: !_isConfirmPasswordVisible,
                   decoration: InputDecoration(
-                    labelText: "Confirm Password",
+                    labelText: "Confirm Password", 
                     border: const OutlineInputBorder(),
                     prefixIcon: const Icon(Icons.lock_outline),
                     suffixIcon: IconButton(
                       icon: Icon(_isConfirmPasswordVisible
                           ? Icons.visibility_off
                           : Icons.visibility),
-                      onPressed: () {
+                      onPressed: () { 
                         setState(() {
                           _isConfirmPasswordVisible =
                               !_isConfirmPasswordVisible;
@@ -172,7 +170,6 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
 
                 const SizedBox(height: 24),
-
                 // ROLE SELECTION
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -219,23 +216,24 @@ class _SignupScreenState extends State<SignupScreen> {
 
                 const SizedBox(height: 16),
 
-                // LOGIN LINK
-                GestureDetector(
-                  
-                  onTap: () => Navigator.pushReplacementNamed(context, '/login'),
-                  child: const Text.rich(
-                    TextSpan(
-                      text: "Already have an account? ",
-                      style: TextStyle(color: Colors.grey),
-                      children: [
-                        TextSpan(
-                          text: "To Log In",
-                          style: TextStyle(
-                              color: Colors.blue,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                      
+                  // LOGIN LINK
+                  GestureDetector(
+                    
+                    onTap: () => Navigator.pushReplacementNamed(context, '/login'),
+                    child: const Text.rich(
+                      TextSpan(
+                        text: "Already have an account? ",
+                        style: TextStyle(color: Colors.grey),
+                        children: [
+                          TextSpan(
+                            text: "To Log In",
+                            style: TextStyle(
+                                color: Colors.blue,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                        
+                      ),
                     ),
                   ),
                   const SizedBox(height: 12),
