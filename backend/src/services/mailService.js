@@ -21,7 +21,7 @@ export async function sendVerificationEmail(to, code) {
   });
 }
 
-export async function sendPasswordResetEmail(to, resetLink) {
+export async function sendPasswordResetEmail(to, resetCode) {
   await transporter.sendMail({
     from: process.env.EMAIL_FROM,
     to,
@@ -29,9 +29,8 @@ export async function sendPasswordResetEmail(to, resetLink) {
     html: `
       <p>Hello,</p>
       <p>You requested to reset your password for ServeEase.</p>
-      <p>Click the link below to reset it:</p>
-      <p><a href="${resetLink}" target="_blank">${resetLink}</a></p>
-      <p>This link will expire in 1 hour.</p>
+      <p>Your Password Reset Code is:<b>${resetCode}</b></p>
+      <p>This code will expire in 1 hour.</p>
       <p>If you didn’t request this, please ignore this email.</p>
     `
   });
