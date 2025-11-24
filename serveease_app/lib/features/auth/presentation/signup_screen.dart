@@ -117,21 +117,126 @@ class _SignupScreenState extends State<SignupScreen> {
                         const InputDecoration(labelText: 'Email Address'),
                     validator: (v) => Validators.validateEmail(v),
                   ),
-                  const SizedBox(height: 12),
-                  TextFormField(
-                    controller: _password,
-                    obscureText: true,
-                    decoration: const InputDecoration(labelText: 'Password'),
-                    validator: (v) => Validators.validatePassword(v),
+                  validator: (v) => Validators.validateEmail(v),
+                ),
+
+                const SizedBox(height: 16),
+
+
+                // PASSWORD
+                TextFormField(
+                  controller: _password,
+                  obscureText: !_isPasswordVisible,
+                  decoration: InputDecoration(
+                    labelText: "Password",
+                    border: const OutlineInputBorder(),
+                    prefixIcon: const Icon(Icons.lock_outline),
+                    suffixIcon: IconButton(
+                      icon: Icon(_isPasswordVisible
+                          ? Icons.visibility_off
+                          : Icons.visibility),
+                      onPressed: () {
+                        setState(() {
+                          _isPasswordVisible = !_isPasswordVisible;
+                        });
+                      },
+                    ),
                   ),
-                  const SizedBox(height: 12),
-                  TextFormField(
-                    controller: _confirm,
-                    obscureText: true,
-                    decoration:
-                        const InputDecoration(labelText: 'Confirm Password'),
-                    validator: (v) =>
-                        Validators.validateConfirmPassword(v, _password.text),
+                  validator: (v) => Validators.validatePassword(v),
+                ),
+
+                const SizedBox(height: 16),
+
+                // CONFIRM PASSWORD
+                TextFormField(
+                  controller: _confirm,
+                  obscureText: !_isConfirmPasswordVisible,
+                  decoration: InputDecoration(
+                    labelText: "Confirm Password",
+                    border: const OutlineInputBorder(),
+                    prefixIcon: const Icon(Icons.lock_outline),
+                    suffixIcon: IconButton(
+                      icon: Icon(_isConfirmPasswordVisible
+                          ? Icons.visibility_off
+                          : Icons.visibility),
+                      onPressed: () {
+                        setState(() {
+                          _isConfirmPasswordVisible =
+                              !_isConfirmPasswordVisible;
+                        });
+                      },
+                    ),
+                  ),
+                  validator: (v) =>
+                      Validators.validateConfirmPassword(v, _password.text),
+                ),
+
+                const SizedBox(height: 24),
+
+                // ROLE SELECTION
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Radio<Role>(
+                      value: Role.seeker,
+                      groupValue: _role,
+                      onChanged: (r) => setState(() => _role = r!),
+                    ),
+                    const Text("Service Seeker"),
+                    const SizedBox(width: 20),
+                    Radio<Role>(
+                      value: Role.provider,
+                      groupValue: _role,
+                      onChanged: (r) => setState(() => _role = r!),
+                    ),
+                    const Text("Service Provider"),
+                  ],
+                ),
+
+                const SizedBox(height: 20),
+
+                // SIGN UP BUTTON
+                SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: _loading
+                      ? const Center(child: CircularProgressIndicator())
+                      : ElevatedButton(
+                          onPressed: _signup,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: const Text(
+                            "Sign Up",  // to sign up page
+                            style:
+                                TextStyle(fontSize: 18, color: Colors.white),
+                          ),
+                        ),
+                ),
+
+                const SizedBox(height: 16),
+
+                // LOGIN LINK
+                GestureDetector(
+                  
+                  onTap: () => Navigator.pushReplacementNamed(context, '/login'),
+                  child: const Text.rich(
+                    TextSpan(
+                      text: "Already have an account? ",
+                      style: TextStyle(color: Colors.grey),
+                      children: [
+                        TextSpan(
+                          text: "To Log In",
+                          style: TextStyle(
+                              color: Colors.blue,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                      
+                    ),
                   ),
                   const SizedBox(height: 12),
                   Align(

@@ -1,12 +1,8 @@
 // ignore_for_file: unused_field
 
 import 'package:dio/dio.dart';
-<<<<<<< HEAD
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import 'api_service.dart';
-
-=======
 import 'api_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -18,7 +14,6 @@ String _resolveBaseUrl() {
   } 
     return 'http://localhost:3000/api/auth';
 }
->>>>>>> feat/providerMgmt
 class AuthService {
   final ApiService _api = ApiService();
   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
