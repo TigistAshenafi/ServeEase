@@ -1,5 +1,3 @@
-// ignore_for_file: unused_element_parameter, use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
 
