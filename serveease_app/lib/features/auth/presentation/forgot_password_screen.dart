@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-
 import '../../../core/services/auth_service.dart';
 import '../../../core/utils/validators.dart';
 
@@ -16,14 +15,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final _email = TextEditingController();
   final _auth = AuthService();
   bool _loading = false;
-
   final _formKey = GlobalKey<FormState>();
 
   void _submit() async {
     if (!_formKey.currentState!.validate()) return;
-
     setState(() => _loading = true);
-
     try {
       await _auth.requestPasswordReset(_email.text.trim());
 
