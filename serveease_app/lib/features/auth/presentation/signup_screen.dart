@@ -110,18 +110,12 @@ class _SignupScreenState extends State<SignupScreen> {
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.person_outline),
                   ),
-                ),
-
-                const SizedBox(height: 16),
-
-                // EMAIL
-                TextFormField(
-                  controller: _email,
-                  decoration: const InputDecoration(
-                    labelText: "Email Address",
-                    hintText: "you@example.com",
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.email_outlined),
+                  const SizedBox(height: 12),
+                  TextFormField(
+                    controller: _email,
+                    decoration:
+                        const InputDecoration(labelText: 'Email Address'),
+                    validator: (v) => Validators.validateEmail(v),
                   ),
                   validator: (v) => Validators.validateEmail(v),
                 ),
@@ -244,8 +238,25 @@ class _SignupScreenState extends State<SignupScreen> {
                       
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 12),
+                  Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text('Join as:',
+                          style: TextStyle(fontWeight: FontWeight.w600))),
+                  const SizedBox(height: 8),
+                  RoleSelector(
+                      selected: _role,
+                      onChanged: (r) => setState(() => _role = r)),
+                  const SizedBox(height: 18),
+                  _loading
+                      ? const CircularProgressIndicator()
+                      : CustomButton(label: 'Sign Up', onPressed: _signup),
+                  const SizedBox(height: 12),
+                  TextButton(
+                      onPressed: () => Navigator.pushNamed(context, '/login'),
+                      child: const Text('Already have an account? Log In')),
+                ],
+              ),
             ),
           ),
         ),
