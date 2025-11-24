@@ -13,7 +13,6 @@ String _resolveBaseUrl() {
   } 
     return 'http://localhost:3000/api/auth';
 }
-
 class AuthService {
   final ApiService _api = ApiService();
   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
