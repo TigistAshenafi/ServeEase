@@ -1,7 +1,8 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, prefer_final_fields
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:serveease_app/shared/widgets/custom_button.dart';
 
 import '../../../core/services/auth_service.dart';
 import '../../../core/utils/validators.dart';
@@ -110,48 +111,74 @@ class _SignupScreenState extends State<SignupScreen> {
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.person_outline),
                   ),
-                  const SizedBox(height: 12),
-                  TextFormField(
-                    controller: _email,
-                    decoration:
-                        const InputDecoration(labelText: 'Email Address'),
-                    validator: (v) => Validators.validateEmail(v),
+                ),
+                const SizedBox(height: 12),
+                TextFormField(
+                  controller: _email,
+                  decoration: const InputDecoration(
+                    labelText: 'Email Address',
+                    border: OutlineInputBorder(),
                   ),
-                  const SizedBox(height: 12),
-                  TextFormField(
-                    controller: _password,
-                    obscureText: true,
-                    decoration: const InputDecoration(labelText: 'Password'),
-                    validator: (v) => Validators.validatePassword(v),
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (v) => Validators.validateEmail(v),
+                ),
+                const SizedBox(height: 12),
+                TextFormField(
+                  controller: _password,
+                  obscureText: !_isPasswordVisible,
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    border: OutlineInputBorder(),
+                    suffixIcon: IconButton(
+                      icon: Icon(_isPasswordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off),
+                      onPressed: () =>
+                          setState(() => _isPasswordVisible = !_isPasswordVisible),
+                    ),
                   ),
-                  const SizedBox(height: 12),
-                  TextFormField(
-                    controller: _confirm,
-                    obscureText: true,
-                    decoration:
-                        const InputDecoration(labelText: 'Confirm Password'),
-                    validator: (v) =>
-                        Validators.validateConfirmPassword(v, _password.text),
+                ),
+                const SizedBox(height: 12),
+                TextFormField(
+                  controller: _confirm,
+                  obscureText: !_isConfirmPasswordVisible,
+                  decoration: InputDecoration(
+                    labelText: 'Confirm Password',
+                    border: OutlineInputBorder(),
+                    suffixIcon: IconButton(
+                      icon: Icon(_isConfirmPasswordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off),
+                      onPressed: () => setState(
+                          () => _isConfirmPasswordVisible = !_isConfirmPasswordVisible),
+                    ),
                   ),
-                  const SizedBox(height: 12),
-                  Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text('Join as:',
-                          style: TextStyle(fontWeight: FontWeight.w600))),
-                  const SizedBox(height: 8),
-                  RoleSelector(
-                      selected: _role,
-                      onChanged: (r) => setState(() => _role = r)),
-                  const SizedBox(height: 18),
-                  _loading
-                      ? const CircularProgressIndicator()
-                      : CustomButton(label: 'Sign Up', onPressed: _signup),
-                  const SizedBox(height: 12),
-                  TextButton(
-                      onPressed: () => Navigator.pushNamed(context, '/login'),
-                      child: const Text('Already have an account? Log In')),
-                ],
-              ),
+                  validator: (v) =>
+                      Validators.validateConfirmPassword(v, _password.text),
+                ),
+                const SizedBox(height: 12),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Join as:',
+                    style: TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                RoleSelector(
+                  selected: _role,
+                  onChanged: (r) => setState(() => _role = r),
+                ),
+                const SizedBox(height: 18),
+                _loading
+                    ? const CircularProgressIndicator()
+                    : CustomButton(label: 'Sign Up', onPressed: _signup),
+                const SizedBox(height: 12),
+                TextButton(
+                  onPressed: () => Navigator.pushNamed(context, '/login'),
+                  child: const Text('Already have an account? Log In'),
+                ),
+              ],
             ),
           ),
         ),
