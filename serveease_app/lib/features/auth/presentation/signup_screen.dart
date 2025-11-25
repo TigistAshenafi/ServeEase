@@ -2,7 +2,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:serveease_app/shared/widgets/custom_button.dart';
+// import 'package:serveease_app/shared/widgets/custom_button.dart';
 
 import '../../../core/services/auth_service.dart';
 import '../../../core/utils/validators.dart';
@@ -62,7 +62,7 @@ class _SignupScreenState extends State<SignupScreen> {
       if (!mounted) return;
       Navigator.pushNamed(
         context,
-        '/email-verification',
+        '/verify-email',
         arguments: {'email': _email.text.trim()},
       );
     } on DioException catch (e) {
@@ -107,7 +107,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 TextFormField(
                   controller: _name,
                   decoration: const InputDecoration(
-                    labelText: "Full Name (optional)",
+                    labelText: "Full Name",
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.person_outline),
                   ),
@@ -227,7 +227,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         style: TextStyle(color: Colors.grey),
                         children: [
                           TextSpan(
-                            text: "To Log In",
+                            text: "Log In",
                             style: TextStyle(
                                 color: Colors.blue,
                                 fontWeight: FontWeight.bold),
@@ -237,23 +237,23 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text('Join as:',
-                          style: TextStyle(fontWeight: FontWeight.w600))),
-                  const SizedBox(height: 8),
-                  RoleSelector(
-                      selected: _role,
-                      onChanged: (r) => setState(() => _role = r)),
-                  const SizedBox(height: 18),
-                  _loading
-                      ? const CircularProgressIndicator()
-                      : CustomButton(label: 'Sign Up', onPressed: _signup),
-                  const SizedBox(height: 12),
-                  TextButton(
-                      onPressed: () => Navigator.pushNamed(context, '/login'),
-                      child: const Text('Already have an account? Log In')),
+              //     const SizedBox(height: 12),
+              //     Align(
+              //         alignment: Alignment.centerLeft,
+              //         child: Text('Join as:',
+              //             style: TextStyle(fontWeight: FontWeight.w600))),
+              //     const SizedBox(height: 8),
+              //     RoleSelector(
+              //         selected: _role,
+              //         onChanged: (r) => setState(() => _role = r)),
+              //     const SizedBox(height: 18),
+              //     _loading
+              //         ? const CircularProgressIndicator()
+              //         : CustomButton(label: 'Sign Up', onPressed: _signup),
+              //     const SizedBox(height: 12),
+              //     TextButton(
+              //         onPressed: () => Navigator.pushNamed(context, '/login'),
+              //         child: const Text('Already have an account? Log In')),
                 ],
               ),
             ),
