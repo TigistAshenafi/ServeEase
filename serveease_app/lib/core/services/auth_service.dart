@@ -5,7 +5,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'api_service.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 String _resolveBaseUrl() {
   if (kIsWeb)  return 'http://localhost:3000/api/auth';
