@@ -1,0 +1,75 @@
+{
+  "@@locale": "am",
+  "appTitle": "ServeEase",
+  "languageLabel": "ቋንቋ",
+  "englishLabel": "እንግሊዝኛ",
+  "amharicLabel": "አማርኛ",
+  "loginWelcomeTitle": "እንኳን ደህና መጡ",
+  "loginSubtitle": "ServeEase ለመቀጠል ይግቡ",
+  "emailLabel": "የኢሜል አድራሻ",
+  "emailHint": "you@example.com",
+  "passwordLabel": "የይለፍ ቃል",
+  "forgotPasswordLabel": "የይለፍ ቃልዎን ረሱ?",
+  "loginButtonLabel": "ግባ",
+  "signupRedirectPrefix": "መለያ የለዎትም? ",
+  "signupRedirectAction": "ይመዝገቡ",
+  "loginRedirectPrefix": "መለያ አለዎት? ",
+  "loginRedirectAction": "ግባ",
+  "loginSuccessMessage": "በትክክል ገብተዋል!",
+  "loginFailed": "መግባት አልተሳካም፡ {reason}",
+  "@loginFailed": {
+    "placeholders": {
+      "reason": {
+        "example": "የተሳሳተ መረጃ"
+      }
+    }
+  },
+  "errorWithMessage": "ስህተት፡ {message}",
+  "@errorWithMessage": {
+    "placeholders": {
+      "message": {
+        "example": "የኔትወርክ ችግኝ"
+      }
+    }
+  },
+  "unknownError": "አልተጠበቀ ችግኝ ተፈጥሯል። እባክዎ ደግመው ይሞክሩ።",
+  "createAccountTitle": "መለያዎን ይፍጠሩ",
+  "signupSubtitle": "ServeEase ጋር ተቀላቅለው አገልግሎቶችን ይፈልጉ ወይም ችሎታዎን ያቅርቡ።",
+  "nameOptionalLabel": "ሙሉ ስም (አማራጭ)",
+  "confirmPasswordLabel": "የይለፍ ቃል ያረጋግጡ",
+  "joinAsLabel": "ይቀላቀሉ እንደ:",
+  "providerDetailsTitle": "የአቅራቢ መረጃ",
+  "businessNameLabel": "የንግድ / ብራንድ ስም",
+  "serviceDescriptionLabel": "የአገልግሎት መግለጫ",
+  "providerBusinessValidation": "ለአቅራቢዎች የንግድ ስም አስፈላጊ ነው",
+  "providerDescriptionValidation": "ለፈላጊዎች የምታቀርቡትን አገልግሎት ይግለጹ",
+  "signupSubmitLabel": "ይመዝገቡ",
+  "providerSubmitLabel": "የአቅራቢ ጥያቄ ያስገቡ",
+  "serviceSeekerLabel": "የአገልግሎት ፈላጊ",
+  "serviceProviderLabel": "የአገልግሎት አቅራቢ",
+  "validationEmailRequired": "ኢሜል ያስፈልጋል",
+  "validationEmailInvalid": "የተሳሳተ ኢሜል",
+  "validationPasswordRequired": "የይለፍ ቃል ያስፈልጋል",
+  "validationPasswordLength": "የይለፍ ቃል ቢያንስ 6 ቁምፊ መሆን አለበት",
+  "validationConfirmPassword": "የይለፍ ቃልን ያረጋግጡ",
+  "validationPasswordsMismatch": "የይለፍ ቃሎቹ አይመሳሰሉም",
+  "verifyEmailTitle": "ኢሜልዎን ያረጋግጡ",
+  "verifyEmailInfo": "የማረጋገጫ ኮድ ወደ {email} ተልኳል።",
+  "@verifyEmailInfo": {
+    "placeholders": {
+      "email": {
+        "example": "email@example.com"
+      }
+    }
+  },
+  "verificationCodeLabel": "የማረጋገጫ ኮድ",
+  "verifyButtonLabel": "ያረጋግጡ",
+  "missingEmailError": "ኢሜል አልተገኘም",
+  "emailVerifiedMessage": "ኢሜሉ ተረጋገጠ። እባክዎ ይግቡ።",
+  "homeTitle": "ServeEase መነሻ",
+  "homeWelcome": "እንኳን ወደ ServeEase በደህና መጡ!",
+  "homeSubtitle": "አገልግሎቶችን ይመልከቱ፣ ጥያቄዎችን ያቀርቡ እና መለያዎን ያቆጣጠሩ።",
+  "homeExploreButton": "አገልግሎቶችን ይመልከቱ"
+}
+
+

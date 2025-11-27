@@ -21,7 +21,9 @@ export const createService = async (req, res) => {
 export const getMyServices = async (req, res) => {
   try {
     const provider = await Provider.findByUserId(req.user.id);
-
+    if (!provider) {
+      return res.status(404).json({ message: "Provider profile not found" });
+    }
     const services = await Service.findByProvider(provider.id);
     res.json(services);
   } catch (error) {

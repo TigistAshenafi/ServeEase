@@ -25,32 +25,82 @@ function setRefreshCookie(res, token, expiresInDays = 7) {
 }
 
 export const register = async (req, res, next) => {
+  let client;
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password, role, providerProfile } = req.body;
     if (!email || !password) return res.status(400).json({ message: 'Missing fields' });
 
+    const wantsProviderRole = role == 'provider';
+    const providerBusinessName = 
+    wantsProviderRole && typeof providerProfile?.businessName === 'string'
+    ? providerProfile.businessName.trim()
+    :null;
+
+    const providerDescription =
+    wantsProviderRole && typeof providerProfile?.description === 'string'
+    ? providerProfile.description.trim()
+    :null;
+
+    if (wantsProviderRole && (!providerBusinessName || !providerDescription)) {
+      return res.status(400).json({ message: 'Provider profile is required when registering as provider.'})
+    }
     // check existing
     const { rows } = await pool.query('SELECT id FROM users WHERE email = $1', [email]);
     if (rows.length) return res.status(409).json({ message: 'Email already used' });
 
+    const storedRole = wantsProviderRole? 'seeker' : (role || 'seeker');
     const userId = uuidv4();
     const password_hash = await bcrypt.hash(password, 10);
-    const userRes = await pool.query(
+        const code = generateVerificationCode();
+    const expires = new Date(Date.now() + 1000 * 60 * 60 * 24); // 24h
+
+    client = await pool.connect();
+    await client.query('BEGIN');
+  
+    const userRes = await client.query(
       'INSERT INTO users(id, name, email, password_hash, role) VALUES($1,$2,$3,$4,$5) RETURNING id,email',
-      [userId, name || null, email, password_hash, role || 'seeker']
+      [userId, name || null, email, password_hash, storedRole]
     );
     const user = userRes.rows[0];
 
     // Create verification code (simple random uuid here)
-    const code = generateVerificationCode();
-    const expires = new Date(Date.now() + 1000 * 60 * 60 * 24); // 24h
-    await pool.query('INSERT INTO email_verifications(user_id, code, expires_at) VALUES($1,$2,$3)', [user.id, code, expires]);
+
+    await client.query(
+      'INSERT INTO email_verifications(user_id, code, expires_at) VALUES($1,$2,$3)', 
+      [user.id, code, expires]
+    );
+
+    if(wantsProviderRole) {
+      await client.query(
+        `INSERT INTO providers (user_id, business_name, description, status)
+        VALUES ($1, $2, $3, 'pending')`,
+        [user.id, providerBusinessName, providerDescription]
+      );
+    }
+
+    await client.query('COMMIT');
 
     // send email
     await sendVerificationEmail(user.email, code);
 
-    res.status(201).json({ message: 'Registered. Check email for verification.' });
-  } catch (err) { next(err); }
+    const message = wantsProviderRole
+    ? 'Registered as provider. Check email for verification.You can continue using seeker account until approval.' 
+    : 'Registered. Check email for verification.';
+
+    res.status(201).json({
+       message, 
+       providerStatus: wantsProviderRole ? 'pending' : undefined
+      });
+  } catch (err) {
+    if (client) {
+      try { await client.query('ROLLBACK'); } catch (_) {}
+      client.release(); 
+      client = null;
+    }
+     next(err);
+     } finally {
+    if (client) client.release();
+  }
 };
 
 export const verifyEmail = async (req, res, next) => {
@@ -86,6 +136,11 @@ export const login = async (req, res, next) => {
 
     if (!user.is_verified) return res.status(403).json({ message: 'Email not verified' });
 
+    const providerRes = await pool.query(
+      'SELECT id, status FROM providers WHERE user_id=$1', [user.id]
+    );
+    const providerStatus = providerRes.rows.length ? providerRes.rows[0].status : null;
+
     const payload = { userId: user.id, role: user.role };
     const accessToken = signAccessToken(payload);
     const refreshToken = signRefreshToken(payload);
@@ -99,7 +154,8 @@ export const login = async (req, res, next) => {
 
     setRefreshCookie(res, refreshToken);
 
-    res.json({ accessToken, user: { id: user.id, name: user.name, role: user.role } });
+    res.json({ accessToken, 
+      user: { id: user.id, name: user.name, role: user.role, providerStatus } });
   } catch (err) { next(err); }
 };
 
@@ -161,8 +217,8 @@ export const requestPasswordReset = async (req, res, next) => {
     const resetId = uuidv4(); 
     // const rawToken = uuidv4(); // actual token to send to user
     // const tokenHash = await hashToken(rawToken);
-    const reserCode = generateVerificationCode();
-    const codeHash = await hashToken(reserCode);
+    const resetCode = generateVerificationCode();
+    const codeHash = await hashToken(resetCode);
     const expires = new Date(Date.now() + 1000 * 60 * 60); // expires in 1 hour
 
     // Save to DB (use resetId as the row id)
@@ -176,7 +232,7 @@ export const requestPasswordReset = async (req, res, next) => {
     await sendPasswordResetEmail(email, resetCode);
 
     // Respond success
-    res.status(200).json({ message: 'The reset cose is sent.' });
+    res.status(200).json({ message: 'The reset code is sent.' });
   } catch (err) {
     console.error('Password reset error:', err);
     next(err);

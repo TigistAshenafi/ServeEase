@@ -2,8 +2,11 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import '../../../core/services/auth_service.dart';
 import '../../../core/guards/auth_guard.dart';
+import '../../../core/localization/l10n_extension.dart';
+import '../../../core/services/auth_service.dart';
+import '../../../core/utils/validators.dart';
+import '../../../shared/widgets/language_toggle.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -36,56 +39,58 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _login() async {
-    // VALIDATION FIRST
     if (!_formKey.currentState!.validate()) return;
 
     setState(() => _loading = true);
+    final l10n = context.l10n;
 
-   try {
-  await _authService.login(
-    _emailController.text.trim(),
-    _passwordController.text.trim(),
-  );
+    try {
+      await _authService.login(
+        _emailController.text.trim(),
+        _passwordController.text.trim(),
+      );
 
-  if (!mounted) return;
+      if (!mounted) return;
 
-  ScaffoldMessenger.of(context).showSnackBar(
-    const SnackBar(
-      content: Text("Login successful!"),
-      backgroundColor: Colors.green,
-      duration: Duration(seconds: 2),
-    ),
-  );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n.loginSuccessMessage),
+          backgroundColor: Colors.green,
+          duration: const Duration(seconds: 2),
+        ),
+      );
 
-  Navigator.pushReplacementNamed(context, '/home');
-}
- catch (e) {
-  String msg;
+      Navigator.pushReplacementNamed(context, '/home');
+    } catch (e) {
+      // --- Null-safe Dio exception handling ---
+      late final String message;
+      if (e is DioException) {
+        final data = e.response?.data;
+        message = (data is Map<String, dynamic> && data['message'] != null)
+            ? data['message'].toString()
+            : e.message ?? l10n.unknownError;
+      } else {
+        message = e.toString();
+      }
 
-if (e is DioException) {
-  // If DioException has a response with data['message'], use it; otherwise fallback
-  msg = e.response != null && e.response?.data != null && e.response?.data['message'] != null
-      ? e.response!.data['message'].toString()
-      : e.message ?? 'Unknown error';
-} else {
-  msg = e.toString();
-}
-
-// Then show SnackBar
-ScaffoldMessenger.of(context).showSnackBar(
-  SnackBar(
-    content: Text("Login failed: $msg"),
-    backgroundColor: Colors.red,
-    duration: const Duration(seconds: 3),
-  ),
-);}
- finally {
-  if (mounted) setState(() => _loading = false);
-}
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.loginFailed(message)),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _loading = false);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
@@ -95,84 +100,82 @@ ScaffoldMessenger.of(context).showSnackBar(
             key: _formKey,
             child: Column(
               children: [
+                // --- Language toggle at top right ---
+                const LanguageToggle(alignment: Alignment.centerRight),
+                const SizedBox(height: 16),
+
+                // --- Logo ---
                 const Icon(
                   Icons.diamond_outlined,
                   size: 60,
                   color: Colors.blue,
                 ),
                 const SizedBox(height: 20),
-                const Text(
-                  "Welcome Back",
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+
+                // --- Titles ---
+                Text(
+                  l10n.loginWelcomeTitle,
+                  style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
-                const Text(
-                  "Log in to continue using ServeEase",
+                Text(
+                  l10n.loginSubtitle,
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.grey),
+                  style: const TextStyle(color: Colors.grey),
                 ),
                 const SizedBox(height: 40),
 
-                // EMAIL FIELD
+                // --- Email field ---
                 TextFormField(
                   controller: _emailController,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(
-                    labelText: "Email Address",
-                    hintText: "you@example.com",
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.email_outlined),
+                  decoration: InputDecoration(
+                    labelText: l10n.emailLabel,
+                    hintText: l10n.emailHint,
+                    border: const OutlineInputBorder(),
+                    prefixIcon: const Icon(Icons.email_outlined),
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) return "Email is required";
-                    final emailRegex = RegExp(r'^[\w\.-]+@[\w\.-]+\.\w+$');
-                    if (!emailRegex.hasMatch(value)) return "Enter a valid email address";
-                    return null;
-                  },
+                  validator: (value) => Validators.validateEmail(context, value),
                 ),
-
                 const SizedBox(height: 16),
 
-                // PASSWORD FIELD
+                // --- Password field ---
                 TextFormField(
                   controller: _passwordController,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   obscureText: !_isPasswordVisible,
                   decoration: InputDecoration(
-                    labelText: "Password",
+                    labelText: l10n.passwordLabel,
                     border: const OutlineInputBorder(),
                     prefixIcon: const Icon(Icons.lock_outline),
                     suffixIcon: IconButton(
-                      icon: Icon(_isPasswordVisible ? Icons.visibility_off : Icons.visibility),
-                      onPressed: () {
-                        setState(() => _isPasswordVisible = !_isPasswordVisible);
-                      },
+                      icon: Icon(_isPasswordVisible
+                          ? Icons.visibility_off
+                          : Icons.visibility),
+                      onPressed: () =>
+                          setState(() => _isPasswordVisible = !_isPasswordVisible),
                     ),
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) return "Password is required";
-                    return null;
-                  },
+                  validator: (value) => Validators.validatePassword(context, value),
                 ),
-
                 const SizedBox(height: 12),
 
-                // FORGOT PASSWORD
+                // --- Forgot password ---
                 Align(
                   alignment: Alignment.centerRight,
                   child: GestureDetector(
                     onTap: () => Navigator.pushNamed(context, '/forgot-password'),
-                    child: const Text(
-                      "Forgot Password?",
-                      style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w600),
+                    child: Text(
+                      l10n.forgotPasswordLabel,
+                      style: const TextStyle(
+                          color: Colors.blue, fontWeight: FontWeight.w600),
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 24),
 
-                // LOGIN BUTTON
+                // --- Login button ---
                 SizedBox(
                   width: double.infinity,
                   height: 50,
@@ -186,26 +189,27 @@ ScaffoldMessenger.of(context).showSnackBar(
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          child: const Text(
-                            "Log In",
-                            style: TextStyle(fontSize: 18, color: Colors.white),
+                          child: Text(
+                            l10n.loginButtonLabel,
+                            style: const TextStyle(
+                                fontSize: 18, color: Colors.white),
                           ),
                         ),
                 ),
-
                 const SizedBox(height: 16),
 
-                // SIGNUP REDIRECT
+                // --- Signup redirect ---
                 GestureDetector(
                   onTap: () => Navigator.pushReplacementNamed(context, '/signup'),
-                  child: const Text.rich(
+                  child: Text.rich(
                     TextSpan(
-                      text: "Don't have an account? ",
-                      style: TextStyle(color: Colors.grey),
+                      text: l10n.signupRedirectPrefix,
+                      style: const TextStyle(color: Colors.grey),
                       children: [
                         TextSpan(
-                          text: "Sign Up",
-                          style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+                          text: l10n.signupRedirectAction,
+                          style: const TextStyle(
+                              color: Colors.blue, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
