@@ -5,6 +5,9 @@ export const registerProvider = async (req, res) => {
     const { business_name, description } = req.body;
     const user_id = req.user.id;
 
+    if (!business_name || !description) {
+      return res.status(400).json({ message: "Business name and description are required." });
+    }
     const existing = await Provider.findByUserId(user_id);
     if (existing)
       return res.status(400).json({ message: "You already registered as a provider." });
