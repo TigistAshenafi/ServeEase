@@ -1,0 +1,75 @@
+{
+  "@@locale": "en",
+  "appTitle": "ServeEase",
+  "languageLabel": "Language",
+  "englishLabel": "English",
+  "amharicLabel": "Amharic",
+  "loginWelcomeTitle": "Welcome Back",
+  "loginSubtitle": "Log in to continue using ServeEase",
+  "emailLabel": "Email Address",
+  "emailHint": "you@example.com",
+  "passwordLabel": "Password",
+  "forgotPasswordLabel": "Forgot Password?",
+  "loginButtonLabel": "Log In",
+  "signupRedirectPrefix": "Don't have an account? ",
+  "signupRedirectAction": "Sign Up",
+  "loginRedirectPrefix": "Already have an account? ",
+  "loginRedirectAction": "Log In",
+  "loginSuccessMessage": "Login successful!",
+  "loginFailed": "Login failed: {reason}",
+  "@loginFailed": {
+    "placeholders": {
+      "reason": {
+        "example": "Invalid credentials"
+      }
+    }
+  },
+  "errorWithMessage": "Error: {message}",
+  "@errorWithMessage": {
+    "placeholders": {
+      "message": {
+        "example": "Network error"
+      }
+    }
+  },
+  "unknownError": "Something went wrong. Please try again.",
+  "createAccountTitle": "Create Your Account",
+  "signupSubtitle": "Join ServeEase to connect with services or offer your expertise.",
+  "nameOptionalLabel": "Full Name (optional)",
+  "confirmPasswordLabel": "Confirm Password",
+  "joinAsLabel": "Join as:",
+  "providerDetailsTitle": "Provider details",
+  "businessNameLabel": "Business / brand name",
+  "serviceDescriptionLabel": "Service description",
+  "providerBusinessValidation": "Business name is required for providers",
+  "providerDescriptionValidation": "Tell seekers about your services",
+  "signupSubmitLabel": "Sign Up",
+  "providerSubmitLabel": "Submit provider request",
+  "serviceSeekerLabel": "Service Seeker",
+  "serviceProviderLabel": "Service Provider",
+  "validationEmailRequired": "Email is required",
+  "validationEmailInvalid": "Invalid email",
+  "validationPasswordRequired": "Password is required",
+  "validationPasswordLength": "Password must be at least 6 characters",
+  "validationConfirmPassword": "Confirm password",
+  "validationPasswordsMismatch": "Passwords do not match",
+  "verifyEmailTitle": "Verify Email",
+  "verifyEmailInfo": "A verification code was sent to {email}.",
+  "@verifyEmailInfo": {
+    "placeholders": {
+      "email": {
+        "example": "email@example.com"
+      }
+    }
+  },
+  "verificationCodeLabel": "Verification code",
+  "verifyButtonLabel": "Verify",
+  "missingEmailError": "Missing email",
+  "emailVerifiedMessage": "Email verified. Please log in.",
+  "homeTitle": "ServeEase Home",
+  "homeWelcome": "Welcome to ServeEase!",
+  "homeSubtitle": "Explore services, request bookings, and manage your account.",
+  "homeExploreButton": "Explore Services"
+}
+
+

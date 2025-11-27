@@ -6,6 +6,7 @@ import 'features/auth/presentation/signup_screen.dart';
 import 'features/auth/presentation/forgot_password_screen.dart';
 import 'features/auth/presentation/reset_password_screen.dart';
 import 'features/auth/presentation/email_verification_screen.dart';
+import 'features/auth/presentation/home_screen.dart';
 
 class ServeEaseApp extends StatelessWidget {
   const ServeEaseApp({super.key});
@@ -25,8 +26,8 @@ class ServeEaseApp extends StatelessWidget {
         '/signup': (context) => const SignupScreen(),
         '/forgot-password': (context) => const ForgotPasswordScreen(),
         '/reset-password': (context) => const ResetPasswordScreen(),
-        '/email-verification': (context) => const EmailVerificationScreen(),
-        
+        '/verify-email': (context) => const EmailVerificationScreen(),
+        '/home': (context) => const HomeScreen(),
       },
     );
   }

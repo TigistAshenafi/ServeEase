@@ -1,13 +1,13 @@
-// ignore_for_file: use_build_context_synchronously, deprecated_member_use
+// ignore_for_file: use_build_context_synchronously, deprecated_member_use, unused_local_variable
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-// import 'package:serveease_app/shared/widgets/custom_button.dart';
-
+import '../../../core/guards/auth_guard.dart';
+import '../../../core/localization/l10n_extension.dart';
 import '../../../core/services/auth_service.dart';
 import '../../../core/utils/validators.dart';
+import '../../../shared/widgets/language_toggle.dart';
 import '../../../shared/widgets/role_selector.dart';
-import '../../../core/guards/auth_guard.dart'; // <-- added import
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -21,11 +21,14 @@ class _SignupScreenState extends State<SignupScreen> {
   final _password = TextEditingController();
   final _confirm = TextEditingController();
   final _name = TextEditingController();
+  final _businessName = TextEditingController();
+  final _businessDescription = TextEditingController();
 
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
 
   Role _role = Role.seeker;
+  bool get _isProvider => _role == Role.provider;
   final _auth = AuthService();
   bool _loading = false;
   final _formKey = GlobalKey<FormState>();
@@ -35,6 +38,17 @@ class _SignupScreenState extends State<SignupScreen> {
   void initState() {
     super.initState();
     _checkAuth();
+  }
+
+  @override
+  void dispose() {
+    _email.dispose();
+    _password.dispose();
+    _confirm.dispose();
+    _name.dispose();
+    _businessName.dispose();
+    _businessDescription.dispose();
+    super.dispose();
   }
 
   void _checkAuth() async {
@@ -49,14 +63,21 @@ class _SignupScreenState extends State<SignupScreen> {
     if (!_formKey.currentState!.validate()) return;
 
     setState(() => _loading = true);
-
+    final l10n = context.l10n;
     try {
-      final roleStr = _role == Role.seeker ? 'seeker' : 'provider';
+      final roleStr = _isProvider ? 'provider' : 'seeker';
+      final providerProfile = _isProvider
+          ? {
+              'businessName': _businessName.text.trim(),
+              'description': _businessDescription.text.trim(),
+            }
+          : null;
       await _auth.register(
         _email.text.trim(),
         _password.text.trim(),
         roleStr,
         name: _name.text.trim(),
+        providerProfile: providerProfile,
       );
 
       if (!mounted) return;
@@ -66,10 +87,11 @@ class _SignupScreenState extends State<SignupScreen> {
         arguments: {'email': _email.text.trim()},
       );
     } on DioException catch (e) {
-      final msg = e.response?.data?['message'] ?? e.message;
+      final msg =
+          e.response?.data?['message'] ?? e.message ?? l10n.unknownError;
       if (!mounted) return;
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Error: $msg')));
+          .showSnackBar(SnackBar(content: Text(l10n.errorWithMessage(msg))));
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -77,6 +99,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
@@ -86,19 +109,23 @@ class _SignupScreenState extends State<SignupScreen> {
             key: _formKey,
             child: Column(
               children: [
-                const Icon(Icons.diamond_outlined, size: 60, color: Colors.blue),
+                const LanguageToggle(alignment: Alignment.centerRight),
+                const SizedBox(height: 16),
+                const Icon(Icons.diamond_outlined,
+                    size: 60, color: Colors.blue),
                 const SizedBox(height: 20),
 
-                const Text(
-                  "Create Your Account",
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                Text(
+                  l10n.createAccountTitle,
+                  style: const TextStyle(
+                      fontSize: 22, fontWeight: FontWeight.bold),
                 ),
 
                 const SizedBox(height: 8),
-                const Text(
-                  "Join ServeEase to connect with services or offer your expertise.",
+                Text(
+                  l10n.signupSubtitle,
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.grey),
+                  style: const TextStyle(color: Colors.grey),
                 ),
 
                 const SizedBox(height: 30),
@@ -106,18 +133,20 @@ class _SignupScreenState extends State<SignupScreen> {
                 // FULL NAME
                 TextFormField(
                   controller: _name,
-                  decoration: const InputDecoration(
-                    labelText: "Full Name",
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: l10n.nameOptionalLabel,
+                    border: const OutlineInputBorder(),
                     prefixIcon: Icon(Icons.person_outline),
                   ),
                 ),
                 const SizedBox(height: 12),
                 TextFormField(
                   controller: _email,
-                  decoration:
-                      const InputDecoration(labelText: 'Email Address'),
-                  validator: (v) => Validators.validateEmail(v),
+                  decoration: InputDecoration(
+                    labelText: l10n.emailLabel,
+                    hintText: l10n.emailHint,
+                  ),
+                  validator: (v) => Validators.validateEmail(context, v),
                 ),
 
                 const SizedBox(height: 16),
@@ -127,22 +156,21 @@ class _SignupScreenState extends State<SignupScreen> {
                   controller: _password,
                   obscureText: !_isPasswordVisible,
                   decoration: InputDecoration(
-                    labelText: "Password",
-                    border: const OutlineInputBorder(), 
+                    labelText: l10n.passwordLabel,
+                    border: const OutlineInputBorder(),
                     prefixIcon: const Icon(Icons.lock_outline),
                     suffixIcon: IconButton(
                       icon: Icon(_isPasswordVisible
                           ? Icons.visibility_off
                           : Icons.visibility),
                       onPressed: () {
-
                         setState(() {
                           _isPasswordVisible = !_isPasswordVisible;
                         });
                       },
                     ),
                   ),
-                  validator: (v) => Validators.validatePassword(v),
+                  validator: (v) => Validators.validatePassword(context, v),
                 ),
                 const SizedBox(height: 16),
 
@@ -151,14 +179,14 @@ class _SignupScreenState extends State<SignupScreen> {
                   controller: _confirm,
                   obscureText: !_isConfirmPasswordVisible,
                   decoration: InputDecoration(
-                    labelText: "Confirm Password", 
+                    labelText: l10n.confirmPasswordLabel,
                     border: const OutlineInputBorder(),
                     prefixIcon: const Icon(Icons.lock_outline),
                     suffixIcon: IconButton(
                       icon: Icon(_isConfirmPasswordVisible
                           ? Icons.visibility_off
                           : Icons.visibility),
-                      onPressed: () { 
+                      onPressed: () {
                         setState(() {
                           _isConfirmPasswordVisible =
                               !_isConfirmPasswordVisible;
@@ -166,34 +194,67 @@ class _SignupScreenState extends State<SignupScreen> {
                       },
                     ),
                   ),
-                  validator: (v) =>
-                      Validators.validateConfirmPassword(v, _password.text),
+                  validator: (v) => Validators.validateConfirmPassword(
+                      context, v, _password.text),
                 ),
 
                 const SizedBox(height: 24),
-                // ROLE SELECTION
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Radio<Role>(
-                      value: Role.seeker,
-                      groupValue: _role,
-                      onChanged: (r) => setState(() => _role = r!),
-                    ),
-                    const Text("Service Seeker"),
-                    const SizedBox(width: 20),
-                    Radio<Role>(
-                      value: Role.provider,
-                      groupValue: _role,
-                      onChanged: (r) => setState(() => _role = r!),
-                    ),
-                    const Text("Service Provider"),
-                  ],
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(l10n.joinAsLabel,
+                      style: const TextStyle(fontWeight: FontWeight.w600)),
                 ),
-
-                const SizedBox(height: 20),
-
-                // SIGN UP BUTTON
+                const SizedBox(height: 8),
+                RoleSelector(
+                    selected: _role,
+                    onChanged: (r) => setState(() => _role = r)),
+                if (_isProvider) ...[
+                  const SizedBox(height: 16),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      l10n.providerDetailsTitle,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: Colors.blueGrey.shade700,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  TextFormField(
+                    controller: _businessName,
+                    decoration: InputDecoration(
+                      labelText: l10n.businessNameLabel,
+                      border: const OutlineInputBorder(),
+                      prefixIcon: const Icon(Icons.storefront_outlined),
+                    ),
+                    validator: (v) {
+                      if (!_isProvider) return null;
+                      if (v == null || v.trim().isEmpty) {
+                        return l10n.providerBusinessValidation;
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 12),
+                  TextFormField(
+                    controller: _businessDescription,
+                    maxLines: 3,
+                    decoration: InputDecoration(
+                      labelText: l10n.serviceDescriptionLabel,
+                      border: const OutlineInputBorder(),
+                      prefixIcon: const Icon(Icons.description_outlined),
+                    ),
+                    validator: (v) {
+                      if (!_isProvider) return null;
+                      if (v == null || v.trim().isEmpty) {
+                        return l10n.providerDescriptionValidation;
+                      }
+                      return null;
+                    },
+                  ),
+                ],
+                const SizedBox(height: 24),
                 SizedBox(
                   width: double.infinity,
                   height: 50,
@@ -207,58 +268,40 @@ class _SignupScreenState extends State<SignupScreen> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          child: const Text(
-                            "Sign Up",  // to sign up page
-                            style:
-                                TextStyle(fontSize: 18, color: Colors.white),
+                          child: Text(
+                            _isProvider
+                                ? l10n.signupSubmitLabel
+                                : l10n.signupSubmitLabel,
+                            style: TextStyle(fontSize: 18, color: Colors.white),
                           ),
                         ),
                 ),
 
                 const SizedBox(height: 16),
 
-                  // LOGIN LINK
-                  GestureDetector(
-                    
-                    onTap: () => Navigator.pushReplacementNamed(context, '/login'),
-                    child: const Text.rich(
-                      TextSpan(
-                        text: "Already have an account? ",
-                        style: TextStyle(color: Colors.grey),
-                        children: [
-                          TextSpan(
-                            text: "Log In",
-                            style: TextStyle(
-                                color: Colors.blue,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                        
-                      ),
+                // LOGIN LINK
+                GestureDetector(
+                  onTap: () =>
+                      Navigator.pushReplacementNamed(context, '/login'),
+                  child: Text.rich(
+                    TextSpan(
+                      text: (l10n.loginRedirectPrefix),
+                      style: const TextStyle(color: Colors.grey),
+                      children: [
+                        TextSpan(
+                          text: (l10n.loginRedirectAction),
+                          style: const TextStyle(
+                              color: Colors.blue, fontWeight: FontWeight.bold),
+                        ),
+                      ],
                     ),
                   ),
-              //     const SizedBox(height: 12),
-              //     Align(
-              //         alignment: Alignment.centerLeft,
-              //         child: Text('Join as:',
-              //             style: TextStyle(fontWeight: FontWeight.w600))),
-              //     const SizedBox(height: 8),
-              //     RoleSelector(
-              //         selected: _role,
-              //         onChanged: (r) => setState(() => _role = r)),
-              //     const SizedBox(height: 18),
-              //     _loading
-              //         ? const CircularProgressIndicator()
-              //         : CustomButton(label: 'Sign Up', onPressed: _signup),
-              //     const SizedBox(height: 12),
-              //     TextButton(
-              //         onPressed: () => Navigator.pushNamed(context, '/login'),
-              //         child: const Text('Already have an account? Log In')),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
-      );
+      ),
+    );
   }
 }
