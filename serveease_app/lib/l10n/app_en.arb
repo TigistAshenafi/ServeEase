@@ -69,7 +69,14 @@
   "homeTitle": "ServeEase Home",
   "homeWelcome": "Welcome to ServeEase!",
   "homeSubtitle": "Explore services, request bookings, and manage your account.",
-  "homeExploreButton": "Explore Services"
+  "homeExploreButton": "Explore Services",
+  "backToLoginLabel": "Back to Login",
+  "emptyVerificationCode": "Please enter the verification code",
+  "forgotPasswordTitle": "Forgot Password?",
+  "forgotPasswordSubtitle": "Enter your email and we'll send you instructions to reset your password.",
+  "sendResetLinkButton": "Send Reset Link",
+  "rememberPasswordPrefix": "Remembered your password? ",
+  "rememberPasswordAction": "Log In",
+  "resetCodeSentMessage": "The reset code has been sent to your email."
+
 }
-
-

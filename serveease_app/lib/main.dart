@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:serveease_app/features/auth/presentation/welcome_screen.dart';
 import 'package:serveease_app/l10n/app_localizations.dart';
 
 import 'core/guards/auth_guard.dart';
@@ -22,7 +23,7 @@ class ServeEaseApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: localeController, 
+      animation: localeController,
       builder: (context, _) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -30,8 +31,9 @@ class ServeEaseApp extends StatelessWidget {
       locale: localeController.locale,
       supportedLocales: LocaleController.supportedLocales,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
-      initialRoute: '/login',
+      initialRoute: '/welcome',
       routes: {
+        '/welcome': (_) => const WelcomeScreen(),
         '/login': (_) => const LoginScreen(),
         '/signup': (_) => const SignupScreen(),
         '/forgot-password': (_) => const ForgotPasswordScreen(),

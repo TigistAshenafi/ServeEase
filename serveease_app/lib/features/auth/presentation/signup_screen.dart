@@ -139,12 +139,16 @@ class _SignupScreenState extends State<SignupScreen> {
                     prefixIcon: Icon(Icons.person_outline),
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 16),
+
+                // EMAIL
                 TextFormField(
                   controller: _email,
-                  decoration: InputDecoration(
+                  decoration:  InputDecoration(
                     labelText: l10n.emailLabel,
                     hintText: l10n.emailHint,
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.email_outlined),
                   ),
                   validator: (v) => Validators.validateEmail(context, v),
                 ),

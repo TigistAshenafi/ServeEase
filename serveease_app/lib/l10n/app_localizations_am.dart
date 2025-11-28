@@ -160,4 +160,28 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String get homeExploreButton => 'አገልግሎቶችን ይመልከቱ';
+
+  @override
+  String get backToLoginLabel => 'ወደ መግቢያ ተመለስ';
+
+  @override
+  String get emptyVerificationCode => 'የማረጋገጫ ኮድ ያስገቡ';
+
+  @override
+  String get forgotPasswordTitle => 'የምስጢር ቃል ይረሳዎታል?';
+
+  @override
+  String get forgotPasswordSubtitle => 'ኢሜሎን እና አዲስ የምስጢር ቃል መቀየር መመሪያ እንዲልክልዎ ያስገቡ።';
+
+  @override
+  String get sendResetLinkButton => 'የማስመለሻ አገናኝ ላክ';
+
+  @override
+  String get rememberPasswordPrefix => 'የይለፍ ቃልዎን ያስታውሱ? ';
+
+  @override
+  String get rememberPasswordAction => 'ግባ';
+
+  @override
+  String get resetCodeSentMessage => 'የማስመለሻ ኮድ ወደ ኢሜሎዎ ተልኳል።';
 }

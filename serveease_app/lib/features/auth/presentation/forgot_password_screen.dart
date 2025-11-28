@@ -1,6 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:serveease_app/core/localization/l10n_extension.dart';
+import 'package:serveease_app/shared/widgets/language_toggle.dart';
 import '../../../core/services/auth_service.dart';
 import '../../../core/utils/validators.dart';
 
@@ -26,12 +28,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       await _auth.requestPasswordReset(_email.text.trim());
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("The reset code is sent to your email."),
+        SnackBar(
+          content: Text(context.l10n.resetCodeSentMessage),
         ),
       );
 
-      // Navigate to ResetPasswordScreen and pass the email
       Navigator.pushNamed(
         context,
         '/reset-password',
@@ -48,6 +49,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
@@ -57,32 +60,43 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             key: _formKey,
             child: Column(
               children: [
+                // Language toggle
+                const LanguageToggle(alignment: Alignment.centerRight),
+                const SizedBox(height: 16),
+
+                // Icon
                 const Icon(Icons.lock_reset, size: 60, color: Colors.blue),
                 const SizedBox(height: 20),
-                const Text(
-                  "Forgot Password?",
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+
+                // Title & subtitle
+                Text(
+                  l10n.forgotPasswordTitle,
+                  style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
-                const Text(
-                  "Enter your email and we'll send you instructions\nto reset your password.",
+                Text(
+                  l10n.forgotPasswordSubtitle,
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.grey),
+                  style: TextStyle(color: Colors.grey.shade700),
                 ),
                 const SizedBox(height: 30),
+
+                // Email input
                 TextFormField(
                   controller: _email,
+                  autovalidateMode: AutovalidateMode.disabled,
                   keyboardType: TextInputType.emailAddress,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  decoration: const InputDecoration(
-                    labelText: "Email Address",
-                    hintText: "you@example.com",
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.email_outlined),
+                  decoration: InputDecoration(
+                    labelText: l10n.emailLabel,
+                    hintText: l10n.emailHint,
+                    border: const OutlineInputBorder(),
+                    prefixIcon: const Icon(Icons.email_outlined),
                   ),
-                  validator: (v) => Validators.validateEmail(context, v),
+                  validator: (value) => Validators.validateEmail(context, value),
                 ),
                 const SizedBox(height: 24),
+
+                // Submit button
                 SizedBox(
                   width: double.infinity,
                   height: 50,
@@ -96,26 +110,25 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          child: const Text(
-                            "Send Reset Link",
-                            style: TextStyle(fontSize: 18, color: Colors.white),
+                          child: Text(
+                            l10n.sendResetLinkButton, // localized
+                            style: const TextStyle(fontSize: 18, color: Colors.white),
                           ),
                         ),
                 ),
                 const SizedBox(height: 16),
+
+                // Back to login
                 GestureDetector(
                   onTap: () => Navigator.pushReplacementNamed(context, '/login'),
-                  child: const Text.rich(
+                  child: Text.rich(
                     TextSpan(
-                      text: "Remembered your password? ",
-                      style: TextStyle(color: Colors.grey),
+                      text: l10n.rememberPasswordPrefix,
+                      style: const TextStyle(color: Colors.grey),
                       children: [
                         TextSpan(
-                          text: "Log In",
-                          style: TextStyle(
-                            color: Colors.blue,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          text: l10n.rememberPasswordAction,
+                          style: const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),

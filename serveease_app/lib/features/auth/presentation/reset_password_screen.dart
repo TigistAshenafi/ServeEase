@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import '../../../core/services/auth_service.dart';
 import '../../../core/utils/validators.dart';
@@ -23,7 +21,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Retrieve email from route arguments
     final args =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
     if (args != null && args['email'] != null) {
@@ -56,51 +53,142 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    const buttonColor = Colors.blue; // Define a consistent color
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Reset Password')),
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
-              const Text(
-                  'Enter the token sent to your email and choose a new password.'),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: _email,
-                readOnly: true,
-                decoration: const InputDecoration(labelText: 'Email'),
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: _token,
-                decoration: const InputDecoration(labelText: 'Reset Code'),
-                validator: (v) => v == null || v.isEmpty ? 'Code required' : null,
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: _password,
-                obscureText: true,
-                decoration: const InputDecoration(labelText: 'New Password'),
-                validator: (v) => Validators.validatePassword(context, v),
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: _confirm,
-                obscureText: true,
-                decoration: const InputDecoration(labelText: 'Confirm Password'),
-                validator: (v) =>
-                    Validators.validateConfirmPassword(context, v, _password.text),
-              ),
-              const SizedBox(height: 18),
-              _loading
-                  ? const CircularProgressIndicator()
-                  : ElevatedButton(
-                      onPressed: _submit,
-                      child: const Text('Reset Password'),
+      // AppBar with colored back button
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          color: buttonColor, // same as main button
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+
+                  // Title
+                  Text(
+                    "Reset Password",
+                    style: const TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
                     ),
-            ],
+                  ),
+                  const SizedBox(height: 6),
+
+                  // Subtitle
+                  Text(
+                    "Enter the reset code sent to your email and set a new password.",
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.grey.shade700,
+                    ),
+                  ),
+                  const SizedBox(height: 28),
+
+                  // Email
+                  TextFormField(
+                    controller: _email,
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      labelText: "Email",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+
+                  // Reset Code
+                  TextFormField(
+                    controller: _token,
+                    decoration: InputDecoration(
+                      labelText: "Reset Code",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    validator: (v) => v == null || v.isEmpty ? "Code required" : null,
+                  ),
+                  const SizedBox(height: 16),
+
+                  // New Password
+                  TextFormField(
+                    controller: _password,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      labelText: "New Password",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    validator: (v) => Validators.validatePassword(context, v),
+                  ),
+                  const SizedBox(height: 16),
+
+                  // Confirm Password
+                  TextFormField(
+                    controller: _confirm,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      labelText: "Confirm Password",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    validator: (v) =>
+                        Validators.validateConfirmPassword(context, v, _password.text),
+                  ),
+                  const SizedBox(height: 28),
+
+                  // Submit Button - Login style
+                  SizedBox(
+                    width: double.infinity,
+                    child: _loading
+                        ? const Center(child: CircularProgressIndicator())
+                        : ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: buttonColor,
+                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            onPressed: _submit,
+                            child: const Text(
+                              "Reset Password",
+                              style: TextStyle(fontSize: 16, color: Colors.white),
+                            ),
+                          ),
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  // Back to login
+                  Center(
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, "/login");
+                      },
+                      child: const Text(
+                        "Back to Login",
+                        style: TextStyle(color: buttonColor),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
           ),
         ),
       ),
