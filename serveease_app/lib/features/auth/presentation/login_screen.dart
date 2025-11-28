@@ -1,7 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+
 import '../../../core/guards/auth_guard.dart';
 import '../../../core/localization/l10n_extension.dart';
 import '../../../core/services/auth_service.dart';
@@ -39,51 +39,33 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _login() async {
+    setState(() => _loading = true); // 🔥 enable validation AFTER submit
+
     if (!_formKey.currentState!.validate()) return;
 
-    setState(() => _loading = true);
-    final l10n = context.l10n;
-
     try {
-      await _authService.login(
+      final response = await AuthService().login(
         _emailController.text.trim(),
         _passwordController.text.trim(),
       );
 
-      if (!mounted) return;
+      final token = response.data['accessToken'];
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.loginSuccessMessage),
-          backgroundColor: Colors.green,
-          duration: const Duration(seconds: 2),
-        ),
-      );
+      if (token != null) {
+        await AuthService().saveAccessToken(token);
+      } else {
+        print("No access token in response");
+        return;
+      }
+
+      if (!mounted) return;
 
       Navigator.pushReplacementNamed(context, '/home');
     } catch (e) {
-      // --- Null-safe Dio exception handling ---
-      late final String message;
-      if (e is DioException) {
-        final data = e.response?.data;
-        message = (data is Map<String, dynamic> && data['message'] != null)
-            ? data['message'].toString()
-            : e.message ?? l10n.unknownError;
-      } else {
-        message = e.toString();
-      }
-
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(l10n.loginFailed(message)),
-            backgroundColor: Colors.red,
-            duration: const Duration(seconds: 3),
-          ),
-        );
-      }
-    } finally {
-      if (mounted) setState(() => _loading = false);
+      print("LOGIN ERROR: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString())),
+      );
     }
   }
 
@@ -98,6 +80,9 @@ class _LoginScreenState extends State<LoginScreen> {
           padding: const EdgeInsets.all(24),
           child: Form(
             key: _formKey,
+             autovalidateMode: _loading
+                ? AutovalidateMode.always   // 🔥 Show validation after submit
+                : AutovalidateMode.disabled, // 🔥 Hide before submit
             child: Column(
               children: [
                 // --- Language toggle at top right ---
@@ -115,7 +100,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 // --- Titles ---
                 Text(
                   l10n.loginWelcomeTitle,
-                  style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 22, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
                 Text(
@@ -128,7 +114,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 // --- Email field ---
                 TextFormField(
                   controller: _emailController,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  autovalidateMode:
+                      AutovalidateMode.disabled, // only validate on submit
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                     labelText: l10n.emailLabel,
@@ -136,14 +123,16 @@ class _LoginScreenState extends State<LoginScreen> {
                     border: const OutlineInputBorder(),
                     prefixIcon: const Icon(Icons.email_outlined),
                   ),
-                  validator: (value) => Validators.validateEmail(context, value),
+                  validator: (value) =>
+                      Validators.validateEmail(context, value),
+                  onChanged: (_) => setState(() {}), // simple and effective
                 ),
                 const SizedBox(height: 16),
 
                 // --- Password field ---
                 TextFormField(
                   controller: _passwordController,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  autovalidateMode: AutovalidateMode.disabled,
                   obscureText: !_isPasswordVisible,
                   decoration: InputDecoration(
                     labelText: l10n.passwordLabel,
@@ -153,11 +142,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       icon: Icon(_isPasswordVisible
                           ? Icons.visibility_off
                           : Icons.visibility),
-                      onPressed: () =>
-                          setState(() => _isPasswordVisible = !_isPasswordVisible),
+                      onPressed: () => setState(
+                          () => _isPasswordVisible = !_isPasswordVisible),
                     ),
                   ),
-                  validator: (value) => Validators.validatePassword(context, value),
+                  validator: (value) =>
+                      Validators.validatePassword(context, value),
                 ),
                 const SizedBox(height: 12),
 
@@ -165,7 +155,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 Align(
                   alignment: Alignment.centerRight,
                   child: GestureDetector(
-                    onTap: () => Navigator.pushNamed(context, '/forgot-password'),
+                    onTap: () =>
+                        Navigator.pushNamed(context, '/forgot-password'),
                     child: Text(
                       l10n.forgotPasswordLabel,
                       style: const TextStyle(
@@ -200,7 +191,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 // --- Signup redirect ---
                 GestureDetector(
-                  onTap: () => Navigator.pushReplacementNamed(context, '/signup'),
+                  onTap: () =>
+                      Navigator.pushReplacementNamed(context, '/signup'),
                   child: Text.rich(
                     TextSpan(
                       text: l10n.signupRedirectPrefix,

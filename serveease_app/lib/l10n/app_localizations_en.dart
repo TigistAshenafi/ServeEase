@@ -160,4 +160,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get homeExploreButton => 'Explore Services';
+
+  @override
+  String get backToLoginLabel => 'Back to Login';
+
+  @override
+  String get emptyVerificationCode => 'Please enter the verification code';
+
+  @override
+  String get forgotPasswordTitle => 'Forgot Password?';
+
+  @override
+  String get forgotPasswordSubtitle => 'Enter your email and we\'ll send you instructions to reset your password.';
+
+  @override
+  String get sendResetLinkButton => 'Send Reset Link';
+
+  @override
+  String get rememberPasswordPrefix => 'Remembered your password? ';
+
+  @override
+  String get rememberPasswordAction => 'Log In';
+
+  @override
+  String get resetCodeSentMessage => 'The reset code has been sent to your email.';
 }

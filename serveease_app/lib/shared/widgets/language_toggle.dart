@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../core/localization/l10n_extension.dart';
 import '../../core/localization/locale_controller.dart';
 
@@ -14,6 +13,18 @@ class LanguageToggle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final currentLocale = localeController.locale ?? Localizations.localeOf(context);
+
+    final locales = [
+      const Locale('en'),
+      const Locale('am'),
+    ];
+
+    // Map each locale to an icon
+    final localeIcons = {
+      'en': Icons.language, // replace with actual icon/image if needed
+      'am': Icons.language, // replace with Ethiopian flag icon if desired
+    };
 
     return Align(
       alignment: alignment,
@@ -27,40 +38,30 @@ class LanguageToggle extends StatelessWidget {
             style: const TextStyle(fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 8),
-          Wrap(
-            spacing: 8,
-            children: const [
-              _LanguageChip(locale: Locale('en')),
-              _LanguageChip(locale: Locale('am')),
-            ],
+          DropdownButton<Locale>(
+            value: currentLocale,
+            items: locales.map((locale) {
+              final label = locale.languageCode == 'am'
+                  ? l10n.amharicLabel
+                  : l10n.englishLabel;
+
+              return DropdownMenuItem(
+                value: locale,
+                child: Row(
+                  children: [
+                    Icon(localeIcons[locale.languageCode], size: 18, color: Colors.blue),
+                    const SizedBox(width: 6),
+                    Text(label),
+                  ],
+                ),
+              );
+            }).toList(),
+            onChanged: (locale) {
+              if (locale != null) localeController.setLocale(locale);
+            },
           ),
         ],
       ),
     );
   }
 }
-
-class _LanguageChip extends StatelessWidget {
-  final Locale locale;
-
-  const _LanguageChip({required this.locale});
-
-  @override
-  Widget build(BuildContext context) {
-    final currentCode = (localeController.locale ??
-            Localizations.localeOf(context))
-        .languageCode;
-    final l10n = context.l10n;
-    final label = locale.languageCode == 'am'
-        ? l10n.amharicLabel
-        : l10n.englishLabel;
-
-    return ChoiceChip(
-      label: Text(label),
-      selected: currentCode == locale.languageCode,
-      onSelected: (_) => localeController.setLocale(locale),
-      selectedColor: Colors.blue.shade100,
-    );
-  }
-}
-

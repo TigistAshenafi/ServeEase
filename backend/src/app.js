@@ -12,7 +12,7 @@ import providerRoutes from "./routes/providerRoutes.js";
 import adminProviderRoutes from "./routes/adminProviderRoutes.js";
 import serviceRoutes from "./routes/serviceRoutes.js";
 
-dotenv.config({ path: './.env' }); 
+dotenv.config({ path: './.env' });
 
 const app = express();
 
@@ -71,10 +71,10 @@ app.use('/api/auth', authRoutes);
 // Health check with security headers
 app.get('/health', (req, res) => {
   res.setHeader('Cache-Control', 'no-cache');
-  res.status(200).json({ 
-    status: 'OK', 
+  res.status(200).json({
+    status: 'OK',
     timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV 
+    environment: process.env.NODE_ENV
   });
 });
 
@@ -90,7 +90,7 @@ app.get('/', (req, res) => {
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
-const MODE = process.env.NODE_ENV || 'development'; 
+const MODE = process.env.NODE_ENV || 'development';
 app.listen(PORT, () => {
   console.log(`Server running in ${MODE} mode on http://localhost:${PORT}`);
 });

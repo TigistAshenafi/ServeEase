@@ -388,6 +388,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Explore Services'**
   String get homeExploreButton;
+
+  /// No description provided for @backToLoginLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Login'**
+  String get backToLoginLabel;
+
+  /// No description provided for @emptyVerificationCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter the verification code'**
+  String get emptyVerificationCode;
+
+  /// No description provided for @forgotPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot Password?'**
+  String get forgotPasswordTitle;
+
+  /// No description provided for @forgotPasswordSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email and we\'ll send you instructions to reset your password.'**
+  String get forgotPasswordSubtitle;
+
+  /// No description provided for @sendResetLinkButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Reset Link'**
+  String get sendResetLinkButton;
+
+  /// No description provided for @rememberPasswordPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Remembered your password? '**
+  String get rememberPasswordPrefix;
+
+  /// No description provided for @rememberPasswordAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Log In'**
+  String get rememberPasswordAction;
+
+  /// No description provided for @resetCodeSentMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The reset code has been sent to your email.'**
+  String get resetCodeSentMessage;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

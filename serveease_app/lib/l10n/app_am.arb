@@ -69,7 +69,14 @@
   "homeTitle": "ServeEase መነሻ",
   "homeWelcome": "እንኳን ወደ ServeEase በደህና መጡ!",
   "homeSubtitle": "አገልግሎቶችን ይመልከቱ፣ ጥያቄዎችን ያቀርቡ እና መለያዎን ያቆጣጠሩ።",
-  "homeExploreButton": "አገልግሎቶችን ይመልከቱ"
+  "homeExploreButton": "አገልግሎቶችን ይመልከቱ",
+  "backToLoginLabel": "ወደ መግቢያ ተመለስ",
+  "emptyVerificationCode": "የማረጋገጫ ኮድ ያስገቡ",
+  "forgotPasswordTitle": "የምስጢር ቃል ይረሳዎታል?",
+  "forgotPasswordSubtitle": "ኢሜሎን እና አዲስ የምስጢር ቃል መቀየር መመሪያ እንዲልክልዎ ያስገቡ።",
+  "sendResetLinkButton": "የማስመለሻ አገናኝ ላክ",
+  "rememberPasswordPrefix": "የይለፍ ቃልዎን ያስታውሱ? ",
+  "rememberPasswordAction": "ግባ","resetCodeSentMessage": "የማስመለሻ ኮድ ወደ ኢሜሎዎ ተልኳል።"
+
+
 }
-
-
