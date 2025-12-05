@@ -5,7 +5,8 @@ import {
   rejectProvider,
   suspendProvider,
 } from "../controllers/adminProviderController.js";
-import { authMiddleware, adminMiddleware } from "../middlewares/authMiddleware.js";
+import authMiddleware from "../middlewares/authMiddleware.js";
+import adminMiddleware from '../middlewares/adminMiddleware.js';
 
 const router = express.Router();
 
