@@ -1,10 +1,12 @@
 {
   "@@locale": "en",
   "appTitle": "ServeEase",
-  "languageLabel": "Language",
-  "englishLabel": "English",
-  "amharicLabel": "Amharic",
+  "englishLabel": "EN",
+  "amharicLabel": "AM",
   "loginWelcomeTitle": "Welcome Back",
+  "providerInfoNote": "As a provider, you will need to set up your profile after verifying your email.",
+  "nameLabel": "Full Name",
+  "nameValidation": "Please enter your name",
   "loginSubtitle": "Log in to continue using ServeEase",
   "emailLabel": "Email Address",
   "emailHint": "you@example.com",
@@ -35,14 +37,12 @@
   "unknownError": "Something went wrong. Please try again.",
   "createAccountTitle": "Create Your Account",
   "signupSubtitle": "Join ServeEase to connect with services or offer your expertise.",
-  "nameOptionalLabel": "Full Name (optional)",
   "confirmPasswordLabel": "Confirm Password",
   "joinAsLabel": "Join as:",
   "providerDetailsTitle": "Provider details",
   "businessNameLabel": "Business / brand name",
   "serviceDescriptionLabel": "Service description",
   "providerBusinessValidation": "Business name is required for providers",
-  "providerDescriptionValidation": "Tell seekers about your services",
   "signupSubmitLabel": "Sign Up",
   "providerSubmitLabel": "Submit provider request",
   "serviceSeekerLabel": "Service Seeker",
@@ -77,6 +77,11 @@
   "sendResetLinkButton": "Send Reset Link",
   "rememberPasswordPrefix": "Remembered your password? ",
   "rememberPasswordAction": "Log In",
-  "resetCodeSentMessage": "The reset code has been sent to your email."
+  "resetCodeSentMessage": "The reset code has been sent to your email.",
+  "providerCategoryLabel": "Category",
+  "providerDescriptionValidation": "Description is required",
+  "providerCategoryValidation": "Category is required",
+  "providerProfileSuccess": "Provider profile created successfully!",
+  "providerProfileSetup": "Provider Profile Setup"
 
 }

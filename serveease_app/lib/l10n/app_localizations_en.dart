@@ -12,13 +12,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appTitle => 'ServeEase';
 
   @override
-  String get languageLabel => 'Language';
+  String get englishLabel => 'EN';
 
   @override
-  String get englishLabel => 'English';
+  String get amharicLabel => 'AM';
 
   @override
-  String get amharicLabel => 'Amharic';
+  String get providerInfoNote =>
+      'As a provider, you will need to set up your profile after verifying your email.';
+  
+  @override
+  String get providerCategoryLabel => 'Category';
+
+  @override
+  String get providerCategoryValidation => 'Category is required';
+
+  @override
+  String get providerProfileSuccess => 'Provider profile created successfully!';
 
   @override
   String get loginWelcomeTitle => 'Welcome Back';
@@ -76,7 +86,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get signupSubtitle => 'Join ServeEase to connect with services or offer your expertise.';
 
   @override
-  String get nameOptionalLabel => 'Full Name (optional)';
+  String get nameLabel => 'Full Name';
+
+  @override
+  String get nameValidation => 'Please enter your name';
 
   @override
   String get confirmPasswordLabel => 'Confirm Password';
@@ -86,6 +99,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get providerDetailsTitle => 'Provider details';
+
+  @override
+  String get providerProfileSetup => 'Provider Profile Setup';
 
   @override
   String get businessNameLabel => 'Business / brand name';

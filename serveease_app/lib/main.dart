@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:serveease_app/features/auth/presentation/provider_setup_screen.dart';
 import 'package:serveease_app/features/auth/presentation/welcome_screen.dart';
 import 'package:serveease_app/l10n/app_localizations.dart';
 
@@ -36,6 +37,7 @@ class ServeEaseApp extends StatelessWidget {
         '/welcome': (_) => const WelcomeScreen(),
         '/login': (_) => const LoginScreen(),
         '/signup': (_) => const SignupScreen(),
+        '/provider-setup': (_) => const ProviderSetupScreen(),
         '/forgot-password': (_) => const ForgotPasswordScreen(),
         '/reset-password': (_) => const ResetPasswordScreen(),
         '/home': (context) => FutureBuilder<bool>(
