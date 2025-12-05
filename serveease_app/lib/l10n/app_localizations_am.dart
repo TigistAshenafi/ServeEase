@@ -12,20 +12,32 @@ class AppLocalizationsAm extends AppLocalizations {
   String get appTitle => 'ServeEase';
 
   @override
-  String get languageLabel => 'ቋንቋ';
+  String get englishLabel => 'EN';
 
   @override
-  String get englishLabel => 'እንግሊዝኛ';
+  String get amharicLabel => 'አማ';
 
   @override
-  String get amharicLabel => 'አማርኛ';
+  String get providerInfoNote => 'እንደ አቅራቢ ኢሜልዎን ማረጋገጥ በኋላ መግለጫዎን ማቋቋም ይኖርቦታል።';
+
+  @override
+  String get providerCategoryLabel => 'ምድብ';
+
+  @override
+  String get providerCategoryValidation => 'ምድብ አስፈላጊ ነው';
+
+  @override
+  String get providerProfileSuccess => 'የአቅራቢ መግለጫ በተሳካ ሁኔታ ተፈጥሯል!';
 
   @override
   String get loginWelcomeTitle => 'እንኳን ደህና መጡ';
 
   @override
   String get loginSubtitle => 'ServeEase ለመቀጠል ይግቡ';
-
+ @override
+  String get nameLabel => 'ሙሉ ስም';
+  @override
+  String get nameValidation => 'እባክዎ ስምዎን ያስገቡ';
   @override
   String get emailLabel => 'የኢሜል አድራሻ';
 
@@ -76,9 +88,6 @@ class AppLocalizationsAm extends AppLocalizations {
   String get signupSubtitle => 'ServeEase ጋር ተቀላቅለው አገልግሎቶችን ይፈልጉ ወይም ችሎታዎን ያቅርቡ።';
 
   @override
-  String get nameOptionalLabel => 'ሙሉ ስም (አማራጭ)';
-
-  @override
   String get confirmPasswordLabel => 'የይለፍ ቃል ያረጋግጡ';
 
   @override
@@ -89,6 +98,9 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String get businessNameLabel => 'የንግድ / ብራንድ ስም';
+
+  @override
+  String get providerProfileSetup => 'የአቅራቢ መግለጫ ቅጽ';
 
   @override
   String get serviceDescriptionLabel => 'የአገልግሎት መግለጫ';

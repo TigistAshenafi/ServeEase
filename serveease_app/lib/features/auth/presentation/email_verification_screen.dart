@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, unused_field, prefer_final_fields
 
 import 'package:flutter/material.dart';
 import '../../../core/localization/l10n_extension.dart';
@@ -14,61 +14,73 @@ class EmailVerificationScreen extends StatefulWidget {
 }
 
 class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
-  final _code = TextEditingController();
-  final _auth = AuthService();
+  final TextEditingController _codeController = TextEditingController();
+  final AuthService _auth = AuthService();
 
   bool _loading = false;
   String? _email;
+  String? _password; // needed to auto-login
+  String? _role;
+  bool _verified = false; // prevents double submit
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     final args =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+
     _email = args?['email'];
+    _password = args?['password']; // pass password from signup
+    _role = args?['role'];
   }
 
-  void _verify() async {
-    final l10n = context.l10n;
+void _verify() async {
+  final l10n = context.l10n;
 
-    if (_email == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.missingEmailError)),
-      );
-      return;
-    }
-
-    if (_code.text.trim().isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.emptyVerificationCode)),
-      );
-      return;
-    }
-
-    setState(() => _loading = true);
-
-    try {
-      await _auth.verifyEmail(_email!, _code.text.trim());
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.emailVerifiedMessage),
-          backgroundColor: Colors.green,
-        ),
-      );
-
-      Navigator.pushNamedAndRemoveUntil(context, '/login', (r) => false);
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.errorWithMessage('$e')),
-          backgroundColor: Colors.red,
-        ),
-      );
-    } finally {
-      setState(() => _loading = false);
-    }
+  if (_email == null || _codeController.text.trim().isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(l10n.missingEmailError)),
+    );
+    return;
   }
+
+  setState(() => _loading = true);
+
+  try {
+    final res = await _auth.verifyEmail(_email!, _codeController.text.trim());
+    
+    // Save token if provider
+    final role = res.data['role'];
+    final token = res.data['accessToken'];
+    if (token != null) await _auth.saveAccessToken(token);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(l10n.emailVerifiedMessage),
+        backgroundColor: Colors.green,
+      ),
+    );
+
+    if (role == 'provider') {
+      Navigator.pushReplacementNamed(
+        context,
+        '/provider-setup',
+        arguments: {'email': _email},
+      );
+    } else {
+      Navigator.pushReplacementNamed(context, '/home');
+    }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(l10n.errorWithMessage('$e')),
+        backgroundColor: Colors.red,
+      ),
+    );
+  } finally {
+    setState(() => _loading = false);
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -81,39 +93,29 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
           padding: const EdgeInsets.all(24),
           child: Column(
             children: [
-              // --- Language toggle ---
               const LanguageToggle(alignment: Alignment.centerRight),
               const SizedBox(height: 16),
-
-              // --- Icon ---
               const Icon(
                 Icons.mark_email_unread_outlined,
                 size: 60,
                 color: Colors.blue,
               ),
               const SizedBox(height: 20),
-
-              // --- Title ---
               Text(
                 l10n.verifyEmailTitle,
                 style:
                     const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
-
-              // --- Description ---
               if (_email != null)
                 Text(
                   l10n.verifyEmailInfo(_email!),
                   textAlign: TextAlign.center,
                   style: const TextStyle(color: Colors.grey),
                 ),
-
               const SizedBox(height: 40),
-
-              // --- Code Input ---
               TextField(
-                controller: _code,
+                controller: _codeController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   labelText: l10n.verificationCodeLabel,
@@ -121,10 +123,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                   prefixIcon: const Icon(Icons.lock_clock_outlined),
                 ),
               ),
-
               const SizedBox(height: 24),
-
-              // --- Verify button ---
               SizedBox(
                 width: double.infinity,
                 height: 50,
@@ -147,10 +146,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                         ),
                       ),
               ),
-
               const SizedBox(height: 16),
-
-              // --- Back to login ---
               GestureDetector(
                 onTap: () => Navigator.pushReplacementNamed(context, '/login'),
                 child: Text(
