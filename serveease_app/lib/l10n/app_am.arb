@@ -1,9 +1,9 @@
 {
   "@@locale": "am",
   "appTitle": "ServeEase",
-  "languageLabel": "ቋንቋ",
-  "englishLabel": "እንግሊዝኛ",
-  "amharicLabel": "አማርኛ",
+  "englishLabel": "EN",
+  "amharicLabel": "አማ",
+  "providerInfoNote": "እንደ አቅራቢ ኢሜልዎን ማረጋገጥ በኋላ መግለጫዎን ማቋቋም ይኖርቦታል።",
   "loginWelcomeTitle": "እንኳን ደህና መጡ",
   "loginSubtitle": "ServeEase ለመቀጠል ይግቡ",
   "emailLabel": "የኢሜል አድራሻ",
@@ -35,7 +35,6 @@
   "unknownError": "አልተጠበቀ ችግኝ ተፈጥሯል። እባክዎ ደግመው ይሞክሩ።",
   "createAccountTitle": "መለያዎን ይፍጠሩ",
   "signupSubtitle": "ServeEase ጋር ተቀላቅለው አገልግሎቶችን ይፈልጉ ወይም ችሎታዎን ያቅርቡ።",
-  "nameOptionalLabel": "ሙሉ ስም (አማራጭ)",
   "confirmPasswordLabel": "የይለፍ ቃል ያረጋግጡ",
   "joinAsLabel": "ይቀላቀሉ እንደ:",
   "providerDetailsTitle": "የአቅራቢ መረጃ",
@@ -76,7 +75,12 @@
   "forgotPasswordSubtitle": "ኢሜሎን እና አዲስ የምስጢር ቃል መቀየር መመሪያ እንዲልክልዎ ያስገቡ።",
   "sendResetLinkButton": "የማስመለሻ አገናኝ ላክ",
   "rememberPasswordPrefix": "የይለፍ ቃልዎን ያስታውሱ? ",
-  "rememberPasswordAction": "ግባ","resetCodeSentMessage": "የማስመለሻ ኮድ ወደ ኢሜሎዎ ተልኳል።"
-
-
+  "rememberPasswordAction": "ግባ",
+  "resetCodeSentMessage": "የማስመለሻ ኮድ ወደ ኢሜሎዎ ተልኳል።",
+  "nameLabel": "ሙሉ ስም",
+  "nameValidation": "እባክዎ ስምዎን ያስገቡ",
+  "providerCategoryLabel": "ምድብ",
+  "providerCategoryValidation": "ምድብ አስፈላጊ ነው",
+  "providerProfileSuccess": "የአቅራቢ መግለጫ በተሳካ ሁኔታ ተፈጥሯል!",
+  "providerProfileSetup": "የአቅራቢ መግለጫ ቅጽ"
 }

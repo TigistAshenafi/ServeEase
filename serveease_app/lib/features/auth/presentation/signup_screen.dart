@@ -1,13 +1,13 @@
-// ignore_for_file: use_build_context_synchronously, deprecated_member_use, unused_local_variable
+// ignore_for_file: use_build_context_synchronously
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import '../../../core/guards/auth_guard.dart';
-import '../../../core/localization/l10n_extension.dart';
 import '../../../core/services/auth_service.dart';
 import '../../../core/utils/validators.dart';
 import '../../../shared/widgets/language_toggle.dart';
 import '../../../shared/widgets/role_selector.dart';
+import 'package:serveease_app/l10n/app_localizations.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -21,19 +21,17 @@ class _SignupScreenState extends State<SignupScreen> {
   final _password = TextEditingController();
   final _confirm = TextEditingController();
   final _name = TextEditingController();
-  final _businessName = TextEditingController();
-  final _businessDescription = TextEditingController();
 
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
 
   Role _role = Role.seeker;
   bool get _isProvider => _role == Role.provider;
+
   final _auth = AuthService();
   bool _loading = false;
   final _formKey = GlobalKey<FormState>();
 
-  // <-- Added initState and _checkAuth
   @override
   void initState() {
     super.initState();
@@ -46,8 +44,6 @@ class _SignupScreenState extends State<SignupScreen> {
     _password.dispose();
     _confirm.dispose();
     _name.dispose();
-    _businessName.dispose();
-    _businessDescription.dispose();
     super.dispose();
   }
 
@@ -57,41 +53,45 @@ class _SignupScreenState extends State<SignupScreen> {
       Navigator.pushReplacementNamed(context, '/home');
     }
   }
-  // <-- End addition
 
   void _signup() async {
     if (!_formKey.currentState!.validate()) return;
 
     setState(() => _loading = true);
-    final l10n = context.l10n;
+
     try {
       final roleStr = _isProvider ? 'provider' : 'seeker';
-      final providerProfile = _isProvider
-          ? {
-              'businessName': _businessName.text.trim(),
-              'description': _businessDescription.text.trim(),
-            }
-          : null;
+
       await _auth.register(
         _email.text.trim(),
         _password.text.trim(),
         roleStr,
         name: _name.text.trim(),
-        providerProfile: providerProfile,
       );
 
       if (!mounted) return;
+
+      _password.clear();
+      _confirm.clear();
+
       Navigator.pushNamed(
         context,
         '/verify-email',
-        arguments: {'email': _email.text.trim()},
+        arguments: {
+          'email': _email.text.trim(),
+          'role': roleStr,
+        },
       );
     } on DioException catch (e) {
-      final msg =
-          e.response?.data?['message'] ?? e.message ?? l10n.unknownError;
+      final msg = e.response?.data?['message'] ??
+          e.message ??
+          AppLocalizations.of(context)!.unknownError;
+
       if (!mounted) return;
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(l10n.errorWithMessage(msg))));
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(msg)),
+      );
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -99,7 +99,8 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
+    final loc = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
@@ -111,48 +112,49 @@ class _SignupScreenState extends State<SignupScreen> {
               children: [
                 const LanguageToggle(alignment: Alignment.centerRight),
                 const SizedBox(height: 16),
-                const Icon(Icons.diamond_outlined,
-                    size: 60, color: Colors.blue),
+                const Icon(Icons.diamond_outlined, size: 60, color: Colors.blue),
                 const SizedBox(height: 20),
-
                 Text(
-                  l10n.createAccountTitle,
-                  style: const TextStyle(
-                      fontSize: 22, fontWeight: FontWeight.bold),
+                  loc.createAccountTitle,
+                  style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                 ),
-
                 const SizedBox(height: 8),
                 Text(
-                  l10n.signupSubtitle,
+                  loc.signupSubtitle,
                   textAlign: TextAlign.center,
                   style: const TextStyle(color: Colors.grey),
                 ),
-
                 const SizedBox(height: 30),
 
-                // FULL NAME
+                // NAME
                 TextFormField(
                   controller: _name,
                   decoration: InputDecoration(
-                    labelText: l10n.nameOptionalLabel,
+                    labelText: loc.nameLabel,
                     border: const OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.person_outline),
+                    prefixIcon: const Icon(Icons.person_outline),
                   ),
+                  validator: (v) =>
+                      (v == null || v.trim().isEmpty) ? loc.nameValidation : null,
                 ),
                 const SizedBox(height: 16),
 
                 // EMAIL
                 TextFormField(
                   controller: _email,
-                  decoration:  InputDecoration(
-                    labelText: l10n.emailLabel,
-                    hintText: l10n.emailHint,
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.email_outlined),
+                  decoration: InputDecoration(
+                    labelText: loc.emailLabel,
+                    hintText: loc.emailHint,
+                    border: const OutlineInputBorder(),
+                    prefixIcon: const Icon(Icons.email_outlined),
                   ),
-                  validator: (v) => Validators.validateEmail(context, v),
+                  validator: (v) {
+                    if (v == null || v.trim().isEmpty) {
+                      return loc.validationEmailRequired;
+                    }
+                    return Validators.validateEmail(context, v);
+                  },
                 ),
-
                 const SizedBox(height: 16),
 
                 // PASSWORD
@@ -160,21 +162,22 @@ class _SignupScreenState extends State<SignupScreen> {
                   controller: _password,
                   obscureText: !_isPasswordVisible,
                   decoration: InputDecoration(
-                    labelText: l10n.passwordLabel,
+                    labelText: loc.passwordLabel,
                     border: const OutlineInputBorder(),
                     prefixIcon: const Icon(Icons.lock_outline),
                     suffixIcon: IconButton(
                       icon: Icon(_isPasswordVisible
                           ? Icons.visibility_off
                           : Icons.visibility),
-                      onPressed: () {
-                        setState(() {
-                          _isPasswordVisible = !_isPasswordVisible;
-                        });
-                      },
+                      onPressed: () =>
+                          setState(() => _isPasswordVisible = !_isPasswordVisible),
                     ),
                   ),
-                  validator: (v) => Validators.validatePassword(context, v),
+                  validator: (v) => (v == null || v.isEmpty)
+                      ? loc.validationPasswordRequired
+                      : (v.length < 6)
+                          ? loc.validationPasswordLength
+                          : null,
                 ),
                 const SizedBox(height: 16),
 
@@ -183,82 +186,53 @@ class _SignupScreenState extends State<SignupScreen> {
                   controller: _confirm,
                   obscureText: !_isConfirmPasswordVisible,
                   decoration: InputDecoration(
-                    labelText: l10n.confirmPasswordLabel,
+                    labelText: loc.confirmPasswordLabel,
                     border: const OutlineInputBorder(),
                     prefixIcon: const Icon(Icons.lock_outline),
                     suffixIcon: IconButton(
                       icon: Icon(_isConfirmPasswordVisible
                           ? Icons.visibility_off
                           : Icons.visibility),
-                      onPressed: () {
-                        setState(() {
-                          _isConfirmPasswordVisible =
-                              !_isConfirmPasswordVisible;
-                        });
-                      },
+                      onPressed: () => setState(
+                          () => _isConfirmPasswordVisible = !_isConfirmPasswordVisible),
                     ),
                   ),
-                  validator: (v) => Validators.validateConfirmPassword(
-                      context, v, _password.text),
+                  validator: (v) => (v == null || v.isEmpty)
+                      ? loc.validationConfirmPassword
+                      : (v != _password.text)
+                          ? loc.validationPasswordsMismatch
+                          : null,
                 ),
-
                 const SizedBox(height: 24),
+
+                // ROLE SELECTOR
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: Text(l10n.joinAsLabel,
-                      style: const TextStyle(fontWeight: FontWeight.w600)),
+                  child: Text(
+                    loc.joinAsLabel,
+                    style: const TextStyle(fontWeight: FontWeight.w600),
+                  ),
                 ),
                 const SizedBox(height: 8),
+
                 RoleSelector(
-                    selected: _role,
-                    onChanged: (r) => setState(() => _role = r)),
-                if (_isProvider) ...[
-                  const SizedBox(height: 16),
-                  Align(
-                    alignment: Alignment.centerLeft,
+                  selected: _role,
+                  onChanged: (r) => setState(() => _role = r),
+                ),
+
+                // PROVIDER NOTE
+                if (_isProvider)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
                     child: Text(
-                      l10n.providerDetailsTitle,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: Colors.blueGrey.shade700,
-                      ),
+                      loc.providerInfoNote,
+                      style: const TextStyle(color: Colors.grey, fontSize: 12),
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  TextFormField(
-                    controller: _businessName,
-                    decoration: InputDecoration(
-                      labelText: l10n.businessNameLabel,
-                      border: const OutlineInputBorder(),
-                      prefixIcon: const Icon(Icons.storefront_outlined),
-                    ),
-                    validator: (v) {
-                      if (!_isProvider) return null;
-                      if (v == null || v.trim().isEmpty) {
-                        return l10n.providerBusinessValidation;
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 12),
-                  TextFormField(
-                    controller: _businessDescription,
-                    maxLines: 3,
-                    decoration: InputDecoration(
-                      labelText: l10n.serviceDescriptionLabel,
-                      border: const OutlineInputBorder(),
-                      prefixIcon: const Icon(Icons.description_outlined),
-                    ),
-                    validator: (v) {
-                      if (!_isProvider) return null;
-                      if (v == null || v.trim().isEmpty) {
-                        return l10n.providerDescriptionValidation;
-                      }
-                      return null;
-                    },
-                  ),
-                ],
+
                 const SizedBox(height: 24),
+
+                // SUBMIT BUTTON
                 SizedBox(
                   width: double.infinity,
                   height: 50,
@@ -273,10 +247,8 @@ class _SignupScreenState extends State<SignupScreen> {
                             ),
                           ),
                           child: Text(
-                            _isProvider
-                                ? l10n.signupSubmitLabel
-                                : l10n.signupSubmitLabel,
-                            style: TextStyle(fontSize: 18, color: Colors.white),
+                            loc.signupSubmitLabel,
+                            style: const TextStyle(fontSize: 18, color: Colors.white),
                           ),
                         ),
                 ),
@@ -289,11 +261,11 @@ class _SignupScreenState extends State<SignupScreen> {
                       Navigator.pushReplacementNamed(context, '/login'),
                   child: Text.rich(
                     TextSpan(
-                      text: (l10n.loginRedirectPrefix),
+                      text: loc.loginRedirectPrefix,
                       style: const TextStyle(color: Colors.grey),
                       children: [
                         TextSpan(
-                          text: (l10n.loginRedirectAction),
+                          text: loc.loginRedirectAction,
                           style: const TextStyle(
                               color: Colors.blue, fontWeight: FontWeight.bold),
                         ),

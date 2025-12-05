@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, unused_field
 
 import 'package:flutter/material.dart';
 
@@ -48,11 +48,14 @@ class _LoginScreenState extends State<LoginScreen> {
         _emailController.text.trim(),
         _passwordController.text.trim(),
       );
+      print("Login response: ${response.data}");
 
       final token = response.data['accessToken'];
+      print("Login response: ${response.data}");
 
       if (token != null) {
         await AuthService().saveAccessToken(token);
+        print("Token saved successfully.");
       } else {
         print("No access token in response");
         return;

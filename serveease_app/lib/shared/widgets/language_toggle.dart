@@ -33,10 +33,10 @@ class LanguageToggle extends StatelessWidget {
             ? CrossAxisAlignment.end
             : CrossAxisAlignment.start,
         children: [
-          Text(
-            l10n.languageLabel,
-            style: const TextStyle(fontWeight: FontWeight.w600),
-          ),
+          // Text(
+          //   l10n.languageLabel,
+          //   style: const TextStyle(fontWeight: FontWeight.w600),
+          // ),
           const SizedBox(height: 8),
           DropdownButton<Locale>(
             value: currentLocale,
