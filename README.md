@@ -161,6 +161,10 @@ serveease-cursor/
 - `POST /api/auth/register` - User registration
 - `GET /api/auth/verify-email` - Email verification
 - `POST /api/auth/login` - User login
+- `POST /api/auth/forgot-password` - Forgot Password
+- `POST /api/auth/reset-password`  - Reset Password
+- `POST /api/auth/refresh-token` - Refresh-Token
+- `POST /api/auth/logout` - User Logout
 - `GET /api/auth/profile` - Get user profile
 
 ### Provider Management
