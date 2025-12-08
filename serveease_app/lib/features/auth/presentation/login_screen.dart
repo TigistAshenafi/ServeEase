@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, unused_field
+// ignore_for_file: use_build_context_synchronously, unused_field, avoid_print
 
 import 'package:flutter/material.dart';
 
