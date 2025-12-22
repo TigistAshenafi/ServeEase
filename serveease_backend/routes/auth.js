@@ -8,7 +8,8 @@ import {
   resetPassword,
   refreshTokenHandler,
   logout,
-  getProfile
+  getProfile,
+  resendVerificationCode
 } from '../controllers/authController.js';
 import { authenticateToken } from '../middleware/auth.js';
 
@@ -51,5 +52,6 @@ router.post('/reset-password', resetPassword);
 router.post('/refresh-token', refreshTokenHandler);
 router.post('/logout', authenticateToken, logout);
 router.get('/profile', authenticateToken, getProfile);
+router.post('/resend-verification-code', resendVerificationCode);
 
 export default router;

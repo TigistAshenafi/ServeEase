@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:serveease_app/features/screens/providers/create_profile_screen.dart';
+import 'package:serveease_app/features/screens/providers/profile_view_screen.dart';
+
 // import 'config/theme.dart';
 import 'features/auth/presentation/welcome_screen.dart';
 import 'features/auth/presentation/login_screen.dart';
@@ -22,12 +25,16 @@ class ServeEaseApp extends StatelessWidget {
       initialRoute: '/welcome',
       routes: {
         '/welcome': (context) => const WelcomeScreen(),
-        '/login': (context) => const LoginScreen(),
-        '/signup': (context) => const SignupScreen(),
-        '/forgot-password': (context) => const ForgotPasswordScreen(),
-        '/reset-password': (context) => const ResetPasswordScreen(),
-        '/verify-email': (context) => const EmailVerificationScreen(),
+        '/login': (context) =>  LoginScreen(),
+         '/register': (context) => RegisterScreen(),
+         '/provider/create-profile': (context) => CreateProfileScreen(),
+          '/provider/profile': (context) => ProviderProfileViewScreen(),
+          '/provider/edit-profile': (context) => CreateProfileScreen(isEditMode: true),
+        '/forgot-password': (context) =>  ForgotPasswordScreen(),
+        '/reset-password': (context) =>  ResetPasswordScreen(),
+        '/verify-email': (context) => VerifyEmailScreen(),
         '/home': (context) => const HomeScreen(),
+        // '/provider-setup': (context) => const ProviderSetupScreen(),
       },
     );
   }

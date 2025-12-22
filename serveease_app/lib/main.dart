@@ -1,87 +1,196 @@
+// lib/main.dart
 import 'package:flutter/material.dart';
-import 'package:serveease_app/features/auth/presentation/provider_setup_screen.dart';
-import 'package:serveease_app/features/auth/presentation/welcome_screen.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:serveease_app/core/localization/locale_controller.dart';
+
+import 'package:serveease_app/core/services/api_service.dart';
+import 'package:serveease_app/core/theme/app_theme.dart';
 import 'package:serveease_app/l10n/app_localizations.dart';
 
-import 'core/guards/auth_guard.dart';
-import 'core/localization/locale_controller.dart';
-import 'features/auth/presentation/home_screen.dart';
-import 'features/auth/presentation/login_screen.dart';
-import 'features/auth/presentation/signup_screen.dart';
-import 'features/auth/presentation/forgot_password_screen.dart';
-import 'features/auth/presentation/reset_password_screen.dart';
-import 'features/auth/presentation/email_verification_screen.dart';
+// 🔥 Locale controller (YOUR EXISTING ONE)
+// import 'package:serveease_app/core/controllers/locale_controller.dart';
 
+import 'package:serveease_app/features/admin/provider_approvals_screen.dart';
+import 'package:serveease_app/features/ai/ai_chat_screen.dart';
+import 'package:serveease_app/features/auth/presentation/email_verification_screen.dart';
+import 'package:serveease_app/features/auth/presentation/forgot_password_screen.dart';
+import 'package:serveease_app/features/auth/presentation/home_screen.dart';
+import 'package:serveease_app/features/auth/presentation/login_screen.dart';
+import 'package:serveease_app/features/auth/presentation/reset_password_screen.dart';
+import 'package:serveease_app/features/auth/presentation/signup_screen.dart';
+import 'package:serveease_app/features/employees/employee_list_screen.dart';
+import 'package:serveease_app/features/requests/request_list_screen.dart';
+import 'package:serveease_app/features/screens/providers/create_profile_screen.dart';
+import 'package:serveease_app/features/screens/providers/profile_view_screen.dart';
+import 'package:serveease_app/features/services/my_services_screen.dart';
+import 'package:serveease_app/features/services/service_catalog_screen.dart';
+
+import 'package:serveease_app/providers/admin_provider.dart';
+import 'package:serveease_app/providers/ai_provider.dart';
+import 'package:serveease_app/providers/auth_provider.dart';
+import 'package:serveease_app/providers/employee_provider.dart';
+import 'package:serveease_app/providers/provider_profile_provider.dart';
+import 'package:serveease_app/providers/service_provider.dart';
+import 'package:serveease_app/providers/service_request_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const ServeEaseApp());
+
+  await dotenv.load(fileName: ".env");
+  await ApiService.init();
+
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarColor: Colors.white,
+      systemNavigationBarIconBrightness: Brightness.dark,
+    ),
+  );
+
+  runApp(const MyApp());
 }
 
-class ServeEaseApp extends StatelessWidget {
-  const ServeEaseApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: localeController,
-      builder: (context, _) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
-      locale: localeController.locale,
-      supportedLocales: LocaleController.supportedLocales,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      initialRoute: '/welcome',
-      routes: {
-        '/welcome': (_) => const WelcomeScreen(),
-        '/login': (_) => const LoginScreen(),
-        '/signup': (_) => const SignupScreen(),
-        '/provider-setup': (_) => const ProviderSetupScreen(),
-        '/forgot-password': (_) => const ForgotPasswordScreen(),
-        '/reset-password': (_) => const ResetPasswordScreen(),
-        '/home': (context) => FutureBuilder<bool>(
-              future: AuthGuard.isLoggedIn(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const Scaffold(
-                    body: Center(child: CircularProgressIndicator()),
-                  );
-                }
-                return snapshot.data == true
-                    ? const HomeScreen()
-                    : const LoginScreen();
-              },
-            ),
-      },
-onGenerateRoute: (settings) {
-  // Handle dynamic routes with arguments for reset-password and verify-email
-  if (settings.name == '/reset-password') {
-    return MaterialPageRoute(
-      builder: (context) => const ResetPasswordScreen(),
-      settings: settings,
-    );
-  }
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (_, __) {
+        return MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (_) => AuthProvider()),
+            ChangeNotifierProvider(create: (_) => ProviderProfileProvider()),
+            ChangeNotifierProvider(create: (_) => ServiceProvider()),
+            ChangeNotifierProvider(create: (_) => ServiceRequestProvider()),
+            ChangeNotifierProvider(create: (_) => EmployeeProvider()),
+            ChangeNotifierProvider(create: (_) => AiProvider()),
+            ChangeNotifierProvider(create: (_) => AdminProvider()),
+          ],
+          child: AnimatedBuilder(
+            animation: localeController,
+            builder: (context, _) {
+              return MaterialApp(
+                debugShowCheckedModeBanner: false,
 
-  if (settings.name == '/verify-email') {
-    return MaterialPageRoute(
-      builder: (context) => const EmailVerificationScreen(),
-      settings: settings,
-    );
-  }
+                // 🌍 LOCALIZATION (CONNECTED TO CONTROLLER)
 
-  return null;
-},
+                locale: localeController.locale,
+                supportedLocales: LocaleController.supportedLocales,
+                localizationsDelegates: const [
+                  AppLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
 
-      onUnknownRoute: (settings) {
-        return MaterialPageRoute(
-          builder: (context) => const Scaffold(
-            body: Center(child: Text('Page not found')),
+                onGenerateTitle: (context) =>
+                    AppLocalizations.of(context)?.appTitle ?? 'ServeEase',
+
+                theme: AppTheme.lightTheme,
+                darkTheme: AppTheme.darkTheme,
+                themeMode: ThemeMode.system,
+
+                home: const AuthWrapper(),
+
+                routes: {
+                  '/login': (_) => LoginScreen(),
+                  '/register': (_) => const RegisterScreen(),
+                  '/home': (_) => const HomeScreen(),
+                  '/provider/create-profile': (_) =>
+                      const CreateProfileScreen(),
+                  '/provider/profile': (_) => const ProviderProfileViewScreen(),
+                  '/provider/edit-profile': (_) =>
+                      const CreateProfileScreen(isEditMode: true),
+                  '/verify-email': (_) => const VerifyEmailScreen(),
+                  '/forgot-password': (_) => ForgotPasswordScreen(),
+                  '/reset-password': (_) => ResetPasswordScreen(),
+                  '/services/catalog': (_) => const ServiceCatalogScreen(),
+                  '/services/my': (_) => const MyServicesScreen(),
+                  '/requests': (_) => const RequestListScreen(),
+                  '/employees': (_) => const EmployeeListScreen(),
+                  '/ai': (_) => const AiChatScreen(),
+                  '/admin/providers': (_) => const ProviderApprovalsScreen(),
+                },
+              );
+            },
           ),
         );
       },
     );
-      }
-      );
   }
 }
+
+// -------------------- AUTH WRAPPER --------------------
+
+class AuthWrapper extends StatefulWidget {
+  const AuthWrapper({super.key});
+
+  @override
+  State<AuthWrapper> createState() => _AuthWrapperState();
+}
+
+class _AuthWrapperState extends State<AuthWrapper> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<AuthProvider>().initialize();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final auth = context.watch<AuthProvider>();
+
+    if (!auth.isInitialized) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    return auth.isAuthenticated ? const HomeScreen() : LoginScreen();
+  }
+}
+
+
+
+// class AuthWrapper extends StatefulWidget {
+//   @override
+//   _AuthWrapperState createState() => _AuthWrapperState();
+// }
+
+// class _AuthWrapperState extends State<AuthWrapper> {
+//   @override
+//   void initState() {
+//     super.initState();
+//     _initializeAuth();
+//   }
+
+//   Future<void> _initializeAuth() async {
+//     await Provider.of<AuthProvider>(context, listen: false).initialize();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     final authProvider = Provider.of<AuthProvider>(context);
+    
+//     if (authProvider.isLoading) {
+//       // return SplashScreen();
+//     }
+    
+//     if (authProvider.isAuthenticated) {
+//       return HomeScreen();
+//     }
+    
+//     return LoginScreen();
+//   }
+// }
