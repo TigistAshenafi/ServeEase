@@ -62,8 +62,7 @@ import 'app_localizations_en.dart';
 /// be consistent with the languages listed in the AppLocalizations.supportedLocales
 /// property.
 abstract class AppLocalizations {
-  AppLocalizations(String locale)
-      : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  AppLocalizations(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -71,8 +70,7 @@ abstract class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
-  static const LocalizationsDelegate<AppLocalizations> delegate =
-      _AppLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
 
   /// A list of this localizations delegate along with the default localizations
   /// delegates.
@@ -84,8 +82,7 @@ abstract class AppLocalizations {
   /// Additional delegates can be added by appending to this list in
   /// MaterialApp. This list does not have to be used at all if a custom list
   /// of delegates is preferred or required.
-  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
-      <LocalizationsDelegate<dynamic>>[
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
     delegate,
     GlobalMaterialLocalizations.delegate,
     GlobalCupertinoLocalizations.delegate,
@@ -98,35 +95,22 @@ abstract class AppLocalizations {
     Locale('en')
   ];
 
-  String get providerInfoNote;
-
-  String get providerCategoryLabel;
-
-  String get providerCategoryValidation;
-
-  String get providerProfileSuccess;
-
   /// No description provided for @appTitle.
   ///
   /// In en, this message translates to:
   /// **'ServeEase'**
   String get appTitle;
 
-  /// No description provided for @languageLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Language'**
-
   /// No description provided for @englishLabel.
   ///
   /// In en, this message translates to:
-  /// **'English'**
+  /// **'EN'**
   String get englishLabel;
 
   /// No description provided for @amharicLabel.
   ///
   /// In en, this message translates to:
-  /// **'Amharic'**
+  /// **'AM'**
   String get amharicLabel;
 
   /// No description provided for @loginWelcomeTitle.
@@ -135,30 +119,54 @@ abstract class AppLocalizations {
   /// **'Welcome Back'**
   String get loginWelcomeTitle;
 
+  /// No description provided for @providerInfoNote.
+  ///
+  /// In en, this message translates to:
+  /// **'As a provider, you will need to set up your profile after verifying your email.'**
+  String get providerInfoNote;
+
+  /// No description provided for @nameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Name'**
+  String get nameLabel;
+
+  /// No description provided for @nameValidation.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your name'**
+  String get nameValidation;
+
   /// No description provided for @loginSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Log in to continue using ServeEase'**
+  /// **'Login to your account to continue'**
   String get loginSubtitle;
 
   /// No description provided for @emailLabel.
   ///
   /// In en, this message translates to:
-  /// **'Email Address'**
+  /// **'Email'**
   String get emailLabel;
 
   /// No description provided for @emailHint.
   ///
   /// In en, this message translates to:
-  /// **'you@example.com'**
+  /// **'Enter your email'**
   String get emailHint;
 
   /// No description provided for @passwordLabel.
   ///
   /// In en, this message translates to:
   /// **'Password'**
+  ///
+  
   String get passwordLabel;
-
+  /// No description provided for @passwordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your password'**
+  String get passwordHint;
   /// No description provided for @forgotPasswordLabel.
   ///
   /// In en, this message translates to:
@@ -168,7 +176,7 @@ abstract class AppLocalizations {
   /// No description provided for @loginButtonLabel.
   ///
   /// In en, this message translates to:
-  /// **'Log In'**
+  /// **'Login'**
   String get loginButtonLabel;
 
   /// No description provided for @signupRedirectPrefix.
@@ -180,7 +188,7 @@ abstract class AppLocalizations {
   /// No description provided for @signupRedirectAction.
   ///
   /// In en, this message translates to:
-  /// **'Sign Up'**
+  /// **'Sign up'**
   String get signupRedirectAction;
 
   /// No description provided for @loginRedirectPrefix.
@@ -204,7 +212,7 @@ abstract class AppLocalizations {
   /// No description provided for @loginFailed.
   ///
   /// In en, this message translates to:
-  /// **'Login failed: {reason}'**
+  /// **'Login failed'**
   String loginFailed(Object reason);
 
   /// No description provided for @errorWithMessage.
@@ -231,14 +239,6 @@ abstract class AppLocalizations {
   /// **'Join ServeEase to connect with services or offer your expertise.'**
   String get signupSubtitle;
 
-  /// No description provided for @nameOptionalLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Full Name (optional)'**
-  String get nameLabel;
-
-  String get nameValidation;
-
   /// No description provided for @confirmPasswordLabel.
   ///
   /// In en, this message translates to:
@@ -257,8 +257,6 @@ abstract class AppLocalizations {
   /// **'Provider details'**
   String get providerDetailsTitle;
 
-  String get providerProfileSetup;
-
   /// No description provided for @businessNameLabel.
   ///
   /// In en, this message translates to:
@@ -276,12 +274,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Business name is required for providers'**
   String get providerBusinessValidation;
-
-  /// No description provided for @providerDescriptionValidation.
-  ///
-  /// In en, this message translates to:
-  /// **'Tell seekers about your services'**
-  String get providerDescriptionValidation;
 
   /// No description provided for @signupSubmitLabel.
   ///
@@ -450,10 +442,79 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The reset code has been sent to your email.'**
   String get resetCodeSentMessage;
+
+  /// No description provided for @providerCategoryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get providerCategoryLabel;
+
+  /// No description provided for @providerDescriptionValidation.
+  ///
+  /// In en, this message translates to:
+  /// **'Description is required'**
+  String get providerDescriptionValidation;
+
+  /// No description provided for @providerCategoryValidation.
+  ///
+  /// In en, this message translates to:
+  /// **'Category is required'**
+  String get providerCategoryValidation;
+
+  /// No description provided for @providerProfileSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Provider profile created successfully!'**
+  String get providerProfileSuccess;
+
+  /// No description provided for @providerProfileSetup.
+  ///
+  /// In en, this message translates to:
+  /// **'Provider Profile Setup'**
+  String get providerProfileSetup;
+
+  /// No description provided for @selectLoginRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select login role'**
+  String get selectLoginRole;
+
+  /// No description provided for @welcome.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome'**
+  String get welcome;
+
+  /// No description provided for @loginAsRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Login as'**
+  String get loginAsRole;
+
+  /// No description provided for @selectRoleError.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select your role'**
+  String get selectRoleError;
+  /// No description provided for @provider.
+  ///
+  /// In en, this message translates to:
+  /// **'Provider'**
+  String get provider;
+
+  /// No description provided for @seeker.
+  ///
+  /// In en, this message translates to:
+  /// **'Seeker'**
+  String get seeker;
+
+// String get validationNameRequired;
+String get validationNameLength;
+
+
 }
 
-class _AppLocalizationsDelegate
-    extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override
@@ -462,25 +523,25 @@ class _AppLocalizationsDelegate
   }
 
   @override
-  bool isSupported(Locale locale) =>
-      <String>['am', 'en'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>['am', 'en'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
+
+
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'am':
-      return AppLocalizationsAm();
-    case 'en':
-      return AppLocalizationsEn();
+    case 'am': return AppLocalizationsAm();
+    case 'en': return AppLocalizationsEn();
   }
 
   throw FlutterError(
-      'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
-      'an issue with the localizations generation tool. Please file an issue '
-      'on GitHub with a reproducible sample app and the gen-l10n configuration '
-      'that was used.');
+    'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+    'an issue with the localizations generation tool. Please file an issue '
+    'on GitHub with a reproducible sample app and the gen-l10n configuration '
+    'that was used.'
+  );
 }

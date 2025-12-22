@@ -1,9 +1,6 @@
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import crypto from 'crypto';
-import { query } from '../config/database.js';
 import nodemailer from 'nodemailer';
-import cookieParser from 'cookie-parser';
+import { query } from '../config/database.js';
 import * as tokenService from '../services/tokenService.js';
 
 // Email transporter
@@ -93,6 +90,56 @@ const register = async (req, res) => {
 };
 
 // Verify email
+// const verifyEmail = async (req, res) => {
+//   try {
+//     const { email, code } = req.query;
+
+//     if (!code) {
+//       return res.status(400).json({
+//         success: false,
+//         message: 'Verification code is required'
+//       });
+//     }
+
+//     // Find user with valid token
+//     const result = await query(
+//       `UPDATE users
+//        SET email_verified = true, email_verification_token = null, email_verification_expires = null
+//        WHERE email_verification_token = $1 AND email_verification_expires > NOW()
+//        RETURNING id, name, email, role`,
+//       [email, code]
+//     );
+
+//     if (result.rows.length === 0) {
+//       return res.status(400).json({
+//         success: false,
+//         message: 'Invalid or expired verification token'
+//       });
+//     }
+
+//     const user = result.rows[0];
+
+//     res.json({
+//       success: true,
+//       message: 'Email verified successfully',
+//       user: {
+//         id: user.id,
+//         name: user.name,
+//         email: user.email,
+//         role: user.role,
+//         emailVerified: true
+//       }
+//     });
+
+//   } catch (error) {
+//     console.error('Email verification error:', error);
+//     res.status(500).json({
+//       success: false,
+//       message: 'Internal server error'
+//     });
+//   }
+// };
+
 const verifyEmail = async (req, res) => {
   try {
     const { email, code } = req.query;
@@ -104,13 +151,16 @@ const verifyEmail = async (req, res) => {
       });
     }
 
-    // Find user with valid token
     const result = await query(
       `UPDATE users
-       SET email_verified = true, email_verification_token = null, email_verification_expires = null
-       WHERE email_verification_token = $1 AND email_verification_expires > NOW()
+       SET email_verified = true,
+           email_verification_token = null,
+           email_verification_expires = null
+       WHERE email_verification_token = $1
+       AND email = $2
+       AND email_verification_expires > NOW()
        RETURNING id, name, email, role`,
-      [email, code]
+      [code, email] // MUST BE THIS ORDER
     );
 
     if (result.rows.length === 0) {
@@ -142,6 +192,75 @@ const verifyEmail = async (req, res) => {
     });
   }
 };
+
+//
+// Add this function for resending verification code
+const resendVerificationCode = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email is required'
+      });
+    }
+
+    // Check if user exists
+    const userResult = await query(
+      'SELECT id, email_verified FROM users WHERE email = $1',
+      [email]
+    );
+
+    if (userResult.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+
+    const user = userResult.rows[0];
+
+    // Check if email is already verified
+    if (user.email_verified) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email is already verified'
+      });
+    }
+
+    // Generate new verification code
+    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes from now
+
+    // Update user with new verification code
+    await query(
+      `UPDATE users
+       SET email_verification_token = $1,
+           email_verification_expires = $2
+       WHERE email = $3`,
+      [verificationCode, expiresAt, email]
+    );
+
+    // Send new verification email
+    await sendVerificationEmail(email, verificationCode);
+
+    res.json({
+      success: true,
+      message: 'Verification code resent successfully'
+    });
+
+  } catch (error) {
+    console.error('Resend verification code error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error'
+    });
+  }
+};
+
+// Add this route to your Express routes
+// app.post('/api/auth/resend-verification', resendVerificationCode);
 
 // Login user
 const login = async (req, res) => {
@@ -216,7 +335,7 @@ const login = async (req, res) => {
     res.json({
       success: true,
       message: 'Login successful',
-      token,
+      accessToken,
       user: {
         id: user.id,
         name: user.name,
@@ -397,12 +516,6 @@ const logout = async (req, res) => {
 
 
 export {
-  register,
-  verifyEmail,
-  login,
-  sendPasswordResetCode,
-  resetPassword,
-  refreshTokenHandler,
-  getProfile,
-  logout
+    getProfile, login, logout, refreshTokenHandler, register, resetPassword, sendPasswordResetCode, verifyEmail,resendVerificationCode
 };
+

@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -18,43 +19,45 @@ class AppLocalizationsAm extends AppLocalizations {
   String get amharicLabel => 'አማ';
 
   @override
-  String get providerInfoNote => 'እንደ አቅራቢ ኢሜልዎን ማረጋገጥ በኋላ መግለጫዎን ማቋቋም ይኖርቦታል።';
-
-  @override
-  String get providerCategoryLabel => 'ምድብ';
-
-  @override
-  String get providerCategoryValidation => 'ምድብ አስፈላጊ ነው';
-
-  @override
-  String get providerProfileSuccess => 'የአቅራቢ መግለጫ በተሳካ ሁኔታ ተፈጥሯል!';
-
-  @override
   String get loginWelcomeTitle => 'እንኳን ደህና መጡ';
 
   @override
-  String get loginSubtitle => 'ServeEase ለመቀጠል ይግቡ';
- @override
-  String get nameLabel => 'ሙሉ ስም';
-  @override
-  String get nameValidation => 'እባክዎ ስምዎን ያስገቡ';
-  @override
-  String get emailLabel => 'የኢሜል አድራሻ';
+  String get providerInfoNote => 'እንደ አቅራቢ ኢሜልዎን ማረጋገጥ በኋላ መግለጫዎን ማቋቋም ይኖርቦታል።';
 
   @override
-  String get emailHint => 'you@example.com';
+  String get nameLabel => 'ሙሉ ስም';
+
+  @override
+  String get nameValidation => 'እባክዎ ስምዎን ያስገቡ';
+
+ @override
+  String get validationNameLength => 'ስም ቢያንስ 3 ፊደላት መሆን አለበት';
+
+  @override
+  String get loginSubtitle => 'ለመቀጠል ወደ መለያዎ ይግቡ';
+
+  @override
+  String get emailLabel => 'ኢሜይል';
+
+  @override
+  String get emailHint => 'ኢሜይልዎን ያስገቡ';
 
   @override
   String get passwordLabel => 'የይለፍ ቃል';
+  @override
+  String get passwordHint => 'የይለፍ ቃልዎን ያስገቡ';
 
   @override
-  String get forgotPasswordLabel => 'የይለፍ ቃልዎን ረሱ?';
+  String get selectRoleError => 'እባክዎ የእርስዎን ምድብ ይምረጡ';
+
+  @override
+  String get forgotPasswordLabel => 'የይለፍ ቃል ረሳዎት?';
 
   @override
   String get loginButtonLabel => 'ግባ';
 
   @override
-  String get signupRedirectPrefix => 'መለያ የለዎትም? ';
+  String get signupRedirectPrefix => 'አካውንት የለዎትም? ';
 
   @override
   String get signupRedirectAction => 'ይመዝገቡ';
@@ -70,7 +73,7 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String loginFailed(Object reason) {
-    return 'መግባት አልተሳካም፡ $reason';
+    return 'መግቢያ አልተሳካም';
   }
 
   @override
@@ -100,16 +103,10 @@ class AppLocalizationsAm extends AppLocalizations {
   String get businessNameLabel => 'የንግድ / ብራንድ ስም';
 
   @override
-  String get providerProfileSetup => 'የአቅራቢ መግለጫ ቅጽ';
-
-  @override
   String get serviceDescriptionLabel => 'የአገልግሎት መግለጫ';
 
   @override
   String get providerBusinessValidation => 'ለአቅራቢዎች የንግድ ስም አስፈላጊ ነው';
-
-  @override
-  String get providerDescriptionValidation => 'ለፈላጊዎች የምታቀርቡትን አገልግሎት ይግለጹ';
 
   @override
   String get signupSubmitLabel => 'ይመዝገቡ';
@@ -196,4 +193,34 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String get resetCodeSentMessage => 'የማስመለሻ ኮድ ወደ ኢሜሎዎ ተልኳል።';
+
+  @override
+  String get providerCategoryLabel => 'ምድብ';
+
+  @override
+  String get providerDescriptionValidation => 'ለፈላጊዎች የምታቀርቡትን አገልግሎት ይግለጹ';
+
+  @override
+  String get providerCategoryValidation => 'ምድብ አስፈላጊ ነው';
+
+  @override
+  String get providerProfileSuccess => 'የአቅራቢ መግለጫ በተሳካ ሁኔታ ተፈጥሯል!';
+
+  @override
+  String get providerProfileSetup => 'የአቅራቢ መግለጫ ቅጽ';
+
+  @override
+  String get selectLoginRole => 'እባክዎ የመግቢያ ሚና ይምረጡ';
+
+  @override
+  String get welcome => 'እንኳን ደህና መጡ';
+
+  @override
+  String get loginAsRole => 'እንደ ማን ይግቡ';
+
+  @override
+  String get provider => 'አቅራቢ';
+
+  @override
+  String get seeker => 'ፍለጋ የሚያደርግ';
 }
