@@ -145,4 +145,5 @@ INSERT INTO service_categories (name, description, icon) VALUES
 
 -- Create admin user (password: admin123 - should be changed in production)
 INSERT INTO users (name, email, password_hash, role, email_verified) VALUES
-('System Admin', 'admin@serveease.com', '$2a$10$rOzJC8r.KH1n8Zx9xO9Ue.Q3Q8wJc8wJc8wJc8wJc8wJc8wJc8wJc', 'admin', true);
+('System Admin', 'admin@serveease.com', '$2a$10$rOzJC8r.KH1n8Zx9xO9Ue.Q3Q8wJc8wJc8wJc8wJc8wJc8wJc8wJc', 'admin', true);  
+-- Admin@1234
