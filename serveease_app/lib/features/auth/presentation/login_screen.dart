@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:serveease_app/core/models/user_model.dart';
 import 'package:serveease_app/core/utils/validators.dart';
 import 'package:serveease_app/providers/auth_provider.dart';
 import 'package:serveease_app/shared/widgets/custom_button.dart';

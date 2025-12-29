@@ -63,7 +63,7 @@ const register = async (req, res) => {
     const verificationExpires = new Date(Date.now() + 20 * 60 * 1000); // 20 min
 
     const result = await query(
-      `INSERT INTO users (name, email, password_hash, role, email_verification_token, email_verification_expires)
+      `INSERT INTO users (name, email, password_hash, role, email_verification_code, email_verification_expires)
        VALUES ($1, $2, $3, $4, $5, $6)
        RETURNING id, name, email, role, email_verified`,
       [name, email, passwordHash, role, verificationCode, verificationExpires]
@@ -104,8 +104,8 @@ const register = async (req, res) => {
 //     // Find user with valid token
 //     const result = await query(
 //       `UPDATE users
-//        SET email_verified = true, email_verification_token = null, email_verification_expires = null
-//        WHERE email_verification_token = $1 AND email_verification_expires > NOW()
+//        SET email_verified = true, email_verification_code = null, email_verification_expires = null
+//        WHERE email_verification_code = $1 AND email_verification_expires > NOW()
 //        RETURNING id, name, email, role`,
 //       [email, code]
 //     );
@@ -154,9 +154,9 @@ const verifyEmail = async (req, res) => {
     const result = await query(
       `UPDATE users
        SET email_verified = true,
-           email_verification_token = null,
+           email_verification_code = null,
            email_verification_expires = null
-       WHERE email_verification_token = $1
+       WHERE email_verification_code = $1
        AND email = $2
        AND email_verification_expires > NOW()
        RETURNING id, name, email, role`,
@@ -236,7 +236,7 @@ const resendVerificationCode = async (req, res) => {
     // Update user with new verification code
     await query(
       `UPDATE users
-       SET email_verification_token = $1,
+       SET email_verification_code = $1,
            email_verification_expires = $2
        WHERE email = $3`,
       [verificationCode, expiresAt, email]

@@ -1,4 +1,6 @@
 // lib/screens/forgot_password_screen.dart
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:serveease_app/providers/auth_provider.dart';

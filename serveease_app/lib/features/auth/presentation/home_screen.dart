@@ -1,7 +1,7 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:serveease_app/features/ai/ai_chat_screen.dart';
 import 'package:serveease_app/features/employees/employee_list_screen.dart';
 import 'package:serveease_app/features/requests/request_list_screen.dart';
@@ -9,8 +9,6 @@ import 'package:serveease_app/features/services/my_services_screen.dart';
 import 'package:serveease_app/features/services/service_catalog_screen.dart';
 import 'package:serveease_app/features/admin/provider_approvals_screen.dart';
 import 'package:serveease_app/providers/auth_provider.dart';
-import 'package:serveease_app/core/utils/responsive.dart';
-import 'package:serveease_app/shared/widgets/service_card.dart';
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
