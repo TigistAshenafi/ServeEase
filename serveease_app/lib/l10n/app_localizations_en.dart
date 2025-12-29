@@ -18,44 +18,53 @@ class AppLocalizationsEn extends AppLocalizations {
   String get amharicLabel => 'AM';
 
   @override
-  String get providerInfoNote =>
-      'As a provider, you will need to set up your profile after verifying your email.';
-  
-  @override
-  String get providerCategoryLabel => 'Category';
-
-  @override
-  String get providerCategoryValidation => 'Category is required';
-
-  @override
-  String get providerProfileSuccess => 'Provider profile created successfully!';
-
-  @override
   String get loginWelcomeTitle => 'Welcome Back';
 
   @override
-  String get loginSubtitle => 'Log in to continue using ServeEase';
+  String get providerInfoNote => 'As a provider, you will need to set up your profile after verifying your email.';
 
   @override
-  String get emailLabel => 'Email Address';
+  String get nameLabel => 'Full Name';
 
   @override
-  String get emailHint => 'you@example.com';
+  String get nameValidation => 'Please enter your name';
+
+//  @override
+//   String get validationNameRequired => 'Please enter your name';
+
+  @override
+  String get validationNameLength => 'Name must be at least 2 characters';
+
+  @override
+  String get loginSubtitle => 'Login to your account to continue';
+
+  @override
+  String get emailLabel => 'Email';
+
+  @override
+  String get emailHint => 'Enter your email';
 
   @override
   String get passwordLabel => 'Password';
+
+   @override
+  String get passwordHint => 'Enter your password';
+
+   @override
+  String get selectRoleError => 'Please select your role';
+
 
   @override
   String get forgotPasswordLabel => 'Forgot Password?';
 
   @override
-  String get loginButtonLabel => 'Log In';
+  String get loginButtonLabel => 'Login';
 
   @override
   String get signupRedirectPrefix => 'Don\'t have an account? ';
 
   @override
-  String get signupRedirectAction => 'Sign Up';
+  String get signupRedirectAction => 'Sign up';
 
   @override
   String get loginRedirectPrefix => 'Already have an account? ';
@@ -68,7 +77,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String loginFailed(Object reason) {
-    return 'Login failed: $reason';
+    return 'Login failed';
   }
 
   @override
@@ -86,12 +95,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get signupSubtitle => 'Join ServeEase to connect with services or offer your expertise.';
 
   @override
-  String get nameLabel => 'Full Name';
-
-  @override
-  String get nameValidation => 'Please enter your name';
-
-  @override
   String get confirmPasswordLabel => 'Confirm Password';
 
   @override
@@ -101,9 +104,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get providerDetailsTitle => 'Provider details';
 
   @override
-  String get providerProfileSetup => 'Provider Profile Setup';
-
-  @override
   String get businessNameLabel => 'Business / brand name';
 
   @override
@@ -111,9 +111,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get providerBusinessValidation => 'Business name is required for providers';
-
-  @override
-  String get providerDescriptionValidation => 'Tell seekers about your services';
 
   @override
   String get signupSubmitLabel => 'Sign Up';
@@ -200,4 +197,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get resetCodeSentMessage => 'The reset code has been sent to your email.';
+
+  @override
+  String get providerCategoryLabel => 'Category';
+
+  @override
+  String get providerDescriptionValidation => 'Description is required';
+
+  @override
+  String get providerCategoryValidation => 'Category is required';
+
+  @override
+  String get providerProfileSuccess => 'Provider profile created successfully!';
+
+  @override
+  String get providerProfileSetup => 'Provider Profile Setup';
+
+  @override
+  String get selectLoginRole => 'Please select login role';
+
+  @override
+  String get welcome => 'Welcome';
+
+  @override
+  String get loginAsRole => 'Login as';
+
+  @override
+  String get provider => 'Provider';
+
+  @override
+  String get seeker => 'Seeker';
 }
