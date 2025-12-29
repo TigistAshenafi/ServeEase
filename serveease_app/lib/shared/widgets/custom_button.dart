@@ -16,7 +16,7 @@ class CustomButton extends StatefulWidget {
   final double borderRadius;
 
   const CustomButton({
-    Key? key,
+    super.key,
     required this.text,
     this.onPressed,
     this.type = ButtonType.primary,
@@ -27,7 +27,7 @@ class CustomButton extends StatefulWidget {
     this.height,
     this.padding,
     this.borderRadius = 12,
-  }) : super(key: key);
+  });
 
   @override
   State<CustomButton> createState() => _CustomButtonState();
@@ -212,13 +212,13 @@ class PrimaryButton extends StatelessWidget {
   final IconData? icon;
 
   const PrimaryButton({
-    Key? key,
+    super.key,
     required this.text,
     this.onPressed,
     this.isLoading = false,
     this.isFullWidth = false,
     this.icon,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -241,13 +241,13 @@ class SecondaryButton extends StatelessWidget {
   final IconData? icon;
 
   const SecondaryButton({
-    Key? key,
+    super.key,
     required this.text,
     this.onPressed,
     this.isLoading = false,
     this.isFullWidth = false,
     this.icon,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

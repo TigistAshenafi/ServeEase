@@ -1,7 +1,7 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:serveease_app/features/ai/ai_chat_screen.dart';
 import 'package:serveease_app/features/employees/employee_list_screen.dart';
 import 'package:serveease_app/features/requests/request_list_screen.dart';
@@ -9,8 +9,6 @@ import 'package:serveease_app/features/services/my_services_screen.dart';
 import 'package:serveease_app/features/services/service_catalog_screen.dart';
 import 'package:serveease_app/features/admin/provider_approvals_screen.dart';
 import 'package:serveease_app/providers/auth_provider.dart';
-import 'package:serveease_app/core/utils/responsive.dart';
-import 'package:serveease_app/shared/widgets/service_card.dart';
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -339,6 +337,8 @@ class _HomeScreenState extends State<HomeScreen> {
 // =============== SEEKER TABS ===============
 
 class SeekerDashboardTab extends StatelessWidget {
+  const SeekerDashboardTab({super.key});
+
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
@@ -564,6 +564,8 @@ class SeekerDashboardTab extends StatelessWidget {
 // =============== PROVIDER TABS ===============
 
 class ProviderDashboardTab extends StatelessWidget {
+  const ProviderDashboardTab({super.key});
+
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
@@ -803,6 +805,8 @@ class ProviderDashboardTab extends StatelessWidget {
 // =============== OTHER TABS ===============
 
 class ServicesTab extends StatelessWidget {
+  const ServicesTab({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -827,6 +831,8 @@ class ServicesTab extends StatelessWidget {
 }
 
 class MyServicesTab extends StatelessWidget {
+  const MyServicesTab({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -851,6 +857,8 @@ class MyServicesTab extends StatelessWidget {
 }
 
 class BookingsTab extends StatelessWidget {
+  const BookingsTab({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -875,6 +883,8 @@ class BookingsTab extends StatelessWidget {
 }
 
 class AppointmentsTab extends StatelessWidget {
+  const AppointmentsTab({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -899,6 +909,8 @@ class AppointmentsTab extends StatelessWidget {
 }
 
 class EarningsTab extends StatelessWidget {
+  const EarningsTab({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -923,6 +935,8 @@ class EarningsTab extends StatelessWidget {
 }
 
 class ProfileTab extends StatelessWidget {
+  const ProfileTab({super.key});
+
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
@@ -970,7 +984,7 @@ class ProfileTab extends StatelessWidget {
                           SizedBox(height: 10),
                           Chip(
                             label: Text(
-                              user?.role?.toUpperCase() ?? 'USER',
+                              user?.role.toUpperCase() ?? 'USER',
                               style: TextStyle(color: Colors.white),
                             ),
                             backgroundColor: user?.role == 'provider'

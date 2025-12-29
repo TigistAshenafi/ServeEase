@@ -28,6 +28,8 @@ import 'package:serveease_app/features/screens/providers/create_profile_screen.d
 import 'package:serveease_app/features/screens/providers/profile_view_screen.dart';
 import 'package:serveease_app/features/services/my_services_screen.dart';
 import 'package:serveease_app/features/services/service_catalog_screen.dart';
+import 'package:serveease_app/features/chat/screens/conversations_screen.dart';
+import 'package:serveease_app/features/chat/screens/chat_screen.dart';
 
 import 'package:serveease_app/providers/admin_provider.dart';
 import 'package:serveease_app/providers/ai_provider.dart';
@@ -36,6 +38,7 @@ import 'package:serveease_app/providers/employee_provider.dart';
 import 'package:serveease_app/providers/provider_profile_provider.dart';
 import 'package:serveease_app/providers/service_provider.dart';
 import 'package:serveease_app/providers/service_request_provider.dart';
+import 'package:serveease_app/features/chat/providers/chat_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -74,6 +77,7 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(create: (_) => EmployeeProvider()),
             ChangeNotifierProvider(create: (_) => AiProvider()),
             ChangeNotifierProvider(create: (_) => AdminProvider()),
+            ChangeNotifierProvider(create: (_) => ChatProvider()),
           ],
           child: AnimatedBuilder(
             animation: localeController,
@@ -119,6 +123,17 @@ class MyApp extends StatelessWidget {
                   '/employees': (_) => const EmployeeListScreen(),
                   '/ai': (_) => const AiChatScreen(),
                   '/admin/providers': (_) => const ProviderApprovalsScreen(),
+                  '/chat': (_) => const ConversationsScreen(),
+                },
+                onGenerateRoute: (settings) {
+                  // Handle dynamic routes like /chat/:conversationId
+                  if (settings.name?.startsWith('/chat/') == true) {
+                    final conversationId = settings.name!.split('/')[2];
+                    return MaterialPageRoute(
+                      builder: (context) => ChatScreen(conversationId: conversationId),
+                    );
+                  }
+                  return null;
                 },
               );
             },
@@ -144,7 +159,18 @@ class _AuthWrapperState extends State<AuthWrapper> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<AuthProvider>().initialize();
+      
+      // Initialize chat service when user is authenticated
+      final authProvider = context.read<AuthProvider>();
+      if (authProvider.isAuthenticated) {
+        _initializeChat();
+      }
     });
+  }
+
+  void _initializeChat() async {
+    final baseUrl = dotenv.env['API_BASE_URL'] ?? 'http://localhost:5000';
+    await context.read<ChatProvider>().initialize(baseUrl);
   }
 
   @override
@@ -157,7 +183,15 @@ class _AuthWrapperState extends State<AuthWrapper> {
       );
     }
 
-    return auth.isAuthenticated ? const HomeScreen() : LoginScreen();
+    if (auth.isAuthenticated) {
+      // Initialize chat when authenticated
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _initializeChat();
+      });
+      return const HomeScreen();
+    }
+
+    return LoginScreen();
   }
 }
 

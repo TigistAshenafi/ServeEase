@@ -1,6 +1,5 @@
 // lib/core/models/service_request_model.dart
 
-import 'service_model.dart';
 
 class ServiceRequest {
   final String id;

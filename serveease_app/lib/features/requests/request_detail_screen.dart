@@ -109,7 +109,7 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   DropdownButtonFormField<String>(
-                    value: _selectedStatus,
+                    initialValue: _selectedStatus,
                     items: const [
                       DropdownMenuItem(
                           value: 'pending', child: Text('Pending')),
@@ -159,7 +159,7 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> {
               child: Column(
                 children: [
                   DropdownButtonFormField<String>(
-                    value: _selectedEmployee,
+                    initialValue: _selectedEmployee,
                     items: employees
                         .map(
                           (e) => DropdownMenuItem(

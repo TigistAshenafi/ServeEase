@@ -26,7 +26,7 @@ class CustomTextField extends StatefulWidget {
   final EdgeInsetsGeometry? contentPadding;
 
   const CustomTextField({
-    Key? key,
+    super.key,
     this.label,
     this.hint,
     this.initialValue,
@@ -47,7 +47,7 @@ class CustomTextField extends StatefulWidget {
     this.focusNode,
     this.textCapitalization = TextCapitalization.none,
     this.contentPadding,
-  }) : super(key: key);
+  });
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -215,7 +215,7 @@ class _CustomTextFieldState extends State<CustomTextField>
                   filled: true,
                   fillColor: _isFocused
                       ? colorScheme.primaryContainer.withOpacity(0.1)
-                      : colorScheme.surfaceVariant.withOpacity(0.3),
+                      : colorScheme.surfaceContainerHighest.withOpacity(0.3),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(
@@ -271,13 +271,13 @@ class EmailTextField extends StatelessWidget {
   final void Function(String)? onChanged;
 
   const EmailTextField({
-    Key? key,
+    super.key,
     this.label,
     this.hint,
     this.controller,
     this.validator,
     this.onChanged,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -312,13 +312,13 @@ class PasswordTextField extends StatefulWidget {
   final void Function(String)? onChanged;
 
   const PasswordTextField({
-    Key? key,
+    super.key,
     this.label,
     this.hint,
     this.controller,
     this.validator,
     this.onChanged,
-  }) : super(key: key);
+  });
 
   @override
   State<PasswordTextField> createState() => _PasswordTextFieldState();
@@ -370,13 +370,13 @@ class NameTextField extends StatelessWidget {
   final void Function(String)? onChanged;
 
   const NameTextField({
-    Key? key,
+    super.key,
     this.label,
     this.hint,
     this.controller,
     this.validator,
     this.onChanged,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -412,13 +412,13 @@ class ConfirmPasswordTextField extends StatefulWidget {
   final void Function(String)? onChanged;
 
   const ConfirmPasswordTextField({
-    Key? key,
+    super.key,
     this.label,
     this.hint,
     this.controller,
     this.validator,
     this.onChanged,
-  }) : super(key: key);
+  });
 
   @override
   State<ConfirmPasswordTextField> createState() => _ConfirmPasswordTextFieldState();

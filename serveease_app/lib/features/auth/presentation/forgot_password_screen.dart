@@ -1,10 +1,14 @@
 // lib/screens/forgot_password_screen.dart
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:serveease_app/providers/auth_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // Added for consistency
 
 class ForgotPasswordScreen extends StatefulWidget {
+  const ForgotPasswordScreen({super.key});
+
   @override
   _ForgotPasswordScreenState createState() => _ForgotPasswordScreenState();
 }
@@ -14,7 +18,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final _emailController = TextEditingController();
   bool _isCodeSent = false;
   String? _sentEmail;
-  bool _obscurePassword = true; // Added for password visibility toggle
+  final bool _obscurePassword = true; // Added for password visibility toggle
   bool _isResending = false; // for resend code loading
 
   Future<void> _sendResetCode() async {
@@ -65,7 +69,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     final colorScheme = theme.colorScheme;
 
     return Scaffold(
-      backgroundColor: colorScheme.background,
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
         title: const Text('Forgot Password'),
         leading: IconButton(

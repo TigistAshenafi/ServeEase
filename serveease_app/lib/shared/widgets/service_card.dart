@@ -23,7 +23,7 @@ class ServiceCard extends StatefulWidget {
   final String duration;
 
   const ServiceCard({
-    Key? key,
+    super.key,
     required this.title,
     required this.description,
     required this.providerName,
@@ -37,7 +37,7 @@ class ServiceCard extends StatefulWidget {
     this.onFavorite,
     this.isFavorite = false,
     required this.duration,
-  }) : super(key: key);
+  });
 
   @override
   State<ServiceCard> createState() => _ServiceCardState();
@@ -148,7 +148,7 @@ class _ServiceCardState extends State<ServiceCard>
             topLeft: Radius.circular(16),
             topRight: Radius.circular(16),
           ),
-          child: Container(
+          child: SizedBox(
             height: 160,
             width: double.infinity,
             child: widget.imageUrl != null
@@ -373,7 +373,7 @@ class _ServiceCardState extends State<ServiceCard>
 
 // Shimmer loading card
 class ServiceCardShimmer extends StatelessWidget {
-  const ServiceCardShimmer({Key? key}) : super(key: key);
+  const ServiceCardShimmer({super.key});
 
   @override
   Widget build(BuildContext context) {

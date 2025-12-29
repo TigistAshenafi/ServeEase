@@ -1,4 +1,6 @@
 // lib/screens/provider/create_profile_screen.dart
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -36,7 +38,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
   String _selectedCategory = '';
   String _selectedCategoryId = ''; // Store category ID for backend
   List<String> _certificates = [];
-  List<File> _certificateFiles = [];
+  final List<File> _certificateFiles = [];
   bool _isLoading = false;
   bool _showCategoryGrid = false;
   List<ServiceCategory> _categories = []; // Store categories from backend

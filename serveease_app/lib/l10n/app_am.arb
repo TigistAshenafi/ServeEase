@@ -1,14 +1,13 @@
 {
   "@@locale": "am",
   
-  "appTitle": "ሰርቭኢዝ",
+  "appTitle": "ServeEase",
   "englishLabel": "EN",
   "amharicLabel": "AM",
   
   "loginWelcomeTitle": "እንኳን ደህና መጡ",
-  "loginSubtitle": "ወደ ሰርቭኢዝ ለመቀጠል ይግቡ",
+  "loginSubtitle": "ወደ ServEase ለመቀጠል ይግቡ",
   "emailLabel": "ኢሜል አድራሻ",
-  "emailHint": "you@example.com",
   "passwordLabel": "የይለፍ ቃል",
   "forgotPasswordLabel": "የይለፍ ቃልዎን ረሱት?",
   "loginButtonLabel": "ግባ",
@@ -113,7 +112,6 @@
   "validationConfirmPassword": "እባክዎ የይለፍ ቃልዎን ያረጋግጡ",
   "validationPasswordsMismatch": "የይለፍ ቃሎች አይዛመዱም",
   "validationNameRequired": "ይህ መስክ ያስፈልጋል",
-  "validationNameLength": "ቢያንስ 2 ቁምፊዎች መሆን አለበት",
   "validationDescriptionRequired": "መግለጫ ያስፈልጋል",
   "validationDescriptionLength": "መግለጫ ቢያንስ 10 ቁምፊዎች መሆን አለበት",
   "validationLocationRequired": "አካባቢ ያስፈልጋል",
@@ -128,19 +126,11 @@
   "serverError": "የአገልጋይ ስህተት። እባክዎ እንደገና ይሞክሩ።",
   "loadingCategories": "ምድቦች እየተጫኑ ነው...",
   "failedToLoadCategories": "ምድቦችን መጫን አልተሳካም",
-
 "selectRoleError": "እባክዎ ሚናዎን ይምረጡ",
   "loginAsLabel": "እንደ ማን ይግቡ",
-  "emailLabel": "ኢሜይል",
   "emailHint": "ኢሜይልዎን ያስገቡ",
-  "passwordLabel": "የይለፍ ቃል",
   "passwordHint": "የይለፍ ቃልዎን ያስገቡ",
-
-  
-  "validationNameLength": "ስም ቢያንስ 3 ፊደላት መሆን አለበት"
-
-
-  
+  "validationNameLength": "ስም ቢያንስ 3 ፊደላት መሆን አለበት",
   "continue": "ቀጥል",
   "cancel": "ሰርዝ",
   "save": "አስቀምጥ",
