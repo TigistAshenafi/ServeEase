@@ -5,6 +5,8 @@ import 'package:serveease_app/providers/auth_provider.dart';
 import 'package:serveease_app/l10n/app_localizations.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
+  const ResetPasswordScreen({super.key});
+
   @override
   _ResetPasswordScreenState createState() => _ResetPasswordScreenState();
 }
@@ -110,8 +112,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   void dispose() {
     _passwordController.dispose();
     _confirmPasswordController.dispose();
-    for (var controller in _codeControllers) controller.dispose();
-    for (var node in _codeFocusNodes) node.dispose();
+    for (var controller in _codeControllers) {
+      controller.dispose();
+    }
+    for (var node in _codeFocusNodes) {
+      node.dispose();
+    }
     super.dispose();
   }
 
@@ -123,7 +129,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     final l10n = AppLocalizations.of(context);
 
     return Scaffold(
-      backgroundColor: colorScheme.background,
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
         title: Text('Reset Password'),
         leading: IconButton(

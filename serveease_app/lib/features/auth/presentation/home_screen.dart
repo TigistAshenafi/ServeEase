@@ -339,6 +339,8 @@ class _HomeScreenState extends State<HomeScreen> {
 // =============== SEEKER TABS ===============
 
 class SeekerDashboardTab extends StatelessWidget {
+  const SeekerDashboardTab({super.key});
+
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
@@ -564,6 +566,8 @@ class SeekerDashboardTab extends StatelessWidget {
 // =============== PROVIDER TABS ===============
 
 class ProviderDashboardTab extends StatelessWidget {
+  const ProviderDashboardTab({super.key});
+
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
@@ -803,6 +807,8 @@ class ProviderDashboardTab extends StatelessWidget {
 // =============== OTHER TABS ===============
 
 class ServicesTab extends StatelessWidget {
+  const ServicesTab({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -827,6 +833,8 @@ class ServicesTab extends StatelessWidget {
 }
 
 class MyServicesTab extends StatelessWidget {
+  const MyServicesTab({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -851,6 +859,8 @@ class MyServicesTab extends StatelessWidget {
 }
 
 class BookingsTab extends StatelessWidget {
+  const BookingsTab({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -875,6 +885,8 @@ class BookingsTab extends StatelessWidget {
 }
 
 class AppointmentsTab extends StatelessWidget {
+  const AppointmentsTab({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -899,6 +911,8 @@ class AppointmentsTab extends StatelessWidget {
 }
 
 class EarningsTab extends StatelessWidget {
+  const EarningsTab({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -923,6 +937,8 @@ class EarningsTab extends StatelessWidget {
 }
 
 class ProfileTab extends StatelessWidget {
+  const ProfileTab({super.key});
+
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
@@ -970,7 +986,7 @@ class ProfileTab extends StatelessWidget {
                           SizedBox(height: 10),
                           Chip(
                             label: Text(
-                              user?.role?.toUpperCase() ?? 'USER',
+                              user?.role.toUpperCase() ?? 'USER',
                               style: TextStyle(color: Colors.white),
                             ),
                             backgroundColor: user?.role == 'provider'

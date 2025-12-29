@@ -183,7 +183,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
     final colorScheme = theme.colorScheme;
     
     return Scaffold(
-      backgroundColor: colorScheme.background,
+      backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -194,7 +194,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                 // Back Button
                 IconButton(
                   onPressed: () => Navigator.pop(context),
-                  icon: Icon(Icons.arrow_back, color: colorScheme.onBackground),
+                  icon: Icon(Icons.arrow_back, color: colorScheme.onSurface),
                 ),
                 const SizedBox(height: 20),
 
@@ -223,7 +223,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
-                      color: colorScheme.onBackground,
+                      color: colorScheme.onSurface,
                     ),
                   ),
                 ),
@@ -257,7 +257,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                         child: Text(
                           _email ?? 'email@example.com',
                           style: TextStyle(
-                            color: colorScheme.onBackground,
+                            color: colorScheme.onSurface,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -332,7 +332,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: colorScheme.onBackground,
+                          color: colorScheme.onSurface,
                         ),
                         decoration: InputDecoration(
                           counterText: '',
@@ -449,7 +449,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                           height: 4,
                           child: LinearProgressIndicator(
                             value: _resendTimer / 60,
-                            backgroundColor: colorScheme.surfaceVariant,
+                            backgroundColor: colorScheme.surfaceContainerHighest,
                             valueColor: AlwaysStoppedAnimation<Color>(colorScheme.primary),
                           ),
                         ),
@@ -479,9 +479,9 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: colorScheme.surfaceVariant.withOpacity(0.1),
+                    color: colorScheme.surfaceContainerHighest.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: colorScheme.surfaceVariant.withOpacity(0.3)),
+                    border: Border.all(color: colorScheme.surfaceContainerHighest.withOpacity(0.3)),
                   ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -496,7 +496,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                               'Verification Note',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: colorScheme.onBackground,
+                                color: colorScheme.onSurface,
                               ),
                             ),
                             const SizedBox(height: 8),

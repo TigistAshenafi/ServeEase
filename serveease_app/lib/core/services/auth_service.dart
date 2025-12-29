@@ -66,7 +66,7 @@ static Future<ApiResponse<void>> resendVerificationCode({
     // Use the same pattern as verifyEmail
     return ApiService.handleResponse<void>(
       res,
-      (json) => null, // No data to parse for void response
+      (json) {}, // No data to parse for void response
     );
   } catch (e) {
     return ApiService.handleError<void>(e);

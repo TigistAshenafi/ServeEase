@@ -27,8 +27,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
-  bool _obscurePassword = true;
-  bool _obscureConfirmPassword = true;
+  final bool _obscurePassword = true;
+  final bool _obscureConfirmPassword = true;
   Role _role = Role.seeker;
   bool get _isProvider => _role == Role.provider;
 
@@ -96,7 +96,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final loc = AppLocalizations.of(context)!;
 
     return Scaffold(
-      backgroundColor: colorScheme.background,
+      backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: ResponsiveWidget(
           mobile: _buildMobileLayout(context, authProvider, theme, colorScheme, loc),
@@ -181,7 +181,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           loc.createAccountTitle,
           style: theme.textTheme.displayMedium?.copyWith(
             fontWeight: FontWeight.bold,
-            color: colorScheme.onBackground,
+            color: colorScheme.onSurface,
           ),
         ).animate().fadeIn(delay: 200.ms).slideX(begin: -0.2),
         SizedBox(height: 8.h),

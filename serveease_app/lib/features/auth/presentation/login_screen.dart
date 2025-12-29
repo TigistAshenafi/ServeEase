@@ -13,6 +13,8 @@ import 'package:serveease_app/l10n/app_localizations.dart';
 import 'package:serveease_app/shared/widgets/language_toggle.dart'; // <-- added
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -189,7 +191,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final l10n = AppLocalizations.of(context);
 
     return Scaffold(
-      backgroundColor: colorScheme.background,
+      backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: ResponsiveWidget(
           mobile: _buildMobileLayout(
@@ -386,11 +388,11 @@ class _LoginScreenState extends State<LoginScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(l10n?.signupRedirectPrefix ?? 'No account?'),
+            Text(l10n.signupRedirectPrefix ?? 'No account?'),
             TextButton(
               onPressed: () => Navigator.pushNamed(context, '/register'),
               child: Text(
-                l10n?.signupRedirectAction ?? 'Sign up',
+                l10n.signupRedirectAction ?? 'Sign up',
                 style: const TextStyle(fontWeight: FontWeight.w600),
               ),
             ),
