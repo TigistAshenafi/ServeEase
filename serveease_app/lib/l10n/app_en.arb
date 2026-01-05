@@ -49,6 +49,8 @@
   "emptyVerificationCode": "Please enter the 6-digit code",
   "emailVerifiedMessage": "Email verified successfully! Please login to continue.",
   "didntReceiveCode": "Didn't receive the code? ",
+  "resendCodeLabel": "Resend Code",
+  "tryAnotherEmail": "Try another email",
   "whatHappensNext": "What happens next?",
   "afterVerificationProvider": "After verification, you will be redirected to complete your provider profile setup.",
   "afterVerificationSeeker": "After verification, you will be taken to your dashboard.",

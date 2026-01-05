@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:serveease_app/providers/auth_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:serveease_app/l10n/app_localizations.dart';
+import 'package:serveease_app/providers/auth_provider.dart';
+import 'package:serveease_app/shared/widgets/language_toggle.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({super.key});
@@ -49,9 +50,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
   Future<void> _resetPassword() async {
     if (_formKey.currentState!.validate()) {
+      final l10n = AppLocalizations.of(context);
+      
       if (_passwordController.text != _confirmPasswordController.text) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Passwords do not match'), backgroundColor: Colors.red),
+          SnackBar(
+            content: Text(l10n?.validationPasswordsMismatch ?? 'Passwords do not match'), 
+            backgroundColor: Colors.red
+          ),
         );
         return;
       }
@@ -59,14 +65,20 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       final code = _getVerificationCode();
       if (code.length != 6) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Please enter the complete 6-digit code'), backgroundColor: Colors.red),
+          SnackBar(
+            content: Text(l10n?.emptyVerificationCode ?? 'Please enter the complete 6-digit code'), 
+            backgroundColor: Colors.red
+          ),
         );
         return;
       }
 
       if (_email == null || _email!.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Email is required'), backgroundColor: Colors.red),
+          SnackBar(
+            content: Text(l10n?.validationEmailRequired ?? 'Email is required'), 
+            backgroundColor: Colors.red
+          ),
         );
         return;
       }
@@ -78,9 +90,15 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         newPassword: _passwordController.text,
       );
 
+      if (!mounted) return;
+
       if (response.success) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Password reset successfully!'), backgroundColor: Colors.green, duration: Duration(seconds: 3)),
+          SnackBar(
+            content: Text(l10n?.emailVerifiedMessage ?? 'Password reset successfully!'), 
+            backgroundColor: Colors.green, 
+            duration: const Duration(seconds: 3)
+          ),
         );
         Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
       } else {
@@ -97,9 +115,15 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       try {
         final authProvider = Provider.of<AuthProvider>(context, listen: false);
         await authProvider.forgotPassword(_email!);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Code resent successfully'), backgroundColor: Colors.green),
-        );
+        if (mounted) {
+          final l10n = AppLocalizations.of(context);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(l10n?.resetCodeSentMessage ?? 'Code resent successfully'), 
+              backgroundColor: Colors.green
+            ),
+          );
+        }
       } finally {
         if (mounted) {
           setState(() => _isResending = false);
@@ -131,7 +155,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     return Scaffold(
       backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        title: Text('Reset Password'),
+        title: Text(l10n?.forgotPasswordTitle ?? 'Reset Password'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
@@ -144,10 +168,15 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Language toggle
+              const LanguageToggle(alignment: Alignment.centerRight),
+              const SizedBox(height: 16),
+              
               // Icon - Similar to Login
               Center(
                 child: Icon(
                   Icons.lock_reset,
+                  
                   size: 80,
                   color: colorScheme.primary,
                 ),
@@ -157,7 +186,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               // Title - Similar styling to Login
               Center(
                 child: Text(
-                  'Reset Password',
+                  l10n?.forgotPasswordTitle ?? 'Reset Password',
                   style: theme.textTheme.displayMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -168,7 +197,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               
               // Description text
               Text(
-                'Enter the 6-digit code sent to $_email',
+                _email != null 
+                    ? (l10n?.verifyEmailInfo(_email!) ?? 'A verification code was sent to $_email.')
+                    : (l10n?.emptyVerificationCode ?? 'Please enter the 6-digit code'),
                 style: theme.textTheme.bodyLarge?.copyWith(
                   color: colorScheme.onSurfaceVariant,
                 ),
@@ -214,8 +245,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 controller: _passwordController,
                 obscureText: _obscurePassword,
                 decoration: InputDecoration(
-                  labelText: 'New Password',
-                  hintText: 'Enter your new password',
+                  labelText: l10n?.passwordLabel ?? 'New Password',
+                  hintText: l10n?.passwordHint ?? 'Enter your new password',
                   border: const OutlineInputBorder(),
                   prefixIcon: const Icon(Icons.lock_outline),
                   suffixIcon: IconButton(
@@ -224,11 +255,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     ),
                     onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
                   ),
-                  filled: false, // Removed filled background
                 ),
                 validator: (value) {
-                  if (value == null || value.isEmpty) return 'Please enter new password';
-                  if (value.length < 6) return 'Password must be at least 6 characters';
+                  if (value == null || value.isEmpty) {
+                    return l10n?.validationPasswordRequired ?? 'Please enter new password';
+                  }
+                  if (value.length < 6) {
+                    return l10n?.validationPasswordLength ?? 'Password must be at least 6 characters';
+                  }
                   return null;
                 },
               ),
@@ -239,8 +273,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 controller: _confirmPasswordController,
                 obscureText: _obscureConfirmPassword,
                 decoration: InputDecoration(
-                  labelText: 'Confirm Password',
-                  hintText: 'Confirm your new password',
+                  labelText: l10n?.confirmPasswordLabel ?? 'Confirm Password',
+                  hintText: l10n?.passwordHint ?? 'Confirm your new password',
                   border: const OutlineInputBorder(),
                   prefixIcon: const Icon(Icons.lock_outline),
                   suffixIcon: IconButton(
@@ -249,11 +283,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     ),
                     onPressed: () => setState(() => _obscureConfirmPassword = !_obscureConfirmPassword),
                   ),
-                  filled: false, // Removed filled background
                 ),
                 validator: (value) {
-                  if (value == null || value.isEmpty) return 'Please confirm password';
-                  if (value != _passwordController.text) return 'Passwords do not match';
+                  if (value == null || value.isEmpty) {
+                    return l10n?.validationConfirmPassword ?? 'Please confirm password';
+                  }
+                  if (value != _passwordController.text) {
+                    return l10n?.validationPasswordsMismatch ?? 'Passwords do not match';
+                  }
                   return null;
                 },
               ),
@@ -271,9 +308,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     elevation: 2,
                   ),
                   child: authProvider.isLoading
-                      ? CircularProgressIndicator(color: Colors.white)
+                      ? const CircularProgressIndicator(color: Colors.white)
                       : Text(
-                          'Reset Password',
+                          l10n?.forgotPasswordTitle ?? 'Reset Password',
                           style: TextStyle(
                             fontSize: 16.sp,
                             color: colorScheme.onPrimary,
@@ -284,12 +321,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               ),
               SizedBox(height: 16.h),
 
-              // Resend Code / Try another email - Updated styling
+              // Resend Code / Try another email - Fully Localized
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Didn\'t receive the code? ',
+                    l10n?.didntReceiveCode ?? 'Didn\'t receive the code? ',
                     style: TextStyle(
                       color: colorScheme.onSurfaceVariant,
                     ),
@@ -303,9 +340,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       : TextButton(
                           onPressed: _resendCode,
                           child: Text(
-                            'Resend Code',
+                            l10n?.resendCodeLabel ?? 'Resend Code',
                             style: TextStyle(
-                              color: Colors.blue,
+                              color: colorScheme.primary,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -321,9 +358,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     (route) => false,
                   ),
                   child: Text(
-                    'Try another email',
+                    l10n?.tryAnotherEmail ?? 'Try another email',
                     style: TextStyle(
-                      color: Colors.blue,
+                      color: colorScheme.primary,
                       fontWeight: FontWeight.w600,
                     ),
                   ),

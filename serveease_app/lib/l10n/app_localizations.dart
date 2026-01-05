@@ -443,6 +443,24 @@ abstract class AppLocalizations {
   /// **'The reset code has been sent to your email.'**
   String get resetCodeSentMessage;
 
+  /// No description provided for @didntReceiveCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Didn\'t receive the code? '**
+  String get didntReceiveCode;
+
+  /// No description provided for @resendCodeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend Code'**
+  String get resendCodeLabel;
+
+  /// No description provided for @tryAnotherEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Try another email'**
+  String get tryAnotherEmail;
+
   /// No description provided for @providerCategoryLabel.
   ///
   /// In en, this message translates to:

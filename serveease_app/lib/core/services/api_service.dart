@@ -120,7 +120,14 @@ class ApiService {
       final refreshed = await refreshAccessToken();
       if (refreshed.success) {
         final retry = await action(_headers(withAuth: withAuth));
+        // Capture refresh cookie on retry if needed
+        if (retry.headers['set-cookie'] != null) {
+          await _captureRefreshCookie(retry);
+        }
         return retry;
+      } else {
+        // If refresh failed, clear tokens and return authentication error
+        await clearTokens();
       }
     }
 
@@ -171,6 +178,14 @@ class ApiService {
     T Function(dynamic)? fromJson,
   ) {
     try {
+      // Handle authentication errors specifically
+      if (response.statusCode == 401) {
+        return ApiResponse<T>(
+          success: false,
+          message: 'Authentication failed. Please login again.',
+        );
+      }
+
       final json = jsonDecode(response.body);
       final ok = response.statusCode >= 200 && response.statusCode < 300;
       final success = ok && (json['success'] ?? true);
@@ -188,14 +203,28 @@ class ApiService {
         );
       }
 
+      // Handle different error status codes
+      String errorMessage;
+      if (response.statusCode == 400) {
+        errorMessage = json['message'] ?? 'Invalid request data';
+      } else if (response.statusCode == 403) {
+        errorMessage = json['message'] ?? 'Access denied';
+      } else if (response.statusCode == 404) {
+        errorMessage = json['message'] ?? 'Resource not found';
+      } else if (response.statusCode == 500) {
+        errorMessage = json['message'] ?? 'Server error occurred';
+      } else {
+        errorMessage = json['message'] ?? 'Request failed';
+      }
+
       return ApiResponse<T>(
         success: false,
-        message: json['message'] ?? 'Request failed',
+        message: errorMessage,
       );
     } catch (e) {
       return ApiResponse<T>(
         success: false,
-        message: 'Failed to parse response',
+        message: 'Failed to parse response: ${e.toString()}',
       );
     }
   }
@@ -211,7 +240,7 @@ class ApiService {
   /// Refresh access token using stored refresh cookie.
   static Future<ApiResponse<String>> refreshAccessToken() async {
     if (_refreshTokenCookie == null) {
-      return ApiResponse(success: false, message: 'No refresh token');
+      return ApiResponse(success: false, message: 'No refresh token available');
     }
     try {
       final res = await _client.post(
@@ -223,12 +252,21 @@ class ApiService {
         final token = json['accessToken'] as String?;
         if (token != null) {
           await setAccessToken(token);
-          return ApiResponse(success: true, message: 'refreshed', data: token);
+          return ApiResponse(success: true, message: 'Token refreshed successfully', data: token);
         }
       }
-      return ApiResponse(success: false, message: 'Refresh failed');
+      // If refresh failed, clear tokens
+      await clearTokens();
+      return ApiResponse(success: false, message: 'Session expired. Please login again.');
     } catch (e) {
-      return ApiResponse(success: false, message: e.toString());
+      await clearTokens();
+      return ApiResponse(success: false, message: 'Session expired. Please login again.');
     }
   }
+
+  /// Check if user has valid authentication
+  static bool get isAuthenticated => _accessToken != null;
+
+  /// Get current access token
+  static String? get accessToken => _accessToken;
 }

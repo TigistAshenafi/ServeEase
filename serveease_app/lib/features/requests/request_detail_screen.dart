@@ -28,7 +28,7 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> {
   Future<void> _loadEmployeesIfNeeded() async {
     final employeeProvider = context.read<EmployeeProvider>();
     if (employeeProvider.employees.isEmpty) {
-      await employeeProvider.load();
+      await employeeProvider.fetchEmployees();
     }
   }
 

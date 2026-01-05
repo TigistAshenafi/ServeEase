@@ -8,7 +8,7 @@ class EmployeeProvider extends ChangeNotifier {
   bool isLoading = false;
   String? error;
 
-  Future<void> load() async {
+  Future<void> fetchEmployees() async {
     isLoading = true;
     notifyListeners();
     final res = await EmployeeService.list();
@@ -22,51 +22,69 @@ class EmployeeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<ApiResponse<Employee>> add({
-    required String employeeName,
+  Future<ApiResponse<Employee>> addEmployee({
+    required String name,
     required String email,
-    required String role,
-    String? phone,
-    List<String>? skills,
+    required String phone,
+    required String position,
+    List<String> skills = const [],
   }) async {
     final res = await EmployeeService.add(
-      employeeName: employeeName,
+      employeeName: name,
       email: email,
-      role: role,
+      role: position,
       phone: phone,
       skills: skills,
     );
     if (res.success && res.data != null) {
       employees.insert(0, res.data!);
       notifyListeners();
+    } else {
+      error = res.message;
+      notifyListeners();
     }
     return res;
   }
 
-  Future<ApiResponse<Employee>> update(
-    String id, {
-    String? employeeName,
-    String? email,
-    String? role,
-    String? phone,
-    List<String>? skills,
-    bool? isActive,
+  Future<ApiResponse<Employee>> updateEmployee({
+    required String employeeId,
+    required String name,
+    required String email,
+    required String phone,
+    required String position,
+    List<String> skills = const [],
   }) async {
     final res = await EmployeeService.update(
-      employeeId: id,
-      employeeName: employeeName,
+      employeeId: employeeId,
+      employeeName: name,
       email: email,
-      role: role,
+      role: position,
       phone: phone,
       skills: skills,
-      isActive: isActive,
     );
     if (res.success && res.data != null) {
-      final idx = employees.indexWhere((e) => e.id == id);
+      final idx = employees.indexWhere((e) => e.id == employeeId);
       if (idx != -1) employees[idx] = res.data!;
+      notifyListeners();
+    } else {
+      error = res.message;
       notifyListeners();
     }
     return res;
+  }
+
+  Future<ApiResponse<void>> toggleEmployeeStatus(String employeeId) async {
+    final employee = employees.firstWhere((e) => e.id == employeeId);
+    final res = await EmployeeService.update(
+      employeeId: employeeId,
+      isActive: !employee.isActive,
+    );
+    if (res.success && res.data != null) {
+      final idx = employees.indexWhere((e) => e.id == employeeId);
+      if (idx != -1) employees[idx] = res.data!;
+      notifyListeners();
+    }
+    return ApiResponse<void>(success: res.success, message: res.message);
   }
 
   Future<ApiResponse<void>> remove(String id) async {
