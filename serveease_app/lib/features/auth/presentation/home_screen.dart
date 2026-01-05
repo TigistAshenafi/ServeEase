@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -1096,6 +1098,8 @@ class _ProviderDashboardTabState extends State<ProviderDashboardTab> {
 // =============== OTHER TABS ===============
 
 class ServicesTab extends StatelessWidget {
+  const ServicesTab({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -1120,6 +1124,8 @@ class ServicesTab extends StatelessWidget {
 }
 
 class MyServicesTab extends StatelessWidget {
+  const MyServicesTab({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -1144,6 +1150,8 @@ class MyServicesTab extends StatelessWidget {
 }
 
 class BookingsTab extends StatelessWidget {
+  const BookingsTab({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -1168,6 +1176,8 @@ class BookingsTab extends StatelessWidget {
 }
 
 class AppointmentsTab extends StatelessWidget {
+  const AppointmentsTab({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -1192,6 +1202,8 @@ class AppointmentsTab extends StatelessWidget {
 }
 
 class EarningsTab extends StatelessWidget {
+  const EarningsTab({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -1216,6 +1228,8 @@ class EarningsTab extends StatelessWidget {
 }
 
 class ProfileTab extends StatelessWidget {
+  const ProfileTab({super.key});
+
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);

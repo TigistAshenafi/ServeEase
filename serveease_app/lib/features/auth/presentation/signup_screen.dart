@@ -1,5 +1,5 @@
 // lib/screens/register_screen.dart
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, deprecated_member_use
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -181,7 +181,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           loc.createAccountTitle,
           style: theme.textTheme.displayMedium?.copyWith(
             fontWeight: FontWeight.bold,
-            color: colorScheme.onBackground,
+            color: colorScheme.onSurface,
           ),
         ).animate().fadeIn(delay: 200.ms).slideX(begin: -0.2),
         SizedBox(height: 8.h),

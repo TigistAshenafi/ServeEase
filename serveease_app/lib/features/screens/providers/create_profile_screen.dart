@@ -37,7 +37,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
   String _selectedCategory = '';
   String _selectedCategoryId = '';
   List<String> _certificates = [];
-  List<File> _certificateFiles = [];
+  final List<File> _certificateFiles = [];
   bool _isLoading = false;
   bool _isGettingLocation = false;
   Position? _currentPosition;

@@ -16,6 +16,10 @@ CREATE TABLE users (
     email_verification_expires TIMESTAMP,
     password_reset_code VARCHAR(6),
     password_reset_expires TIMESTAMP,
+    is_active BOOLEAN DEFAULT TRUE,
+    suspended_at TIMESTAMP,
+    suspension_reason TEXT,
+    refresh_token VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

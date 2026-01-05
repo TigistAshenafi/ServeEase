@@ -9,7 +9,6 @@
   "loginSubtitle": "Sign in to continue to ServeEase",
   "emailLabel": "Email Address",
   "emailHint": "you@example.com",
-  "passwordLabel": "Password",
   "forgotPasswordLabel": "Forgot Password?",
   "loginButtonLabel": "Sign In",
   "signupRedirectPrefix": "Don't have an account? ",
@@ -128,8 +127,6 @@
   "validationPasswordLength": "Password must be at least 6 characters long",
   "validationConfirmPassword": "Please confirm your password",
   "validationPasswordsMismatch": "Passwords do not match",
-  "validationNameRequired": "This field is required",
-  "validationNameLength": "Must be at least 2 characters",
   "validationDescriptionRequired": "Description is required",
   "validationDescriptionLength": "Description must be at least 10 characters",
   "validationLocationRequired": "Location is required",
@@ -153,20 +150,14 @@
   "failedToLoadCategories": "Failed to load categories",
 
   
-  "emailLabel": "Email",
-  "emailHint": "Enter your email",
   "passwordLabel": "Password",
   "passwordHint": "Enter your password",
   "selectRoleError": "Please select your role",
-  "loginAsLabel": "Login as"
+  "loginAsLabel": "Login as",
 
 
   "validationNameRequired": "Name is required",
-  "validationNameLength": "Name must be at least 3 characters"
-
-
-
-  
+  "validationNameLength": "Name must be at least 3 characters",
   "continue": "CONTINUE",
   "cancel": "Cancel",
   "save": "Save",

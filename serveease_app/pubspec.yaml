@@ -46,6 +46,16 @@ dependencies:
   share_plus: ^7.2.1
   connectivity_plus: ^5.0.2
 
+  # Chat functionality
+  socket_io_client: ^2.0.3+1
+  emoji_picker_flutter: ^2.0.0
+  flutter_chat_bubble: ^2.0.2
+  image_gallery_saver: ^2.0.3
+  photo_view: ^0.14.0
+  flutter_sound: ^9.2.13
+  record: ^5.0.4
+  audioplayers: ^5.2.1
+
   # Icons
   cupertino_icons: ^1.0.5
   flutter_gen: ^5.10.0  # CHANGED: Downgraded to resolve conflict with lottie

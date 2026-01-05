@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:serveease_app/core/models/user_model.dart';
 import 'package:serveease_app/core/utils/validators.dart';
 import 'package:serveease_app/providers/auth_provider.dart';
 import 'package:serveease_app/shared/widgets/custom_button.dart';
@@ -13,6 +12,8 @@ import 'package:serveease_app/l10n/app_localizations.dart';
 import 'package:serveease_app/shared/widgets/language_toggle.dart'; // <-- added
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -386,11 +387,11 @@ class _LoginScreenState extends State<LoginScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(l10n?.signupRedirectPrefix ?? 'No account?'),
+            Text(l10n.signupRedirectPrefix ?? 'No account?'),
             TextButton(
               onPressed: () => Navigator.pushNamed(context, '/register'),
               child: Text(
-                l10n?.signupRedirectAction ?? 'Sign up',
+                l10n.signupRedirectAction ?? 'Sign up',
                 style: const TextStyle(fontWeight: FontWeight.w600),
               ),
             ),
