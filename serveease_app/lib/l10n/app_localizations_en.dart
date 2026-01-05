@@ -199,6 +199,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get resetCodeSentMessage => 'The reset code has been sent to your email.';
 
   @override
+  String get didntReceiveCode => 'Didn\'t receive the code? ';
+
+  @override
+  String get resendCodeLabel => 'Resend Code';
+
+  @override
+  String get tryAnotherEmail => 'Try another email';
+
+  @override
   String get providerCategoryLabel => 'Category';
 
   @override

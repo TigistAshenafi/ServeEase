@@ -76,6 +76,7 @@ class AuthProvider extends ChangeNotifier {
     return response;
   }
 
+
   // Verify email
   Future<ApiResponse<User>> verifyEmail({
     required String email,

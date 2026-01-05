@@ -43,6 +43,8 @@
   "emptyVerificationCode": "እባክዎ 6-አሃዝ ኮዱን ያስገቡ",
   "emailVerifiedMessage": "ኢሜል በተሳካ ሁኔታ ተረጋግጧል! ለመቀጠል እባክዎ ይግቡ።",
   "didntReceiveCode": "ኮዱን አልተቀበሉም? ",
+  "resendCodeLabel": "ኮድ እንደገና ላክ",
+  "tryAnotherEmail": "ሌላ ኢሜል ይሞክሩ",
   "whatHappensNext": "ቀጥሎ ምን ይከሰታል?",
   "afterVerificationProvider": "ከማረጋገጥ በኋላ፣ የአቅራቢ መገለጫ ማዘጋጃዎን ለማጠናቀቅ ይዛወራሉ።",
   "afterVerificationSeeker": "ከማረጋገጥ በኋላ፣ ወደ ዳሽቦርድዎ ይወሰዳሉ።",

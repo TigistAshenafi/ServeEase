@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:serveease_app/features/screens/providers/create_profile_screen.dart';
 import 'package:serveease_app/features/screens/providers/profile_view_screen.dart';
+import 'package:serveease_app/features/employees/employee_list_screen.dart';
+import 'package:serveease_app/features/services/my_services_screen.dart';
 
 // import 'config/theme.dart';
 import 'features/auth/presentation/welcome_screen.dart';
@@ -34,6 +36,8 @@ class ServeEaseApp extends StatelessWidget {
         '/reset-password': (context) =>  ResetPasswordScreen(),
         '/verify-email': (context) => VerifyEmailScreen(),
         '/home': (context) => const HomeScreen(),
+        '/employees': (context) => const EmployeeListScreen(),
+        '/services/my': (context) => const MyServicesScreen(),
         // '/provider-setup': (context) => const ProviderSetupScreen(),
       },
     );

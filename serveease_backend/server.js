@@ -1,13 +1,12 @@
-import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import authRoutes from './routes/auth.js';
-import providerRoutes from './routes/provider.js';
-import serviceRoutes from './routes/services.js';
-import serviceRequestRoutes from './routes/serviceRequests.js';
-import employeeRoutes from './routes/employees.js';
+import express from 'express';
 import aiRoutes from './routes/ai.js';
-
+import authRoutes from './routes/auth.js';
+import employeeRoutes from './routes/employees.js';
+import providerRoutes from './routes/provider.js';
+import serviceRequestRoutes from './routes/serviceRequests.js';
+import serviceRoutes from './routes/services.js';
 // Load environment variables
 dotenv.config();
 

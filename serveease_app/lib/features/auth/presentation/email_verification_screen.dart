@@ -183,7 +183,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
     final colorScheme = theme.colorScheme;
     
     return Scaffold(
-      backgroundColor: colorScheme.background,
+      backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(

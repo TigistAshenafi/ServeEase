@@ -1,16 +1,16 @@
 import express from 'express';
 import { body } from 'express-validator';
 import {
-  createOrUpdateProfile,
-  getProfile,
-  getAllProviders,
   approveProvider,
+  createOrUpdateProfile,
+  getAllProviders,
+  getProfile,
   rejectProvider
 } from '../controllers/providerController.js';
 import {
   authenticateToken,
-  requireProvider,
-  requireAdmin
+  requireAdmin,
+  requireProvider
 } from '../middleware/auth.js';
 
 const router = express.Router();

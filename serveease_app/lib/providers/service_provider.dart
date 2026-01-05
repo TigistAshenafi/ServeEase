@@ -46,6 +46,7 @@ class ServiceProvider extends ChangeNotifier {
     required int durationHours,
   }) async {
     isLoading = true;
+    error = null;
     notifyListeners();
     final res = await ServiceService.create(
       title: title,
@@ -57,6 +58,7 @@ class ServiceProvider extends ChangeNotifier {
     isLoading = false;
     if (res.success && res.data != null) {
       myServices.insert(0, res.data!);
+      error = null;
     } else {
       error = res.message;
     }
@@ -74,6 +76,7 @@ class ServiceProvider extends ChangeNotifier {
     bool? isActive,
   }) async {
     isLoading = true;
+    error = null;
     notifyListeners();
     final res = await ServiceService.update(
       serviceId: id,
@@ -88,6 +91,7 @@ class ServiceProvider extends ChangeNotifier {
     if (res.success && res.data != null) {
       final idx = myServices.indexWhere((s) => s.id == id);
       if (idx != -1) myServices[idx] = res.data!;
+      error = null;
     } else {
       error = res.message;
     }

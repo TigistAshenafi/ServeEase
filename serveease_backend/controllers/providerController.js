@@ -1,5 +1,5 @@
-import { query } from '../config/database.js';
 import nodemailer from 'nodemailer';
+import { query } from '../config/database.js';
 
 // Email transporter
 const transporter = nodemailer.createTransport({
@@ -355,9 +355,6 @@ const rejectProvider = async (req, res) => {
 };
 
 export {
-  createOrUpdateProfile,
-  getProfile,
-  getAllProviders,
-  approveProvider,
-  rejectProvider
+    approveProvider, createOrUpdateProfile, getAllProviders, getProfile, rejectProvider
 };
+

@@ -223,4 +223,13 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String get seeker => 'ፍለጋ የሚያደርግ';
+
+  @override
+  String get didntReceiveCode => 'ኮዱን አልተቀበሉም? ';
+
+  @override
+  String get resendCodeLabel => 'ኮድ እንደገና ላክ';
+
+  @override
+  String get tryAnotherEmail => 'ሌላ ኢሜል ይሞክሩ';
 }
