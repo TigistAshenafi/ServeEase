@@ -1,21 +1,13 @@
+import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-<<<<<<< HEAD
 import { i18nMiddleware } from './middleware/i18n.js';
 import authRoutes from './routes/auth.js';
 import providerRoutes from './routes/provider.js';
 import serviceRoutes from './routes/services.js';
 import serviceRequestRoutes from './routes/serviceRequests.js';
 import employeeRoutes from './routes/employees.js';
-=======
-import express from 'express';
->>>>>>> bc880ce957d53bbe4cca033a664fa74a78d4ce24
 import aiRoutes from './routes/ai.js';
-import authRoutes from './routes/auth.js';
-import employeeRoutes from './routes/employees.js';
-import providerRoutes from './routes/provider.js';
-import serviceRequestRoutes from './routes/serviceRequests.js';
-import serviceRoutes from './routes/services.js';
 // Load environment variables
 dotenv.config();
 

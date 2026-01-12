@@ -2,14 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-<<<<<<< HEAD
-import 'package:serveease_app/providers/auth_provider.dart';
-=======
 import 'package:provider/provider.dart';
 import 'package:serveease_app/l10n/app_localizations.dart';
 import 'package:serveease_app/providers/auth_provider.dart';
-import 'package:serveease_app/shared/widgets/language_toggle.dart';
->>>>>>> bc880ce957d53bbe4cca033a664fa74a78d4ce24
+import 'package:serveease_app/shared/widgets/app_bar_language_toggle.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({super.key});
@@ -60,18 +56,13 @@ class ResetPasswordScreenState extends State<ResetPasswordScreen> {
   Future<void> _resetPassword() async {
     if (_formKey.currentState!.validate()) {
       final l10n = AppLocalizations.of(context);
-      
+
       if (_passwordController.text != _confirmPasswordController.text) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-<<<<<<< HEAD
-              content: Text('Passwords do not match'),
+              content: Text(l10n?.validationPasswordsMismatch ??
+                  'Passwords do not match'),
               backgroundColor: Colors.red),
-=======
-            content: Text(l10n?.validationPasswordsMismatch ?? 'Passwords do not match'), 
-            backgroundColor: Colors.red
-          ),
->>>>>>> bc880ce957d53bbe4cca033a664fa74a78d4ce24
         );
         return;
       }
@@ -80,14 +71,9 @@ class ResetPasswordScreenState extends State<ResetPasswordScreen> {
       if (code.length != 6) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-<<<<<<< HEAD
-              content: Text('Please enter the complete 6-digit code'),
+              content: Text(l10n?.emptyVerificationCode ??
+                  'Please enter the complete 6-digit code'),
               backgroundColor: Colors.red),
-=======
-            content: Text(l10n?.emptyVerificationCode ?? 'Please enter the complete 6-digit code'), 
-            backgroundColor: Colors.red
-          ),
->>>>>>> bc880ce957d53bbe4cca033a664fa74a78d4ce24
         );
         return;
       }
@@ -95,13 +81,9 @@ class ResetPasswordScreenState extends State<ResetPasswordScreen> {
       if (_email == null || _email!.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-<<<<<<< HEAD
-              content: Text('Email is required'), backgroundColor: Colors.red),
-=======
-            content: Text(l10n?.validationEmailRequired ?? 'Email is required'), 
-            backgroundColor: Colors.red
-          ),
->>>>>>> bc880ce957d53bbe4cca033a664fa74a78d4ce24
+              content:
+                  Text(l10n?.validationEmailRequired ?? 'Email is required'),
+              backgroundColor: Colors.red),
         );
         return;
       }
@@ -116,27 +98,14 @@ class ResetPasswordScreenState extends State<ResetPasswordScreen> {
       if (!mounted) return;
 
       if (response.success) {
-<<<<<<< HEAD
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-                content: Text('Password reset successfully!'),
-                backgroundColor: Colors.green,
-                duration: Duration(seconds: 3)),
-          );
-          Navigator.pushNamedAndRemoveUntil(
-              context, '/login', (route) => false);
-        }
-=======
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(l10n?.emailVerifiedMessage ?? 'Password reset successfully!'), 
-            backgroundColor: Colors.green, 
-            duration: const Duration(seconds: 3)
-          ),
+              content: Text(
+                  l10n?.emailVerifiedMessage ?? 'Password reset successfully!'),
+              backgroundColor: Colors.green,
+              duration: const Duration(seconds: 3)),
         );
         Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
->>>>>>> bc880ce957d53bbe4cca033a664fa74a78d4ce24
       } else {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -154,23 +123,15 @@ class ResetPasswordScreenState extends State<ResetPasswordScreen> {
       try {
         final authProvider = Provider.of<AuthProvider>(context, listen: false);
         await authProvider.forgotPassword(_email!);
-<<<<<<< HEAD
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: Text('Code resent successfully'),
-              backgroundColor: Colors.green),
-        );
-=======
         if (mounted) {
           final l10n = AppLocalizations.of(context);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(l10n?.resetCodeSentMessage ?? 'Code resent successfully'), 
-              backgroundColor: Colors.green
-            ),
+                content:
+                    Text(l10n?.resendCodeLabel ?? 'Code resent successfully'),
+                backgroundColor: Colors.green),
           );
         }
->>>>>>> bc880ce957d53bbe4cca033a664fa74a78d4ce24
       } finally {
         if (mounted) {
           setState(() => _isResending = false);
@@ -196,6 +157,7 @@ class ResetPasswordScreenState extends State<ResetPasswordScreen> {
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     final colorScheme = theme.colorScheme;
 
     return Scaffold(
@@ -215,14 +177,16 @@ class ResetPasswordScreenState extends State<ResetPasswordScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Language toggle
-              const LanguageToggle(alignment: Alignment.centerRight),
+              const AppBarLanguageToggle(
+                iconColor: Colors.grey,
+                textColor: Colors.black,
+              ),
               const SizedBox(height: 16),
-              
+
               // Icon - Similar to Login
               Center(
                 child: Icon(
                   Icons.lock_reset,
-                  
                   size: 80,
                   color: colorScheme.primary,
                 ),
@@ -243,9 +207,11 @@ class ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
               // Description text
               Text(
-                _email != null 
-                    ? (l10n?.verifyEmailInfo(_email!) ?? 'A verification code was sent to $_email.')
-                    : (l10n?.emptyVerificationCode ?? 'Please enter the 6-digit code'),
+                _email != null
+                    ? (l10n?.verifyEmailInfo ??
+                        'A verification code was sent to $_email.')
+                    : (l10n?.emptyVerificationCode ??
+                        'Please enter the 6-digit code'),
                 style: theme.textTheme.bodyLarge?.copyWith(
                   color: colorScheme.onSurfaceVariant,
                 ),
@@ -309,17 +275,12 @@ class ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-<<<<<<< HEAD
-                    return 'Please enter new password';
+                    return l10n?.validationPasswordRequired ??
+                        'Please enter new password';
                   }
                   if (value.length < 6) {
-                    return 'Password must be at least 6 characters';
-=======
-                    return l10n?.validationPasswordRequired ?? 'Please enter new password';
-                  }
-                  if (value.length < 6) {
-                    return l10n?.validationPasswordLength ?? 'Password must be at least 6 characters';
->>>>>>> bc880ce957d53bbe4cca033a664fa74a78d4ce24
+                    return l10n?.validationPasswordLength ??
+                        'Password must be at least 6 characters';
                   }
                   return null;
                 },
@@ -347,17 +308,12 @@ class ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-<<<<<<< HEAD
-                    return 'Please confirm password';
+                    return l10n?.validationConfirmPassword ??
+                        'Please confirm password';
                   }
                   if (value != _passwordController.text) {
-                    return 'Passwords do not match';
-=======
-                    return l10n?.validationConfirmPassword ?? 'Please confirm password';
-                  }
-                  if (value != _passwordController.text) {
-                    return l10n?.validationPasswordsMismatch ?? 'Passwords do not match';
->>>>>>> bc880ce957d53bbe4cca033a664fa74a78d4ce24
+                    return l10n?.validationPasswordsMismatch ??
+                        'Passwords do not match';
                   }
                   return null;
                 },

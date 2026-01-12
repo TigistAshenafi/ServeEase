@@ -32,7 +32,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
   final _categoryController = TextEditingController();
   final _locationController = TextEditingController();
   final _phoneController = TextEditingController();
-  
+
   String _selectedProviderType = 'individual';
   String _selectedCategory = '';
   String _selectedCategoryId = '';
@@ -55,7 +55,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
     super.initState();
     _loadCategories();
     _loadExistingProfile();
-    
+
     // Add location search listener
     _locationController.addListener(_onLocationChanged);
   }
@@ -84,7 +84,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
       _selectedLocation = location;
       _locationController.text = location.name;
       _showLocationSuggestions = false;
-      
+
       // Store coordinates if available
       if (location.latitude != null && location.longitude != null) {
         _currentPosition = Position(
@@ -105,9 +105,9 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
 
   Future<void> _loadCategories() async {
     setState(() => _isLoading = true);
-    
+
     final response = await ProviderService.getServiceCategories();
-    
+
     if (response.success && response.data != null) {
       setState(() {
         _categories = response.data!;
@@ -122,9 +122,10 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
   Future<void> _loadExistingProfile() async {
     if (widget.isEditMode) {
       setState(() => _isLoading = true);
-      final provider = Provider.of<ProviderProfileProvider>(context, listen: false);
+      final provider =
+          Provider.of<ProviderProfileProvider>(context, listen: false);
       await provider.loadProfile();
-      
+
       if (provider.profile != null) {
         final profile = provider.profile!;
         _selectedProviderType = profile.providerType;
@@ -132,14 +133,15 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
         _descriptionController.text = profile.description;
         _selectedCategory = profile.category;
         _locationController.text = profile.location;
-        
+
         // Handle phone number - remove +251 if present since the widget shows it
         String phoneNumber = profile.phone;
         if (phoneNumber.startsWith('+251')) {
-          phoneNumber = phoneNumber.substring(4).trim(); // Remove +251 and any space
+          phoneNumber =
+              phoneNumber.substring(4).trim(); // Remove +251 and any space
         }
         _phoneController.text = phoneNumber;
-        
+
         _certificates = List.from(profile.certificates);
       }
       setState(() => _isLoading = false);
@@ -150,25 +152,31 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
     setState(() => _isGettingLocation = true);
 
     final result = await LocationService.getCurrentLocation();
-    
+
     setState(() => _isGettingLocation = false);
 
-    if (result.success && result.suggestion != null && result.position != null) {
+    if (result.success &&
+        result.suggestion != null &&
+        result.position != null) {
       setState(() {
         _currentPosition = result.position;
         _selectedLocation = result.suggestion;
-        _locationController.text = 'Current Location (${result.position!.latitude.toStringAsFixed(4)}, ${result.position!.longitude.toStringAsFixed(4)})';
+        _locationController.text =
+            'Current Location (${result.position!.latitude.toStringAsFixed(4)}, ${result.position!.longitude.toStringAsFixed(4)})';
         _showLocationSuggestions = false;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('Current location captured successfully!'),
-          backgroundColor: Colors.green,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Current location captured successfully!'),
+            backgroundColor: Colors.green,
+            behavior: SnackBarBehavior.floating,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          ),
+        );
+      }
     } else {
       _showErrorSnackbar(result.error ?? 'Failed to get location');
     }
@@ -182,7 +190,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
         maxHeight: 1200,
         imageQuality: 85,
       );
-      
+
       if (image != null) {
         final file = File(image.path);
         setState(() {
@@ -218,7 +226,8 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
   Future<void> _submitProfile() async {
     if (_formKey.currentState!.validate()) {
       if (_selectedProviderType == 'individual' && _certificates.isEmpty) {
-        _showErrorSnackbar('Individual providers must upload at least one certificate');
+        _showErrorSnackbar(
+            'Individual providers must upload at least one certificate');
         return;
       }
 
@@ -229,23 +238,29 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
 
       setState(() => _isLoading = true);
 
-      final provider = Provider.of<ProviderProfileProvider>(context, listen: false);
-      
+      final provider =
+          Provider.of<ProviderProfileProvider>(context, listen: false);
+
       // Prepare location string with coordinates if available
       String locationString = _locationController.text.trim();
-      if (_selectedLocation != null && _selectedLocation!.latitude != null && _selectedLocation!.longitude != null) {
-        locationString = '${_selectedLocation!.fullAddress} (${_selectedLocation!.latitude!.toStringAsFixed(6)}, ${_selectedLocation!.longitude!.toStringAsFixed(6)})';
+      if (_selectedLocation != null &&
+          _selectedLocation!.latitude != null &&
+          _selectedLocation!.longitude != null) {
+        locationString =
+            '${_selectedLocation!.fullAddress} (${_selectedLocation!.latitude!.toStringAsFixed(6)}, ${_selectedLocation!.longitude!.toStringAsFixed(6)})';
       } else if (_currentPosition != null) {
-        locationString = '$locationString (${_currentPosition!.latitude.toStringAsFixed(6)}, ${_currentPosition!.longitude.toStringAsFixed(6)})';
+        locationString =
+            '$locationString (${_currentPosition!.latitude.toStringAsFixed(6)}, ${_currentPosition!.longitude.toStringAsFixed(6)})';
       }
-      
+
       final result = await provider.createOrUpdateProfile(
         providerType: _selectedProviderType,
         businessName: _businessNameController.text.trim(),
         description: _descriptionController.text.trim(),
         category: _selectedCategory,
         location: locationString,
-        phone: EthiopianPhoneValidator.getFullPhoneNumber(_phoneController.text.trim()),
+        phone: EthiopianPhoneValidator.getFullPhoneNumber(
+            _phoneController.text.trim()),
         certificates: _certificates,
       );
 
@@ -373,7 +388,9 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                     child: Column(
                       children: [
                         Text(
-                          widget.isEditMode ? 'Update Your Profile' : 'Become a Provider',
+                          widget.isEditMode
+                              ? 'Update Your Profile'
+                              : 'Become a Provider',
                           style: theme.textTheme.displaySmall?.copyWith(
                             fontWeight: FontWeight.bold,
                             color: colorScheme.onSurface,
@@ -394,7 +411,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                     ),
                   ),
                   const SizedBox(height: 48),
-                  
+
                   // Form sections with clean design like login
                   _buildProviderTypeSection(),
                   const SizedBox(height: 32),
@@ -408,7 +425,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                     _buildCertificatesSection(),
                   if (_selectedProviderType == 'individual')
                     const SizedBox(height: 32),
-                  
+
                   // Submit button like login page
                   SizedBox(
                     width: double.infinity,
@@ -445,7 +462,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
   Widget _buildProviderTypeSection() {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -491,7 +508,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final isSelected = _selectedProviderType == type;
-    
+
     return GestureDetector(
       onTap: () => setState(() => _selectedProviderType = type),
       child: Container(
@@ -539,8 +556,12 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
         TextFormField(
           controller: _businessNameController,
           decoration: InputDecoration(
-            labelText: _selectedProviderType == 'individual' ? 'Your Name' : 'Business Name',
-            hintText: _selectedProviderType == 'individual' ? 'Enter your full name' : 'Enter business name',
+            labelText: _selectedProviderType == 'individual'
+                ? 'Your Name'
+                : 'Business Name',
+            hintText: _selectedProviderType == 'individual'
+                ? 'Enter your full name'
+                : 'Enter business name',
             border: const OutlineInputBorder(),
             prefixIcon: const Icon(Icons.badge_outlined),
           ),
@@ -555,7 +576,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
           },
         ),
         const SizedBox(height: 24),
-        
+
         // Description field
         TextFormField(
           controller: _descriptionController,
@@ -587,7 +608,8 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
       children: [
         // Category dropdown field
         DropdownButtonFormField<String>(
-          value: _selectedCategoryId.isEmpty ? null : _selectedCategoryId,
+          initialValue:
+              _selectedCategoryId.isEmpty ? null : _selectedCategoryId,
           decoration: const InputDecoration(
             labelText: 'Service Category',
             hintText: 'Select your service category',
@@ -603,7 +625,8 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
           onChanged: (value) {
             setState(() {
               _selectedCategoryId = value ?? '';
-              _selectedCategory = _categories.firstWhere((cat) => cat.id == value).name;
+              _selectedCategory =
+                  _categories.firstWhere((cat) => cat.id == value).name;
             });
           },
           validator: (value) {
@@ -620,7 +643,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
   Widget _buildContactSection() {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -663,7 +686,8 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                             height: 20,
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
-                              valueColor: AlwaysStoppedAnimation<Color>(colorScheme.primary),
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  colorScheme.primary),
                             ),
                           )
                         : Icon(
@@ -685,7 +709,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                   border: Border.all(color: colorScheme.outline),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
+                      color: Colors.black.withValues(alpha: 0.1),
                       blurRadius: 8,
                       offset: const Offset(0, 2),
                     ),
@@ -696,7 +720,8 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                   children: [
                     // Header
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
                       decoration: BoxDecoration(
                         color: colorScheme.primaryContainer,
                         borderRadius: const BorderRadius.only(
@@ -706,7 +731,8 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                       ),
                       child: Row(
                         children: [
-                          Icon(Icons.location_city, color: colorScheme.primary, size: 18),
+                          Icon(Icons.location_city,
+                              color: colorScheme.primary, size: 18),
                           const SizedBox(width: 8),
                           Text(
                             'Ethiopian Cities',
@@ -717,7 +743,8 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                             ),
                           ),
                           const Spacer(),
-                          Icon(Icons.keyboard_arrow_down, color: colorScheme.primary, size: 16),
+                          Icon(Icons.keyboard_arrow_down,
+                              color: colorScheme.primary, size: 16),
                         ],
                       ),
                     ),
@@ -734,7 +761,8 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                               onTap: () => _selectLocation(suggestion),
                               borderRadius: BorderRadius.circular(8),
                               child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 12),
                                 child: Row(
                                   children: [
                                     Container(
@@ -752,7 +780,8 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                     const SizedBox(width: 12),
                                     Expanded(
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             suggestion.name,
@@ -766,7 +795,8 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                           Text(
                                             suggestion.fullAddress,
                                             style: TextStyle(
-                                              color: colorScheme.onSurfaceVariant,
+                                              color:
+                                                  colorScheme.onSurfaceVariant,
                                               fontSize: 12,
                                             ),
                                           ),
@@ -791,9 +821,9 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
               ),
           ],
         ),
-        
+
         const SizedBox(height: 24),
-        
+
         // Ethiopian Phone Field with Flag
         EthiopianPhoneField(
           controller: _phoneController,
@@ -807,7 +837,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
   Widget _buildCertificatesSection() {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -837,7 +867,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
             width: double.infinity,
             padding: const EdgeInsets.all(40),
             decoration: BoxDecoration(
-              color: colorScheme.surfaceVariant,
+              color: colorScheme.surfaceContainerHighest,
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
                 color: colorScheme.outline,

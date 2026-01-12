@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:serveease_app/core/utils/validators.dart';
 import 'package:serveease_app/l10n/app_localizations.dart';
 import 'package:serveease_app/providers/auth_provider.dart';
-import 'package:serveease_app/shared/widgets/language_toggle.dart';
+import 'package:serveease_app/shared/widgets/app_bar_language_toggle.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -41,7 +41,8 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         final l10n = AppLocalizations.of(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(l10n?.resetCodeSentMessage ?? 'Reset code sent to your email'),
+            content: Text(
+                l10n?.resetCodeSentMessage ?? 'Reset code sent to your email'),
             backgroundColor: Colors.green,
             duration: const Duration(seconds: 3),
           ),
@@ -85,17 +86,15 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         ),
       ),
       body: SingleChildScrollView(
-<<<<<<< HEAD
-        padding: EdgeInsets.symmetric(
-            horizontal: 24.w, vertical: 32.h), // Updated padding
-=======
         padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 32.h),
->>>>>>> bc880ce957d53bbe4cca033a664fa74a78d4ce24
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Language toggle
-            const LanguageToggle(alignment: Alignment.centerRight),
+            const AppBarLanguageToggle(
+              iconColor: Colors.grey,
+              textColor: Colors.black,
+            ),
             const SizedBox(height: 16),
 
             // Icon - Similar to Login
@@ -124,7 +123,8 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             Text(
               _isCodeSent
                   ? 'We sent a 6-digit verification code to $_sentEmail\nPlease check your email and enter the code below.'
-                  : l10n?.forgotPasswordSubtitle ?? 'Enter your email address and we\'ll send you a verification code to reset your password.',
+                  : l10n?.forgotPasswordSubtitle ??
+                      'Enter your email address and we\'ll send you a verification code to reset your password.',
               style: theme.textTheme.bodyLarge?.copyWith(
                 color: colorScheme.onSurfaceVariant,
               ),
@@ -146,20 +146,8 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       prefixIcon: const Icon(Icons.email_outlined),
                     ),
                     keyboardType: TextInputType.emailAddress,
-<<<<<<< HEAD
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your email';
-                      }
-                      if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                          .hasMatch(value)) {
-                        return 'Please enter a valid email';
-                      }
-                      return null;
-                    },
-=======
-                    validator: (value) => Validators.validateEmail(context, value),
->>>>>>> bc880ce957d53bbe4cca033a664fa74a78d4ce24
+                    validator: (value) =>
+                        Validators.validateEmail(context, value),
                   ),
                   SizedBox(height: 24.h),
 
@@ -199,7 +187,8 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(l10n?.rememberPasswordPrefix ?? 'Remembered your password? '),
+                    Text(l10n?.rememberPasswordPrefix ??
+                        'Remembered your password? '),
                     TextButton(
                       onPressed: () => Navigator.pop(context),
                       child: Text(
@@ -242,31 +231,22 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                     _sentEmail!.isNotEmpty) {
                                   setState(() => _isResending = true);
                                   try {
-<<<<<<< HEAD
                                     final authProvider =
                                         Provider.of<AuthProvider>(context,
                                             listen: false);
                                     await authProvider
                                         .forgotPassword(_sentEmail!);
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content:
-                                            Text('Code resent successfully'),
-                                        backgroundColor: Colors.green,
-                                      ),
-                                    );
-=======
-                                    final authProvider = Provider.of<AuthProvider>(context, listen: false);
-                                    await authProvider.forgotPassword(_sentEmail!);
                                     if (mounted) {
-                                      ScaffoldMessenger.of(context).showSnackBar(
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
                                         SnackBar(
-                                          content: Text(l10n?.resetCodeSentMessage ?? 'Code resent successfully'),
+                                          content: Text(
+                                              l10n?.resetCodeSentMessage ??
+                                                  'Code resent successfully'),
                                           backgroundColor: Colors.green,
                                         ),
                                       );
                                     }
->>>>>>> bc880ce957d53bbe4cca033a664fa74a78d4ce24
                                   } finally {
                                     if (mounted) {
                                       setState(() => _isResending = false);

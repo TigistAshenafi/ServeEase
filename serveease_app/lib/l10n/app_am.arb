@@ -870,12 +870,6 @@
     "description": "Subtitle on login screen"
   },
   
-<<<<<<< HEAD
-  "emailLabel": "ኢሜይል",
-  "@emailLabel": {
-    "description": "Email field label"
-  },
-=======
   "verifyEmailTitle": "ኢሜልዎን ያረጋግጡ",
   "verifyEmailInfo": "6-አሃዝ የማረጋገጫ ኮድ ወደ ላክነው:",
   "verificationCodeLabel": "6-አሃዝ ኮድ ያስገቡ",
@@ -890,7 +884,11 @@
   "whatHappensNext": "ቀጥሎ ምን ይከሰታል?",
   "afterVerificationProvider": "ከማረጋገጥ በኋላ፣ የአቅራቢ መገለጫ ማዘጋጃዎን ለማጠናቀቅ ይዛወራሉ።",
   "afterVerificationSeeker": "ከማረጋገጥ በኋላ፣ ወደ ዳሽቦርድዎ ይወሰዳሉ።",
->>>>>>> bc880ce957d53bbe4cca033a664fa74a78d4ce24
+  
+  "emailLabel": "ኢሜይል",
+  "@emailLabel": {
+    "description": "Email field label"
+  },
   
   "emailHint": "ኢሜይልዎን ያስገቡ",
   "@emailHint": {

@@ -18,6 +18,45 @@ class AppLocalizationsEn extends AppLocalizations {
   String get login => 'Login';
 
   @override
+  String get verifyEmailTitle => 'Verify Email';
+
+  @override
+  String get verifyEmailInfo => 'We sent a 6-digit verification code to:';
+
+  @override
+  String get verificationCodeLabel => 'Enter 6-digit Code';
+
+  @override
+  String get verifyButtonLabel => 'VERIFY EMAIL';
+
+  @override
+  String get resendCodeLabel => 'RESEND CODE';
+
+  @override
+  String get backToLoginLabel => 'Back to Login';
+
+  @override
+  String get emptyVerificationCode => 'Please enter the 6-digit code';
+
+  @override
+  String get emailVerifiedMessage => 'Email verified successfully! Please login to continue.';
+
+  @override
+  String get didntReceiveCode => 'Didn\'t receive the code? ';
+
+  @override
+  String get tryAnotherEmail => 'Try another email';
+
+  @override
+  String get whatHappensNext => 'What happens next?';
+
+  @override
+  String get afterVerificationProvider => 'After verification, you will be redirected to complete your provider profile setup.';
+
+  @override
+  String get afterVerificationSeeker => 'After verification, you will be taken to your dashboard.';
+
+  @override
   String get register => 'Register';
 
   @override
@@ -594,87 +633,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginRedirectPrefix => 'Already have an account?';
 
   @override
-<<<<<<< HEAD
   String get loginRedirectAction => 'Sign in';
-=======
-  String get missingEmailError => 'Missing email';
 
   @override
-  String get emailVerifiedMessage => 'Email verified. Please log in.';
+  String get forgotPasswordTitle => 'Forgot Password';
 
   @override
-  String get homeTitle => 'ServeEase Home';
-
-  @override
-  String get homeWelcome => 'Welcome to ServeEase!';
-
-  @override
-  String get homeSubtitle => 'Explore services, request bookings, and manage your account.';
-
-  @override
-  String get homeExploreButton => 'Explore Services';
-
-  @override
-  String get backToLoginLabel => 'Back to Login';
-
-  @override
-  String get emptyVerificationCode => 'Please enter the verification code';
-
-  @override
-  String get forgotPasswordTitle => 'Forgot Password?';
-
-  @override
-  String get forgotPasswordSubtitle => 'Enter your email and we\'ll send you instructions to reset your password.';
+  String get forgotPasswordSubtitle => 'Enter your email to receive a password reset link';
 
   @override
   String get sendResetLinkButton => 'Send Reset Link';
 
   @override
-  String get rememberPasswordPrefix => 'Remembered your password? ';
+  String get rememberPasswordPrefix => 'Remember your password?';
 
   @override
-  String get rememberPasswordAction => 'Log In';
+  String get rememberPasswordAction => 'Back to Login';
 
   @override
-  String get resetCodeSentMessage => 'The reset code has been sent to your email.';
-
-  @override
-  String get didntReceiveCode => 'Didn\'t receive the code? ';
-
-  @override
-  String get resendCodeLabel => 'Resend Code';
-
-  @override
-  String get tryAnotherEmail => 'Try another email';
-
-  @override
-  String get providerCategoryLabel => 'Category';
-
-  @override
-  String get providerDescriptionValidation => 'Description is required';
-
-  @override
-  String get providerCategoryValidation => 'Category is required';
-
-  @override
-  String get providerProfileSuccess => 'Provider profile created successfully!';
-
-  @override
-  String get providerProfileSetup => 'Provider Profile Setup';
-
-  @override
-  String get selectLoginRole => 'Please select login role';
-
-  @override
-  String get welcome => 'Welcome';
-
-  @override
-  String get loginAsRole => 'Login as';
-
-  @override
-  String get provider => 'Provider';
-
-  @override
-  String get seeker => 'Seeker';
->>>>>>> bc880ce957d53bbe4cca033a664fa74a78d4ce24
+  String get resetCodeSentMessage => 'Password reset code has been sent to your email';
 }

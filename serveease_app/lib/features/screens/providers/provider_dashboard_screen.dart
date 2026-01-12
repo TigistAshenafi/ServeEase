@@ -15,7 +15,8 @@ class ProviderDashboardScreen extends StatefulWidget {
   const ProviderDashboardScreen({super.key, this.providerType});
 
   @override
-  State<ProviderDashboardScreen> createState() => _ProviderDashboardScreenState();
+  State<ProviderDashboardScreen> createState() =>
+      _ProviderDashboardScreenState();
 }
 
 class _ProviderDashboardScreenState extends State<ProviderDashboardScreen>
@@ -31,9 +32,11 @@ class _ProviderDashboardScreenState extends State<ProviderDashboardScreen>
   }
 
   Future<void> _loadData() async {
-    final profileProvider = Provider.of<ProviderProfileProvider>(context, listen: false);
-    final requestProvider = Provider.of<ServiceRequestProvider>(context, listen: false);
-    
+    final profileProvider =
+        Provider.of<ProviderProfileProvider>(context, listen: false);
+    final requestProvider =
+        Provider.of<ServiceRequestProvider>(context, listen: false);
+
     await profileProvider.loadProfile();
     await requestProvider.fetchRequests();
   }
@@ -48,14 +51,17 @@ class _ProviderDashboardScreenState extends State<ProviderDashboardScreen>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    
+
     return Scaffold(
       backgroundColor: colorScheme.surface,
-      body: Consumer3<AuthProvider, ProviderProfileProvider, ServiceRequestProvider>(
-        builder: (context, authProvider, profileProvider, requestProvider, child) {
+      body: Consumer3<AuthProvider, ProviderProfileProvider,
+          ServiceRequestProvider>(
+        builder:
+            (context, authProvider, profileProvider, requestProvider, child) {
           final profile = profileProvider.profile;
-          final providerType = profile?.providerType ?? widget.providerType ?? 'individual';
-          
+          final providerType =
+              profile?.providerType ?? widget.providerType ?? 'individual';
+
           return CustomScrollView(
             slivers: [
               _buildAppBar(context, authProvider, profile, colorScheme),
@@ -66,7 +72,8 @@ class _ProviderDashboardScreenState extends State<ProviderDashboardScreen>
                     padding: const EdgeInsets.all(20.0),
                     child: Column(
                       children: [
-                        _buildStatsCards(requestProvider.requests, providerType),
+                        _buildStatsCards(
+                            requestProvider.requests, providerType),
                         const SizedBox(height: 20),
                         _buildTabSection(requestProvider, providerType),
                       ],
@@ -81,7 +88,8 @@ class _ProviderDashboardScreenState extends State<ProviderDashboardScreen>
     );
   }
 
-  Widget _buildAppBar(BuildContext context, AuthProvider authProvider, profile, ColorScheme colorScheme) {
+  Widget _buildAppBar(BuildContext context, AuthProvider authProvider, profile,
+      ColorScheme colorScheme) {
     return SliverAppBar(
       expandedHeight: 200,
       backgroundColor: Colors.transparent,
@@ -109,10 +117,10 @@ class _ProviderDashboardScreenState extends State<ProviderDashboardScreen>
                     children: [
                       CircleAvatar(
                         radius: 30,
-                        backgroundColor: Colors.white.withOpacity(0.2),
+                        backgroundColor: Colors.white.withValues(alpha: 0.2),
                         child: Icon(
-                          profile?.providerType == 'organization' 
-                              ? Icons.business 
+                          profile?.providerType == 'organization'
+                              ? Icons.business
                               : Icons.person,
                           color: Colors.white,
                           size: 30,
@@ -133,12 +141,12 @@ class _ProviderDashboardScreenState extends State<ProviderDashboardScreen>
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              profile?.providerType == 'organization' 
-                                  ? 'Organization Account' 
+                              profile?.providerType == 'organization'
+                                  ? 'Organization Account'
                                   : 'Individual Provider',
                               style: TextStyle(
                                 fontSize: 16,
-                                color: Colors.white.withOpacity(0.9),
+                                color: Colors.white.withValues(alpha: 0.9),
                               ),
                             ),
                           ],
@@ -166,16 +174,26 @@ class _ProviderDashboardScreenState extends State<ProviderDashboardScreen>
 
   Widget _buildStatsCards(List<ServiceRequest> requests, String providerType) {
     final pendingCount = requests.where((r) => r.status == 'pending').length;
-    final activeCount = requests.where((r) => ['accepted', 'assigned', 'in_progress'].contains(r.status)).length;
-    final completedCount = requests.where((r) => r.status == 'completed').length;
+    final activeCount = requests
+        .where(
+            (r) => ['accepted', 'assigned', 'in_progress'].contains(r.status))
+        .length;
+    final completedCount =
+        requests.where((r) => r.status == 'completed').length;
 
     return Row(
       children: [
-        Expanded(child: _buildStatCard('Pending', pendingCount, Colors.orange, Icons.pending)),
+        Expanded(
+            child: _buildStatCard(
+                'Pending', pendingCount, Colors.orange, Icons.pending)),
         const SizedBox(width: 12),
-        Expanded(child: _buildStatCard('Active', activeCount, Colors.blue, Icons.work)),
+        Expanded(
+            child:
+                _buildStatCard('Active', activeCount, Colors.blue, Icons.work)),
         const SizedBox(width: 12),
-        Expanded(child: _buildStatCard('Completed', completedCount, Colors.green, Icons.check_circle)),
+        Expanded(
+            child: _buildStatCard(
+                'Completed', completedCount, Colors.green, Icons.check_circle)),
       ],
     );
   }
@@ -209,7 +227,8 @@ class _ProviderDashboardScreenState extends State<ProviderDashboardScreen>
     );
   }
 
-  Widget _buildTabSection(ServiceRequestProvider requestProvider, String providerType) {
+  Widget _buildTabSection(
+      ServiceRequestProvider requestProvider, String providerType) {
     return GlassmorphicCard(
       child: Column(
         children: [
@@ -240,7 +259,8 @@ class _ProviderDashboardScreenState extends State<ProviderDashboardScreen>
     );
   }
 
-  Widget _buildRequestsTab(ServiceRequestProvider requestProvider, String providerType) {
+  Widget _buildRequestsTab(
+      ServiceRequestProvider requestProvider, String providerType) {
     return Column(
       children: [
         Padding(
@@ -249,21 +269,26 @@ class _ProviderDashboardScreenState extends State<ProviderDashboardScreen>
             children: [
               Expanded(
                 child: DropdownButtonFormField<String>(
-                  value: _selectedStatus,
+                  initialValue: _selectedStatus,
                   decoration: InputDecoration(
                     labelText: 'Filter by Status',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   ),
                   items: const [
                     DropdownMenuItem(value: 'all', child: Text('All Requests')),
                     DropdownMenuItem(value: 'pending', child: Text('Pending')),
-                    DropdownMenuItem(value: 'accepted', child: Text('Accepted')),
-                    DropdownMenuItem(value: 'assigned', child: Text('Assigned')),
-                    DropdownMenuItem(value: 'in_progress', child: Text('In Progress')),
-                    DropdownMenuItem(value: 'completed', child: Text('Completed')),
+                    DropdownMenuItem(
+                        value: 'accepted', child: Text('Accepted')),
+                    DropdownMenuItem(
+                        value: 'assigned', child: Text('Assigned')),
+                    DropdownMenuItem(
+                        value: 'in_progress', child: Text('In Progress')),
+                    DropdownMenuItem(
+                        value: 'completed', child: Text('Completed')),
                   ],
                   onChanged: (value) {
                     setState(() => _selectedStatus = value!);
@@ -273,7 +298,8 @@ class _ProviderDashboardScreenState extends State<ProviderDashboardScreen>
               ),
               const SizedBox(width: 12),
               IconButton(
-                onPressed: () => requestProvider.fetchRequests(status: _selectedStatus),
+                onPressed: () =>
+                    requestProvider.fetchRequests(status: _selectedStatus),
                 icon: const Icon(Icons.refresh),
               ),
             ],
@@ -298,7 +324,8 @@ class _ProviderDashboardScreenState extends State<ProviderDashboardScreen>
                       itemCount: requestProvider.requests.length,
                       itemBuilder: (context, index) {
                         final request = requestProvider.requests[index];
-                        return _buildRequestCard(request, providerType, requestProvider);
+                        return _buildRequestCard(
+                            request, providerType, requestProvider);
                       },
                     ),
         ),
@@ -306,7 +333,8 @@ class _ProviderDashboardScreenState extends State<ProviderDashboardScreen>
     );
   }
 
-  Widget _buildRequestCard(ServiceRequest request, String providerType, ServiceRequestProvider requestProvider) {
+  Widget _buildRequestCard(ServiceRequest request, String providerType,
+      ServiceRequestProvider requestProvider) {
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -364,14 +392,16 @@ class _ProviderDashboardScreenState extends State<ProviderDashboardScreen>
                   if (request.status == 'pending') ...[
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: () => _updateRequestStatus(request.id, 'accepted', requestProvider),
+                        onPressed: () => _updateRequestStatus(
+                            request.id, 'accepted', requestProvider),
                         child: const Text('Accept'),
                       ),
                     ),
                     const SizedBox(width: 8),
                     Expanded(
                       child: OutlinedButton(
-                        onPressed: () => _updateRequestStatus(request.id, 'cancelled', requestProvider),
+                        onPressed: () => _updateRequestStatus(
+                            request.id, 'cancelled', requestProvider),
                         child: const Text('Decline'),
                       ),
                     ),
@@ -381,7 +411,8 @@ class _ProviderDashboardScreenState extends State<ProviderDashboardScreen>
                         onPressed: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ServiceRequestDetailsScreen(request: request),
+                            builder: (context) =>
+                                ServiceRequestDetailsScreen(request: request),
                           ),
                         ),
                         icon: const Icon(Icons.visibility),
@@ -424,9 +455,9 @@ class _ProviderDashboardScreenState extends State<ProviderDashboardScreen>
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withOpacity(0.3)),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Text(
         status.toUpperCase(),
@@ -443,7 +474,7 @@ class _ProviderDashboardScreenState extends State<ProviderDashboardScreen>
     return Consumer<ProviderProfileProvider>(
       builder: (context, provider, child) {
         final profile = provider.profile;
-        
+
         if (profile == null) {
           return const Center(
             child: Column(
@@ -550,7 +581,8 @@ class _ProviderDashboardScreenState extends State<ProviderDashboardScreen>
             title: const Text('Notifications'),
             subtitle: const Text('Manage notification preferences'),
             trailing: const Icon(Icons.arrow_forward_ios),
-            onTap: () => Navigator.pushNamed(context, '/provider/notifications'),
+            onTap: () =>
+                Navigator.pushNamed(context, '/provider/notifications'),
           ),
           const Divider(),
           ListTile(
@@ -668,26 +700,31 @@ class _ProviderDashboardScreenState extends State<ProviderDashboardScreen>
     );
   }
 
-  Future<void> _updateRequestStatus(String requestId, String status, ServiceRequestProvider requestProvider) async {
+  Future<void> _updateRequestStatus(String requestId, String status,
+      ServiceRequestProvider requestProvider) async {
     final result = await requestProvider.updateStatus(
       requestId: requestId,
       status: status,
     );
 
     if (result.success) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Request status updated to $status'),
-          backgroundColor: Colors.green,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Request status updated to $status'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Failed to update status: ${result.message}'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to update status: ${result.message}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 }
