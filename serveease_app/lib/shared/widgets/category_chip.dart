@@ -23,7 +23,7 @@ class CategoryChip extends StatelessWidget {
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
           color: isSelected
-              ? (category['color'] as Color).withOpacity(0.1)
+              ? (category['color'] as Color).withValues(alpha: 0.1)
               : Colors.grey.shade50,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
@@ -35,7 +35,7 @@ class CategoryChip extends StatelessWidget {
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: (category['color'] as Color).withOpacity(0.2),
+                    color: (category['color'] as Color).withValues(alpha: 0.2),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   )

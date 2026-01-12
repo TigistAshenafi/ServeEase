@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:serveease_app/core/services/api_service.dart';
 import 'package:serveease_app/features/admin/provider_approvals_screen.dart';
 import 'package:serveease_app/features/ai/ai_chat_screen.dart';
@@ -12,8 +11,6 @@ import 'package:serveease_app/features/requests/request_list_screen.dart';
 import 'package:serveease_app/features/services/my_services_screen.dart';
 import 'package:serveease_app/features/services/service_catalog_screen.dart';
 import 'package:serveease_app/providers/auth_provider.dart';
-import 'package:serveease_app/shared/widgets/app_bar_language_toggle.dart';
-import 'package:serveease_app/l10n/app_localizations.dart';
 import 'package:serveease_app/providers/provider_profile_provider.dart';
 import 'package:serveease_app/providers/service_provider.dart';
 import 'package:serveease_app/providers/service_request_provider.dart';
@@ -38,8 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _loadProviderProfile() async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     if (authProvider.user?.role == 'provider') {
-      final profileProvider =
-          Provider.of<ProviderProfileProvider>(context, listen: false);
+      final profileProvider = Provider.of<ProviderProfileProvider>(context, listen: false);
       await profileProvider.loadProfile();
     }
   }
@@ -54,14 +50,27 @@ class _HomeScreenState extends State<HomeScreen> {
       ];
     }
     if (role == 'provider') {
-      return [
+      // Check if provider is organization type to show team tab
+      final profileProvider = Provider.of<ProviderProfileProvider>(context, listen: false);
+      final isOrganization = profileProvider.profile?.providerType == 'organization';
+      
+      List<Widget> providerTabs = [
         ProviderDashboardTab(),
         MyServicesScreen(),
         RequestListScreen(),
-        EmployeeListScreen(),
+      ];
+      
+      // Only add Team tab for organization providers
+      if (isOrganization) {
+        providerTabs.add(EmployeeListScreen());
+      }
+      
+      providerTabs.addAll([
         AiChatScreen(),
         ProfileTab(),
-      ];
+      ]);
+      
+      return providerTabs;
     }
     return [
       SeekerDashboardTab(),
@@ -94,32 +103,47 @@ class _HomeScreenState extends State<HomeScreen> {
       ];
     }
     if (role == 'provider') {
-      return const [
-        BottomNavigationBarItem(
+      // Check if provider is organization type to show team tab
+      final profileProvider = Provider.of<ProviderProfileProvider>(context, listen: false);
+      final isOrganization = profileProvider.profile?.providerType == 'organization';
+      
+      List<BottomNavigationBarItem> providerItems = [
+        const BottomNavigationBarItem(
           icon: Icon(Icons.dashboard),
-          label: 'Dashboard',
+          label: 'Home',
         ),
-        BottomNavigationBarItem(
+        const BottomNavigationBarItem(
           icon: Icon(Icons.work),
           label: 'Services',
         ),
-        BottomNavigationBarItem(
+        const BottomNavigationBarItem(
           icon: Icon(Icons.event_available),
           label: 'Requests',
         ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.group),
-          label: 'Team',
-        ),
-        BottomNavigationBarItem(
+      ];
+      
+      // Only add Team tab for organization providers
+      if (isOrganization) {
+        providerItems.add(
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.group),
+            label: 'Team',
+          ),
+        );
+      }
+      
+      providerItems.addAll([
+        const BottomNavigationBarItem(
           icon: Icon(Icons.smart_toy),
           label: 'AI',
         ),
-        BottomNavigationBarItem(
+        const BottomNavigationBarItem(
           icon: Icon(Icons.person),
           label: 'Profile',
         ),
-      ];
+      ]);
+      
+      return providerItems;
     }
     return const [
       BottomNavigationBarItem(
@@ -166,102 +190,97 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context);
-    final user = authProvider.user;
-    final role = user?.role ?? 'seeker';
+    return Consumer2<AuthProvider, ProviderProfileProvider>(
+      builder: (context, authProvider, profileProvider, child) {
+        final user = authProvider.user;
+        final role = user?.role ?? 'seeker';
 
-    final tabs = _buildTabs(role);
-    final navItems = _navItems(role);
-    if (_selectedIndex >= tabs.length) {
-      _selectedIndex = 0;
-    }
+        final tabs = _buildTabs(role);
+        final navItems = _navItems(role);
+        if (_selectedIndex >= tabs.length) {
+          _selectedIndex = 0;
+        }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          children: [
-            Icon(Icons.handyman, color: Colors.white),
-            SizedBox(width: 10),
-            Text('ServeEase'),
-          ],
-        ),
-        backgroundColor: Colors.blue[700],
-        elevation: 2,
-        actions: [
-          // Language Toggle
-          const Padding(
-            padding: EdgeInsets.only(right: 8.0),
-            child: AppBarLanguageToggle(
-              iconColor: Colors.white,
-              textColor: Colors.white,
-            ),
-          ),
-          if (_loading)
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  color: Colors.white,
-                ),
-              ),
-            )
-          else
-            PopupMenuButton<String>(
-              icon: const Icon(Icons.more_vert, color: Colors.white),
-              onSelected: (value) {
-                if (value == 'logout') {
-                  _logout();
-                } else if (value == 'profile') {
-                  _selectedIndex = navItems.length - 1;
-                  setState(() {});
-                }
-              },
-              itemBuilder: (BuildContext context) => [
-                const PopupMenuItem<String>(
-                  value: 'profile',
-                  child: Row(
-                    children: [
-                      Icon(Icons.person, size: 20),
-                      SizedBox(width: 10),
-                      Text('My Profile'),
-                    ],
-                  ),
-                ),
-                const PopupMenuDivider(),
-                const PopupMenuItem<String>(
-                  value: 'logout',
-                  child: Row(
-                    children: [
-                      Icon(Icons.logout, size: 20),
-                      SizedBox(width: 10),
-                      Text('Logout'),
-                    ],
-                  ),
-                ),
+        return Scaffold(
+          appBar: AppBar(
+            title: Row(
+              children: [
+                Icon(Icons.handyman, color: Colors.white),
+                SizedBox(width: 10),
+                Text('ServeEase'),
               ],
             ),
-        ],
-      ),
-      drawer: _buildDrawer(context, authProvider),
-      body: IndexedStack(index: _selectedIndex, children: tabs),
-      bottomNavigationBar: BottomNavigationBar(
-        items: navItems,
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue[700],
-        unselectedItemColor: Colors.grey[600],
-        showUnselectedLabels: true,
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.white,
-        elevation: 8,
-        onTap: _onItemTapped,
-      ),
+            backgroundColor: Colors.blue[700],
+            elevation: 2,
+            actions: [
+              if (_loading)
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.white,
+                    ),
+                  ),
+                )
+              else
+                PopupMenuButton<String>(
+                  icon: const Icon(Icons.more_vert, color: Colors.white),
+                  onSelected: (value) {
+                    if (value == 'logout') {
+                      _logout();
+                    } else if (value == 'profile') {
+                      _selectedIndex = navItems.length - 1;
+                      setState(() {});
+                    }
+                  },
+                  itemBuilder: (BuildContext context) => [
+                    const PopupMenuItem<String>(
+                      value: 'profile',
+                      child: Row(
+                        children: [
+                          Icon(Icons.person, size: 20),
+                          SizedBox(width: 10),
+                          Text('My Profile'),
+                        ],
+                      ),
+                    ),
+                    const PopupMenuDivider(),
+                    const PopupMenuItem<String>(
+                      value: 'logout',
+                      child: Row(
+                        children: [
+                          Icon(Icons.logout, size: 20),
+                          SizedBox(width: 10),
+                          Text('Logout'),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+            ],
+          ),
+          drawer: _buildDrawer(context, authProvider, profileProvider),
+          body: IndexedStack(index: _selectedIndex, children: tabs),
+          bottomNavigationBar: BottomNavigationBar(
+            items: navItems,
+            currentIndex: _selectedIndex,
+            selectedItemColor: Colors.blue[700],
+            unselectedItemColor: Colors.grey[600],
+            showUnselectedLabels: true,
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: Colors.white,
+            elevation: 8,
+            onTap: _onItemTapped,
+          ),
+        );
+      },
     );
   }
 
-  Widget _buildDrawer(BuildContext context, AuthProvider authProvider) {
+  Widget _buildDrawer(BuildContext context, AuthProvider authProvider, ProviderProfileProvider profileProvider) {
     final user = authProvider.user;
 
     return Drawer(
@@ -390,15 +409,14 @@ class _SeekerDashboardTabState extends State<SeekerDashboardTab> {
   Future<void> _loadData() async {
     // Load service requests
     context.read<ServiceRequestProvider>().fetchRequests();
-
+    
     // Load service categories
     await _loadServiceCategories();
   }
 
   Future<void> _loadServiceCategories() async {
     try {
-      final response =
-          await ApiService.get('${ApiService.servicesBase}/categories');
+      final response = await ApiService.get('${ApiService.servicesBase}/categories');
       if (response.statusCode == 200) {
         final apiResponse = ApiService.handleResponse<Map<String, dynamic>>(
           response,
@@ -406,8 +424,7 @@ class _SeekerDashboardTabState extends State<SeekerDashboardTab> {
         );
         if (apiResponse.success && apiResponse.data != null) {
           setState(() {
-            _categories = List<Map<String, dynamic>>.from(
-                apiResponse.data!['categories'] ?? []);
+            _categories = List<Map<String, dynamic>>.from(apiResponse.data!['categories'] ?? []);
             _loadingCategories = false;
           });
         }
@@ -465,25 +482,24 @@ class _SeekerDashboardTabState extends State<SeekerDashboardTab> {
                 ),
               ),
               SliverPadding(
-                padding: EdgeInsets.all(16.w),
+                padding: EdgeInsets.all(16),
                 sliver: SliverList(
                   delegate: SliverChildListDelegate([
                     // Quick Stats
                     _buildStatsCard(requestProvider),
-                    SizedBox(height: 20.h),
+                    SizedBox(height: 20),
 
                     // Service Categories
                     Text(
-                      AppLocalizations.of(context)?.services ??
-                          'Service Categories',
+                      'Service Categories',
                       style: TextStyle(
-                        fontSize: 18.sp,
+                        fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 10.h),
+                    SizedBox(height: 10),
                     _buildCategoriesGrid(),
-                    SizedBox(height: 20.h),
+                    SizedBox(height: 20),
 
                     // Recent Bookings
                     _buildRecentBookings(requestProvider),
@@ -499,60 +515,49 @@ class _SeekerDashboardTabState extends State<SeekerDashboardTab> {
 
   Widget _buildStatsCard(ServiceRequestProvider requestProvider) {
     final requests = requestProvider.requests;
-    final activeCount = requests
-        .where(
-            (r) => ['accepted', 'assigned', 'in_progress'].contains(r.status))
-        .length;
-    final completedCount =
-        requests.where((r) => r.status == 'completed').length;
+    final activeCount = requests.where((r) => ['accepted', 'assigned', 'in_progress'].contains(r.status)).length;
+    final completedCount = requests.where((r) => r.status == 'completed').length;
     final pendingCount = requests.where((r) => r.status == 'pending').length;
 
     return Card(
       elevation: 4,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.r),
-      ),
       child: Padding(
-        padding: EdgeInsets.all(16.w),
+        padding: const EdgeInsets.all(16.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _buildStatItem(
-                'Active', '$activeCount', Icons.schedule, Colors.blue),
-            _buildStatItem('Completed', '$completedCount', Icons.check_circle,
-                Colors.green),
-            _buildStatItem(
-                'Pending', '$pendingCount', Icons.pending, Colors.orange),
+            _buildStatItem('Active', '$activeCount', Icons.schedule, Colors.blue),
+            _buildStatItem('Completed', '$completedCount', Icons.check_circle, Colors.green),
+            _buildStatItem('Pending', '$pendingCount', Icons.pending, Colors.orange),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildStatItem(
-      String label, String value, IconData icon, Color color) {
+  Widget _buildStatItem(String label, String value, IconData icon, Color color) {
     return Column(
       children: [
         Container(
-          padding: EdgeInsets.all(12.r),
+          padding: EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: color.withValues(alpha: 0.1),
+            color: color.withOpacity(0.1),
             shape: BoxShape.circle,
           ),
-          child: Icon(icon, color: color, size: 24.sp),
+          child: Icon(icon, color: color, size: 24),
         ),
-        SizedBox(height: 8.h),
+        SizedBox(height: 8),
         Text(
           value,
           style: TextStyle(
-            fontSize: 20.sp,
+            fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
         Text(
           label,
           style: TextStyle(
-            fontSize: 12.sp,
+            fontSize: 12,
             color: Colors.grey,
           ),
         ),
@@ -597,43 +602,14 @@ class _SeekerDashboardTabState extends State<SeekerDashboardTab> {
 
     final displayCategories = _categories.take(6).toList();
 
-    // Get screen width to determine responsive layout
-    final screenWidth = MediaQuery.of(context).size.width;
-
-    // Determine cross axis count based on screen size
-    int crossAxisCount;
-    double childAspectRatio;
-    double iconSize;
-    double fontSize;
-
-    if (screenWidth < 600) {
-      // Mobile phones
-      crossAxisCount = 3;
-      childAspectRatio = 0.85;
-      iconSize = 20.sp; // Reduced from 28.sp
-      fontSize = 11.sp;
-    } else if (screenWidth < 900) {
-      // Tablets
-      crossAxisCount = 4;
-      childAspectRatio = 0.9;
-      iconSize = 24.sp; // Reduced from 32.sp
-      fontSize = 12.sp;
-    } else {
-      // Large tablets/Desktop
-      crossAxisCount = 6;
-      childAspectRatio = 1.0;
-      iconSize = 28.sp; // Reduced from 36.sp
-      fontSize = 13.sp;
-    }
-
     return GridView.builder(
       shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
+      physics: NeverScrollableScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: crossAxisCount,
-        crossAxisSpacing: 8.w,
-        mainAxisSpacing: 8.h,
-        childAspectRatio: childAspectRatio,
+        crossAxisCount: 3,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+        childAspectRatio: 1,
       ),
       itemCount: displayCategories.length > 5 ? 6 : displayCategories.length,
       itemBuilder: (context, index) {
@@ -668,46 +644,24 @@ class _SeekerDashboardTabState extends State<SeekerDashboardTab> {
 
         return Card(
           elevation: 2,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.r),
-          ),
           child: InkWell(
             onTap: () {
               Navigator.pushNamed(context, '/services/catalog');
             },
-            borderRadius: BorderRadius.circular(12.r),
-            child: Container(
-              padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 4.w),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(8.r),
-                    decoration: BoxDecoration(
-                      color: color.withValues(alpha: 0.1),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      icon,
-                      color: color,
-                      size: iconSize,
-                    ),
-                  ),
-                  SizedBox(height: 6.h),
-                  Flexible(
-                    child: Text(
-                      category['name'] as String,
-                      style: TextStyle(
-                        fontSize: fontSize,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      textAlign: TextAlign.center,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              ),
+            borderRadius: BorderRadius.circular(8),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(icon, color: color, size: 30),
+                SizedBox(height: 8),
+                Text(
+                  category['name'],
+                  style: TextStyle(fontSize: 12),
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
             ),
           ),
         );
@@ -752,8 +706,7 @@ class _SeekerDashboardTabState extends State<SeekerDashboardTab> {
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
                     children: [
-                      Icon(Icons.inbox_outlined,
-                          size: 48, color: Colors.grey[400]),
+                      Icon(Icons.inbox_outlined, size: 48, color: Colors.grey[400]),
                       SizedBox(height: 8),
                       Text(
                         'No bookings yet',
@@ -801,7 +754,7 @@ class _SeekerDashboardTabState extends State<SeekerDashboardTab> {
       leading: Container(
         padding: EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: Colors.blue.withValues(alpha: 0.1),
+          color: Colors.blue.withOpacity(0.1),
           shape: BoxShape.circle,
         ),
         child: Icon(Icons.work, color: Colors.blue),
@@ -811,7 +764,7 @@ class _SeekerDashboardTabState extends State<SeekerDashboardTab> {
         style: TextStyle(fontWeight: FontWeight.w500),
       ),
       subtitle: Text(
-        request.createdAt != null
+        request.createdAt != null 
             ? DateFormat('MMM dd, yyyy').format(request.createdAt)
             : 'Recent',
       ),
@@ -926,26 +879,21 @@ class _ProviderDashboardTabState extends State<ProviderDashboardTab> {
     );
   }
 
-  Widget _buildEarningsCard(
-      ServiceRequestProvider requestProvider, ServiceProvider serviceProvider) {
+  Widget _buildEarningsCard(ServiceRequestProvider requestProvider, ServiceProvider serviceProvider) {
     final requests = requestProvider.requests;
-    final completedRequests =
-        requests.where((r) => r.status == 'completed').toList();
-    final pendingRequests =
-        requests.where((r) => r.status == 'pending').toList();
-    final cancelledRequests =
-        requests.where((r) => r.status == 'cancelled').toList();
-
+    final completedRequests = requests.where((r) => r.status == 'completed').toList();
+    final pendingRequests = requests.where((r) => r.status == 'pending').toList();
+    final cancelledRequests = requests.where((r) => r.status == 'cancelled').toList();
+    
     // Calculate monthly earnings (this month's completed requests)
     final now = DateTime.now();
     final thisMonth = DateTime(now.year, now.month);
     final monthlyCompleted = completedRequests.where((r) {
       return r.createdAt.isAfter(thisMonth);
     }).toList();
-
+    
     // Estimate earnings (you might want to add actual price calculation)
-    final monthlyEarnings =
-        monthlyCompleted.length * 50.0; // Placeholder calculation
+    final monthlyEarnings = monthlyCompleted.length * 50.0; // Placeholder calculation
 
     return Card(
       elevation: 4,
@@ -974,12 +922,9 @@ class _ProviderDashboardTabState extends State<ProviderDashboardTab> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildEarningItem(
-                    'Completed', '${completedRequests.length}', Colors.green),
-                _buildEarningItem(
-                    'Pending', '${pendingRequests.length}', Colors.orange),
-                _buildEarningItem(
-                    'Cancelled', '${cancelledRequests.length}', Colors.red),
+                _buildEarningItem('Completed', '${completedRequests.length}', Colors.green),
+                _buildEarningItem('Pending', '${pendingRequests.length}', Colors.orange),
+                _buildEarningItem('Cancelled', '${cancelledRequests.length}', Colors.red),
               ],
             ),
           ],
@@ -1013,30 +958,10 @@ class _ProviderDashboardTabState extends State<ProviderDashboardTab> {
 
   Widget _buildQuickActions() {
     final actions = [
-      {
-        'label': 'Add Service',
-        'icon': Icons.add_circle,
-        'color': Colors.blue,
-        'route': '/services/my'
-      },
-      {
-        'label': 'View Requests',
-        'icon': Icons.list_alt,
-        'color': Colors.green,
-        'route': '/requests'
-      },
-      {
-        'label': 'Messages',
-        'icon': Icons.message,
-        'color': Colors.purple,
-        'route': '/requests'
-      },
-      {
-        'label': 'AI Assistant',
-        'icon': Icons.smart_toy,
-        'color': Colors.orange,
-        'route': '/ai'
-      },
+      {'label': 'Add Service', 'icon': Icons.add_circle, 'color': Colors.blue, 'route': '/services/my'},
+      {'label': 'View Requests', 'icon': Icons.list_alt, 'color': Colors.green, 'route': '/requests'},
+      {'label': 'Messages', 'icon': Icons.message, 'color': Colors.purple, 'route': '/requests'},
+      {'label': 'AI Assistant', 'icon': Icons.smart_toy, 'color': Colors.orange, 'route': '/ai'},
     ];
 
     return GridView.builder(
@@ -1062,8 +987,7 @@ class _ProviderDashboardTabState extends State<ProviderDashboardTab> {
               padding: const EdgeInsets.all(12.0),
               child: Row(
                 children: [
-                  Icon(action['icon'] as IconData,
-                      color: action['color'] as Color),
+                  Icon(action['icon'] as IconData, color: action['color'] as Color),
                   SizedBox(width: 12),
                   Expanded(
                     child: Text(
@@ -1086,8 +1010,8 @@ class _ProviderDashboardTabState extends State<ProviderDashboardTab> {
       final requestDate = r.createdAt;
       final today = DateTime.now();
       return requestDate.year == today.year &&
-          requestDate.month == today.month &&
-          requestDate.day == today.day;
+             requestDate.month == today.month &&
+             requestDate.day == today.day;
     }).toList();
 
     return Card(
@@ -1123,8 +1047,7 @@ class _ProviderDashboardTabState extends State<ProviderDashboardTab> {
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
                     children: [
-                      Icon(Icons.inbox_outlined,
-                          size: 48, color: Colors.grey[400]),
+                      Icon(Icons.inbox_outlined, size: 48, color: Colors.grey[400]),
                       SizedBox(height: 8),
                       Text(
                         'No requests yet',
@@ -1183,7 +1106,7 @@ class _ProviderDashboardTabState extends State<ProviderDashboardTab> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            request.createdAt != null
+            request.createdAt != null 
                 ? DateFormat('MMM dd').format(request.createdAt!)
                 : 'Recent',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
@@ -1451,8 +1374,7 @@ class ProfileTab extends StatelessWidget {
                 children: [
                   _buildSettingItem('Edit Profile', Icons.edit, context),
                   _buildSettingItem('Change Password', Icons.lock, context),
-                  _buildSettingItem(
-                      'Notification Settings', Icons.notifications, context),
+                  _buildSettingItem('Notification Settings', Icons.notifications, context),
                   _buildSettingItem('Privacy', Icons.privacy_tip, context),
                   _buildSettingItem('Help & Support', Icons.help, context),
                 ],
@@ -1550,10 +1472,9 @@ class ProfileTab extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-              
+                // Note: Implement profile update
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                      content: Text('Profile update feature coming soon!')),
+                  SnackBar(content: Text('Profile update feature coming soon!')),
                 );
                 Navigator.pop(context);
               },
@@ -1613,17 +1534,15 @@ class ProfileTab extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                if (newPasswordController.text !=
-                    confirmPasswordController.text) {
+                if (newPasswordController.text != confirmPasswordController.text) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Passwords do not match!')),
                   );
                   return;
                 }
-              
+                // Note: Implement password change
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                      content: Text('Password change feature coming soon!')),
+                  SnackBar(content: Text('Password change feature coming soon!')),
                 );
                 Navigator.pop(context);
               },
@@ -1649,7 +1568,7 @@ class ProfileTab extends StatelessWidget {
                 subtitle: Text('Receive notifications for new requests'),
                 value: true,
                 onChanged: (bool value) {
-
+                  // Note: Implement notification toggle
                 },
               ),
               SwitchListTile(
@@ -1657,7 +1576,7 @@ class ProfileTab extends StatelessWidget {
                 subtitle: Text('Receive email updates'),
                 value: false,
                 onChanged: (bool value) {
-
+                  // Note: Implement email notification toggle
                 },
               ),
               SwitchListTile(
@@ -1665,6 +1584,7 @@ class ProfileTab extends StatelessWidget {
                 subtitle: Text('Receive SMS alerts'),
                 value: false,
                 onChanged: (bool value) {
+                  // Note: Implement SMS notification toggle
                 },
               ),
             ],
@@ -1704,14 +1624,25 @@ class ProfileTab extends StatelessWidget {
                 subtitle: Text('Control who can see your profile'),
                 trailing: Icon(Icons.chevron_right),
                 onTap: () {
+                  // Note: Navigate to profile visibility settings
                 },
               ),
               ListTile(
                 leading: Icon(Icons.location_on),
                 title: Text('Location Sharing'),
-                subtitle: Text('Control location sharing preferences'),
+                subtitle: Text('Manage location permissions'),
                 trailing: Icon(Icons.chevron_right),
                 onTap: () {
+                  // Note: Navigate to location settings
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.data_usage),
+                title: Text('Data Usage'),
+                subtitle: Text('View and manage your data'),
+                trailing: Icon(Icons.chevron_right),
+                onTap: () {
+                  // Note: Navigate to data usage
                 },
               ),
             ],
@@ -1740,24 +1671,36 @@ class ProfileTab extends StatelessWidget {
                 leading: Icon(Icons.help_outline),
                 title: Text('FAQ'),
                 subtitle: Text('Frequently asked questions'),
-                trailing: Icon(Icons.chevron_right),
                 onTap: () {
+                  Navigator.pop(context);
+                  _showFAQ(context);
                 },
               ),
               ListTile(
                 leading: Icon(Icons.contact_support),
                 title: Text('Contact Support'),
-                subtitle: Text('Get help from our support team'),
-                trailing: Icon(Icons.chevron_right),
+                subtitle: Text('Get help from our team'),
                 onTap: () {
+                  Navigator.pop(context);
+                  _showContactSupport(context);
                 },
               ),
               ListTile(
                 leading: Icon(Icons.feedback),
                 title: Text('Send Feedback'),
                 subtitle: Text('Help us improve the app'),
-                trailing: Icon(Icons.chevron_right),
                 onTap: () {
+                  Navigator.pop(context);
+                  _showFeedbackForm(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.info),
+                title: Text('About ServeEase'),
+                subtitle: Text('App version and info'),
+                onTap: () {
+                  Navigator.pop(context);
+                  _showAboutDialog(context);
                 },
               ),
             ],
@@ -1770,6 +1713,166 @@ class ProfileTab extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+
+  void _showFAQ(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Frequently Asked Questions'),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildFAQItem('How do I book a service?', 'Browse services, select one, and tap "Book Now" to create a request.'),
+                _buildFAQItem('How do I become a provider?', 'Sign up as a provider and complete your profile verification.'),
+                _buildFAQItem('How do payments work?', 'Payments are processed securely after service completion.'),
+                _buildFAQItem('Can I cancel a booking?', 'Yes, you can cancel bookings from the requests screen.'),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildFAQItem(String question, String answer) {
+    return ExpansionTile(
+      title: Text(question, style: TextStyle(fontWeight: FontWeight.w500)),
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(answer),
+        ),
+      ],
+    );
+  }
+
+  void _showContactSupport(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Contact Support'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: Icon(Icons.email),
+                title: Text('Email Support'),
+                subtitle: Text('support@serveease.com'),
+                onTap: () {
+                  // Note: Open email app
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Opening email app...')),
+                  );
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.phone),
+                title: Text('Phone Support'),
+                subtitle: Text('+1 (555) 123-4567'),
+                onTap: () {
+                  // Note: Open phone app
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Opening phone app...')),
+                  );
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.chat),
+                title: Text('Live Chat'),
+                subtitle: Text('Chat with our support team'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/ai'); // Use AI chat as live chat
+                },
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showFeedbackForm(BuildContext context) {
+    final feedbackController = TextEditingController();
+    
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Send Feedback'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('We value your feedback! Let us know how we can improve.'),
+              SizedBox(height: 16),
+              TextField(
+                controller: feedbackController,
+                decoration: InputDecoration(
+                  labelText: 'Your feedback',
+                  border: OutlineInputBorder(),
+                  hintText: 'Tell us what you think...',
+                ),
+                maxLines: 4,
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                if (feedbackController.text.isNotEmpty) {
+                  // Note: Send feedback to server
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Thank you for your feedback!')),
+                  );
+                  Navigator.pop(context);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Please enter your feedback')),
+                  );
+                }
+              },
+              child: Text('Send'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showAboutDialog(BuildContext context) {
+    showAboutDialog(
+      context: context,
+      applicationName: 'ServeEase',
+      applicationVersion: '1.0.0',
+      applicationIcon: Icon(Icons.handyman, size: 48, color: Colors.blue[700]),
+      children: [
+        Text('ServeEase connects service seekers with trusted professionals.'),
+        SizedBox(height: 8),
+        Text('Built with Flutter and powered by a robust backend API.'),
+        SizedBox(height: 8),
+        Text('© 2024 ServeEase. All rights reserved.'),
+      ],
     );
   }
 }

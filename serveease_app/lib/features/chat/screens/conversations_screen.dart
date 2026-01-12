@@ -35,6 +35,7 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
           IconButton(
             icon: const Icon(Icons.search),
             onPressed: () {
+              // Implement search functionality
             },
           ),
         ],

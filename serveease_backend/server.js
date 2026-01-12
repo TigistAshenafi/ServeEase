@@ -1,13 +1,17 @@
-import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { i18nMiddleware } from './middleware/i18n.js';
-import authRoutes from './routes/auth.js';
-import providerRoutes from './routes/provider.js';
-import serviceRoutes from './routes/services.js';
-import serviceRequestRoutes from './routes/serviceRequests.js';
-import employeeRoutes from './routes/employees.js';
+import express from 'express';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
+import adminRoutes from './routes/admin.js';
 import aiRoutes from './routes/ai.js';
+import authRoutes from './routes/auth.js';
+import chatRoutes from './routes/chat.js';
+import employeeRoutes from './routes/employees.js';
+import providerRoutes from './routes/provider.js';
+import serviceRequestRoutes from './routes/serviceRequests.js';
+import serviceRoutes from './routes/services.js';
+import { initializeSocket } from './services/socketService.js';
 // Load environment variables
 dotenv.config();
 
@@ -26,9 +30,6 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Add i18n middleware
-app.use(i18nMiddleware);
 
 // Initialize Socket.IO
 initializeSocket(io);

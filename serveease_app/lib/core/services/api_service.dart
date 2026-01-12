@@ -1,9 +1,10 @@
 // lib/core/services/api_service.dart
 import 'dart:convert';
+
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:logging/logging.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Generic API response wrapper used across the app.
 class ApiResponse<T> {
@@ -20,11 +21,12 @@ class ApiResponse<T> {
 
 /// Centralized HTTP client with token + cookie handling and automatic refresh.
 class ApiService {
+  static final Logger _logger = Logger('ApiService');
+
   ApiService._internal();
   static final ApiService _instance = ApiService._internal();
   factory ApiService() => _instance;
 
-  static final Logger _logger = Logger('ApiService');
   static final http.Client _client = http.Client();
 
   // Base URLs
@@ -33,11 +35,10 @@ class ApiService {
       return dotenv.env['API_BASE_URL'] ?? 'http://localhost:3000';
     } catch (e) {
       // Fallback if dotenv is not initialized
-      _logger.warning('dotenv not initialized, using fallback URL: $e');
+      _logger.warning('dotenv not initialized, using fallback URL');
       return 'http://localhost:3000';
     }
   }
-
   static String get authBase => '$_baseHost/api/auth';
   static String get providerBase => '$_baseHost/api/provider';
   static String get servicesBase => '$_baseHost/api/services';
@@ -46,8 +47,7 @@ class ApiService {
   static String get aiBase => '$_baseHost/api/ai';
 
   static String? _accessToken;
-  static String?
-      _refreshTokenCookie; // raw cookie string: refreshToken=xyz; Path=/
+  static String? _refreshTokenCookie; // raw cookie string: refreshToken=xyz; Path=/
 
   /// Load stored tokens/cookies
   static Future<void> init() async {
@@ -78,6 +78,8 @@ class ApiService {
     await prefs.remove('access_token');
     await prefs.remove('refresh_cookie');
   }
+
+
 
   /// Common headers
   static Map<String, String> _headers({bool withAuth = true}) {
@@ -195,8 +197,7 @@ class ApiService {
       if (success) {
         T? data;
         if (fromJson != null) {
-          final payload =
-              json['data'] ?? json['user'] ?? json['profile'] ?? json;
+          final payload = json['data'] ?? json['user'] ?? json['profile'] ?? json;
           data = fromJson(payload);
         }
         return ApiResponse<T>(
@@ -255,20 +256,15 @@ class ApiService {
         final token = json['accessToken'] as String?;
         if (token != null) {
           await setAccessToken(token);
-          return ApiResponse(
-              success: true,
-              message: 'Token refreshed successfully',
-              data: token);
+          return ApiResponse(success: true, message: 'Token refreshed successfully', data: token);
         }
       }
       // If refresh failed, clear tokens
       await clearTokens();
-      return ApiResponse(
-          success: false, message: 'Session expired. Please login again.');
+      return ApiResponse(success: false, message: 'Session expired. Please login again.');
     } catch (e) {
       await clearTokens();
-      return ApiResponse(
-          success: false, message: 'Session expired. Please login again.');
+      return ApiResponse(success: false, message: 'Session expired. Please login again.');
     }
   }
 

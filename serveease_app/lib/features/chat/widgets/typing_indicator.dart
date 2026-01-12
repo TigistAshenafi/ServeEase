@@ -61,7 +61,7 @@ class _TypingIndicatorState extends State<TypingIndicator> with SingleTickerProv
           width: 8.r,
           height: 8.r,
           decoration: BoxDecoration(
-            color: Colors.grey[600]!.withOpacity(0.3 + opacity * 0.7),
+            color: Colors.grey[600]!.withValues(alpha: 0.3 + opacity * 0.7),
             shape: BoxShape.circle,
           ),
         );

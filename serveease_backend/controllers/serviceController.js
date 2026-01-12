@@ -1,7 +1,7 @@
 import { query } from '../config/database.js';
 
 // Get all service categories
-const getServiceCategories = async (req, res) => {
+const getServiceCategories = async (_req, res) => {
   try {
     const result = await query(
       'SELECT * FROM service_categories ORDER BY name',
@@ -362,10 +362,7 @@ const deleteService = async (req, res) => {
 };
 
 export {
-  getServiceCategories,
-  getServicesByCategory,
-  getProviderServices,
-  createService,
-  updateService,
-  deleteService
+  createService, deleteService, getProviderServices, getServiceCategories,
+  getServicesByCategory, updateService
 };
+

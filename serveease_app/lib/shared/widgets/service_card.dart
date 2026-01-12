@@ -111,7 +111,7 @@ class _ServiceCardState extends State<ServiceCard>
             scale: _scaleAnimation.value,
             child: Card(
               elevation: _elevationAnimation.value,
-              shadowColor: colorScheme.shadow.withOpacity(0.1),
+              shadowColor: colorScheme.shadow.withValues(alpha: 0.1),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
               ),
@@ -123,7 +123,7 @@ class _ServiceCardState extends State<ServiceCard>
                     end: Alignment.bottomRight,
                     colors: [
                       colorScheme.surface,
-                      colorScheme.surface.withOpacity(0.8),
+                      colorScheme.surface.withValues(alpha: 0.8),
                     ],
                   ),
                 ),
@@ -195,7 +195,7 @@ class _ServiceCardState extends State<ServiceCard>
               child: Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.9),
+                  color: Colors.white.withValues(alpha: 0.9),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -212,7 +212,7 @@ class _ServiceCardState extends State<ServiceCard>
           Positioned.fill(
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.6),
+                color: Colors.black.withValues(alpha: 0.6),
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(16),
                   topRight: Radius.circular(16),

@@ -14,19 +14,16 @@ class ServiceRequestDetailsScreen extends StatefulWidget {
   const ServiceRequestDetailsScreen({super.key, required this.request});
 
   @override
-  State<ServiceRequestDetailsScreen> createState() =>
-      _ServiceRequestDetailsScreenState();
+  State<ServiceRequestDetailsScreen> createState() => _ServiceRequestDetailsScreenState();
 }
 
-class _ServiceRequestDetailsScreenState
-    extends State<ServiceRequestDetailsScreen> {
+class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScreen> {
   @override
   void initState() {
     super.initState();
     // Load employees if this is an organization
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final profileProvider =
-          Provider.of<ProviderProfileProvider>(context, listen: false);
+      final profileProvider = Provider.of<ProviderProfileProvider>(context, listen: false);
       if (profileProvider.profile?.providerType == 'organization') {
         Provider.of<EmployeeProvider>(context, listen: false).fetchEmployees();
       }
@@ -42,13 +39,10 @@ class _ServiceRequestDetailsScreenState
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: Consumer3<ServiceRequestProvider, EmployeeProvider,
-          ProviderProfileProvider>(
-        builder: (context, requestProvider, employeeProvider, profileProvider,
-            child) {
-          final providerType =
-              profileProvider.profile?.providerType ?? 'individual';
-
+      body: Consumer3<ServiceRequestProvider, EmployeeProvider, ProviderProfileProvider>(
+        builder: (context, requestProvider, employeeProvider, profileProvider, child) {
+          final providerType = profileProvider.profile?.providerType ?? 'individual';
+          
           return SingleChildScrollView(
             padding: const EdgeInsets.all(20),
             child: Column(
@@ -66,7 +60,7 @@ class _ServiceRequestDetailsScreenState
                 ],
                 _buildStatusSection(requestProvider, providerType),
                 const SizedBox(height: 20),
-                if (providerType == 'organization' &&
+                if (providerType == 'organization' && 
                     widget.request.status == 'accepted') ...[
                   _buildEmployeeAssignment(requestProvider, employeeProvider),
                   const SizedBox(height: 20),
@@ -104,8 +98,7 @@ class _ServiceRequestDetailsScreenState
             const SizedBox(height: 12),
             Row(
               children: [
-                Icon(Icons.calendar_today,
-                    size: 16, color: Colors.grey.shade600),
+                Icon(Icons.calendar_today, size: 16, color: Colors.grey.shade600),
                 const SizedBox(width: 8),
                 Text(
                   'Requested: ${_formatDate(widget.request.createdAt)}',
@@ -147,13 +140,10 @@ class _ServiceRequestDetailsScreenState
               ),
             ),
             const SizedBox(height: 16),
-            _buildDetailRow('Price',
-                '\$${widget.request.service.price.toStringAsFixed(2)}'),
-            _buildDetailRow(
-                'Duration', '${widget.request.service.durationHours} hours'),
+            _buildDetailRow('Price', '\$${widget.request.service.price.toStringAsFixed(2)}'),
+            _buildDetailRow('Duration', '${widget.request.service.durationHours} hours'),
             if (widget.request.assignedEmployeeId != null)
-              _buildDetailRow('Assigned Employee',
-                  'Employee ID: ${widget.request.assignedEmployeeId}'),
+              _buildDetailRow('Assigned Employee', 'Employee ID: ${widget.request.assignedEmployeeId}'),
           ],
         ),
       ),
@@ -221,8 +211,7 @@ class _ServiceRequestDetailsScreenState
     );
   }
 
-  Widget _buildStatusSection(
-      ServiceRequestProvider requestProvider, String providerType) {
+  Widget _buildStatusSection(ServiceRequestProvider requestProvider, String providerType) {
     return GlassmorphicCard(
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -245,22 +234,16 @@ class _ServiceRequestDetailsScreenState
   }
 
   Widget _buildStatusTimeline() {
-    final statuses = [
-      'pending',
-      'accepted',
-      'assigned',
-      'in_progress',
-      'completed'
-    ];
+    final statuses = ['pending', 'accepted', 'assigned', 'in_progress', 'completed'];
     final currentIndex = statuses.indexOf(widget.request.status);
-
+    
     return Column(
       children: statuses.asMap().entries.map((entry) {
         final index = entry.key;
         final status = entry.value;
         final isCompleted = index <= currentIndex;
         final isCurrent = index == currentIndex;
-
+        
         return Row(
           children: [
             Container(
@@ -268,7 +251,7 @@ class _ServiceRequestDetailsScreenState
               height: 24,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: isCompleted
+                color: isCompleted 
                     ? (isCurrent ? Colors.blue : Colors.green)
                     : Colors.grey.shade300,
               ),
@@ -294,8 +277,7 @@ class _ServiceRequestDetailsScreenState
     );
   }
 
-  Widget _buildEmployeeAssignment(ServiceRequestProvider requestProvider,
-      EmployeeProvider employeeProvider) {
+  Widget _buildEmployeeAssignment(ServiceRequestProvider requestProvider, EmployeeProvider employeeProvider) {
     return GlassmorphicCard(
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -352,8 +334,7 @@ class _ServiceRequestDetailsScreenState
                       Icon(Icons.warning, color: Colors.orange.shade600),
                       const SizedBox(width: 12),
                       const Expanded(
-                        child: Text(
-                            'No employees available. Add employees first.'),
+                        child: Text('No employees available. Add employees first.'),
                       ),
                     ],
                   ),
@@ -362,8 +343,7 @@ class _ServiceRequestDetailsScreenState
                 Column(
                   children: employeeProvider.employees
                       .where((e) => e.isActive)
-                      .map((employee) =>
-                          _buildEmployeeCard(employee, requestProvider))
+                      .map((employee) => _buildEmployeeCard(employee, requestProvider))
                       .toList(),
                 ),
             ],
@@ -373,14 +353,12 @@ class _ServiceRequestDetailsScreenState
     );
   }
 
-  Widget _buildEmployeeCard(
-      Employee employee, ServiceRequestProvider requestProvider) {
+  Widget _buildEmployeeCard(Employee employee, ServiceRequestProvider requestProvider) {
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor:
-              Theme.of(context).primaryColor.withValues(alpha: 0.1),
+          backgroundColor: Theme.of(context).primaryColor.withValues(alpha: 0.1),
           child: Text(
             employee.name.isNotEmpty ? employee.name[0].toUpperCase() : 'E',
             style: TextStyle(
@@ -403,8 +381,7 @@ class _ServiceRequestDetailsScreenState
     );
   }
 
-  Widget _buildActionButtons(
-      ServiceRequestProvider requestProvider, String providerType) {
+  Widget _buildActionButtons(ServiceRequestProvider requestProvider, String providerType) {
     return Column(
       children: [
         if (widget.request.status == 'pending') ...[
@@ -422,8 +399,7 @@ class _ServiceRequestDetailsScreenState
                 child: OutlinedButton.icon(
                   onPressed: () => _updateStatus('cancelled', requestProvider),
                   icon: const Icon(Icons.cancel, color: Colors.red),
-                  label: const Text('DECLINE',
-                      style: TextStyle(color: Colors.red)),
+                  label: const Text('DECLINE', style: TextStyle(color: Colors.red)),
                   style: OutlinedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 50),
                     shape: RoundedRectangleBorder(
@@ -436,17 +412,15 @@ class _ServiceRequestDetailsScreenState
             ],
           ),
         ],
-        if (widget.request.status == 'accepted' &&
-            providerType == 'individual') ...[
+        if (widget.request.status == 'accepted' && providerType == 'individual') ...[
           GradientButton(
             onPressed: () => _updateStatus('in_progress', requestProvider),
             text: 'START WORK',
             icon: Icons.play_arrow,
           ),
         ],
-        if (widget.request.status == 'assigned' ||
-            (widget.request.status == 'accepted' &&
-                providerType == 'individual')) ...[
+        if (widget.request.status == 'assigned' || 
+            (widget.request.status == 'accepted' && providerType == 'individual')) ...[
           GradientButton(
             onPressed: () => _updateStatus('in_progress', requestProvider),
             text: 'START WORK',
@@ -553,15 +527,14 @@ class _ServiceRequestDetailsScreenState
     }
   }
 
-  Future<void> _updateStatus(
-      String status, ServiceRequestProvider requestProvider) async {
+  Future<void> _updateStatus(String status, ServiceRequestProvider requestProvider) async {
     final result = await requestProvider.updateStatus(
       requestId: widget.request.id,
       status: status,
     );
 
     if (result.success) {
-      if (mounted) {
+      if (mounted && context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Request status updated to $status'),
@@ -571,7 +544,7 @@ class _ServiceRequestDetailsScreenState
         Navigator.pop(context);
       }
     } else {
-      if (mounted) {
+      if (mounted && context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Failed to update status: ${result.message}'),
@@ -582,15 +555,14 @@ class _ServiceRequestDetailsScreenState
     }
   }
 
-  Future<void> _assignEmployee(
-      String employeeId, ServiceRequestProvider requestProvider) async {
+  Future<void> _assignEmployee(String employeeId, ServiceRequestProvider requestProvider) async {
     final result = await requestProvider.assignEmployee(
       requestId: widget.request.id,
       employeeId: employeeId,
     );
 
     if (result.success) {
-      if (mounted) {
+      if (mounted && context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Employee assigned successfully'),
@@ -600,7 +572,7 @@ class _ServiceRequestDetailsScreenState
         Navigator.pop(context);
       }
     } else {
-      if (mounted) {
+      if (mounted && context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Failed to assign employee: ${result.message}'),

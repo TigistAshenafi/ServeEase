@@ -1,13 +1,12 @@
-// ignore_for_file: deprecated_member_use
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import '../models/conversation.dart';
-import 'package:intl/intl.dart';
 
 class MessageBubble extends StatelessWidget {
   final Message message;
@@ -113,7 +112,7 @@ class MessageBubble extends StatelessWidget {
       padding: EdgeInsets.all(8.w),
       decoration: BoxDecoration(
         color: isMe 
-            ? Theme.of(context).primaryColor.withOpacity(0.1)
+            ? Theme.of(context).primaryColor.withValues(alpha: 0.1)
             : Colors.grey[100],
         borderRadius: BorderRadius.circular(8.r),
         border: Border(
@@ -134,7 +133,7 @@ class MessageBubble extends StatelessWidget {
               fontSize: 12.sp,
               fontWeight: FontWeight.w600,
               color: isMe 
-                  ? Colors.white.withOpacity(0.8)
+                  ? Colors.white.withValues(alpha: 0.8)
                   : Theme.of(context).primaryColor,
             ),
           ),
@@ -144,7 +143,7 @@ class MessageBubble extends StatelessWidget {
             style: TextStyle(
               fontSize: 12.sp,
               color: isMe 
-                  ? Colors.white.withOpacity(0.7)
+                  ? Colors.white.withValues(alpha: 0.7)
                   : Colors.grey[600],
             ),
             maxLines: 2,
@@ -245,7 +244,7 @@ class MessageBubble extends StatelessWidget {
         padding: EdgeInsets.all(12.w),
         decoration: BoxDecoration(
           color: message.isFromMe 
-              ? Colors.white.withOpacity(0.1)
+              ? Colors.white.withValues(alpha: 0.1)
               : Colors.grey[100],
           borderRadius: BorderRadius.circular(8.r),
         ),
@@ -277,7 +276,7 @@ class MessageBubble extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 12.sp,
                         color: message.isFromMe 
-                            ? Colors.white.withOpacity(0.7)
+                            ? Colors.white.withValues(alpha: 0.7)
                             : Colors.grey[600],
                       ),
                     ),
@@ -295,7 +294,7 @@ class MessageBubble extends StatelessWidget {
       padding: EdgeInsets.all(12.w),
       decoration: BoxDecoration(
         color: message.isFromMe 
-            ? Colors.white.withOpacity(0.1)
+            ? Colors.white.withValues(alpha: 0.1)
             : Colors.grey[100],
         borderRadius: BorderRadius.circular(8.r),
       ),

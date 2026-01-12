@@ -1,26 +1,24 @@
 // lib/screens/login_screen.dart
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:serveease_app/core/utils/validators.dart';
-import 'package:serveease_app/providers/auth_provider.dart';
-import 'package:serveease_app/shared/widgets/custom_button.dart';
+import 'package:provider/provider.dart';
 // import 'package:serveease_app/shared/widgets/custom_text_field.dart';
 import 'package:serveease_app/core/utils/responsive.dart';
+import 'package:serveease_app/core/utils/validators.dart';
 import 'package:serveease_app/l10n/app_localizations.dart';
-import 'package:serveease_app/shared/widgets/app_bar_language_toggle.dart'; // <-- added
+import 'package:serveease_app/providers/auth_provider.dart';
+import 'package:serveease_app/shared/widgets/custom_button.dart';
+import 'package:serveease_app/shared/widgets/app_bar_language_toggle.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  LoginScreenState createState() => LoginScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -100,7 +98,7 @@ class LoginScreenState extends State<LoginScreen> {
 //   if (response.success) {
 //     // SAFE ACCESS: Handle role access properly
 //     dynamic userRole;
-
+    
 //     // Try multiple ways to get role
 //     if (response.data is User) {
 //       userRole = (response.data as User).role;
@@ -108,12 +106,12 @@ class LoginScreenState extends State<LoginScreen> {
 //       final data = response.data as Map;
 //       userRole = data['role'] ?? data['user']?['role'];
 //     }
-
+    
 //     // Fallback: Use loginAs selection if role not in response
 //     final effectiveRole = userRole?.toString() ?? _loginAs;
-
+    
 //     String targetRoute;
-
+    
 //     if (effectiveRole == 'provider') {
 //       // Provider: Use redirect or default to create-profile
 //       targetRoute = _redirectTo ?? '/provider/create-profile';
@@ -121,13 +119,13 @@ class LoginScreenState extends State<LoginScreen> {
 //       // Non-provider or seeker
 //       targetRoute = _redirectTo ?? '/home';
 //     }
-
+    
 //     // Debug output
 //     print('Login Navigation:');
 //     print('  Effective role: $effectiveRole');
 //     print('  Redirect from args: $_redirectTo');
 //     print('  Final route: $targetRoute');
-
+    
 //     Navigator.pushNamedAndRemoveUntil(
 //       context,
 //       targetRoute,
@@ -143,19 +141,20 @@ class LoginScreenState extends State<LoginScreen> {
 //   }
 // }
 
+
   Future<void> _login() async {
     if (!_formKey.currentState!.validate()) return;
 
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    final l10n = AppLocalizations.of(context)!;
 
     if (_showRoleSelection && _loginAs == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.selectRoleError),
-          backgroundColor: Colors.red,
-        ),
-      );
+  SnackBar(
+    content: Text(AppLocalizations.of(context)?.selectRoleError ?? 'Please select your role'),
+    backgroundColor: Colors.red,
+  ),
+);
+
       return;
     }
 
@@ -217,10 +216,7 @@ class LoginScreenState extends State<LoginScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Language toggle
-            const AppBarLanguageToggle(
-              iconColor: Colors.grey,
-              textColor: Colors.black,
-            ),
+            const AppBarLanguageToggle(),
             const SizedBox(height: 16),
 
             _buildHeader(theme, colors, l10n),
@@ -251,7 +247,7 @@ class LoginScreenState extends State<LoginScreen> {
           child: Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [colors.primary, colors.primary.withOpacity(0.85)],
+                colors: [colors.primary, colors.primary.withValues(alpha: 0.85)],
               ),
             ),
             child: Center(
@@ -285,14 +281,14 @@ class LoginScreenState extends State<LoginScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            l10n!.loginWelcomeTitle,
+            l10n?.loginWelcomeTitle ?? 'Welcome Back',
             style: theme.textTheme.displayMedium
                 ?.copyWith(fontWeight: FontWeight.bold),
             textAlign: TextAlign.center, // ensures the title is centered
           ).animate().fadeIn(),
           SizedBox(height: 8.h),
           Text(
-            l10n.loginSubtitle,
+            l10n?.loginSubtitle ?? 'Login to continue',
             style: theme.textTheme.bodyLarge
                 ?.copyWith(color: colors.onSurfaceVariant),
             textAlign: TextAlign.center, // ensures subtitle is centered
@@ -319,8 +315,8 @@ class LoginScreenState extends State<LoginScreen> {
           autovalidateMode: AutovalidateMode.disabled,
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
-            labelText: l10n!.emailLabel,
-            hintText: l10n.emailHint,
+            labelText: l10n?.emailLabel ?? 'Email',
+            hintText: l10n?.emailHint ?? 'Enter your email',
             border: const OutlineInputBorder(),
             prefixIcon: const Icon(Icons.email_outlined),
           ),
@@ -335,8 +331,8 @@ class LoginScreenState extends State<LoginScreen> {
           autovalidateMode: AutovalidateMode.disabled,
           obscureText: _obscurePassword,
           decoration: InputDecoration(
-            labelText: l10n.passwordLabel,
-            hintText: l10n.passwordHint,
+            labelText: l10n?.passwordLabel ?? 'Password',
+            hintText: l10n?.passwordHint ?? 'Enter your password',
             border: const OutlineInputBorder(),
             prefixIcon: const Icon(Icons.lock_outline),
             suffixIcon: IconButton(
@@ -358,7 +354,7 @@ class LoginScreenState extends State<LoginScreen> {
 
         // --- Login button ---
         PrimaryButton(
-          text: l10n.loginButtonLabel,
+          text: l10n?.loginButtonLabel ?? 'Login',
           isLoading: auth.isLoading,
           isFullWidth: true,
           onPressed: _login,
@@ -373,7 +369,7 @@ class LoginScreenState extends State<LoginScreen> {
           child: GestureDetector(
             onTap: () => Navigator.pushNamed(context, '/forgot-password'),
             child: Text(
-              l10n.forgotPasswordLabel,
+              l10n!.forgotPasswordLabel,
               style: const TextStyle(
                   color: Colors.blue, fontWeight: FontWeight.w600),
             ),
@@ -468,20 +464,20 @@ class LoginScreenState extends State<LoginScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          l10n!.loginAsRole,
+          l10n?.loginAsRole ?? 'Login As',
           style: theme.textTheme.labelLarge,
         ),
         SizedBox(height: 12.h),
         Row(
           children: [
             Expanded(
-              child:
-                  _roleButton('seeker', l10n.serviceSeekerLabel, Icons.person),
+              child: _roleButton('seeker',
+                  l10n?.serviceSeekerLabel ?? 'Service Seeker', Icons.person),
             ),
             SizedBox(width: 8.w),
             Expanded(
-              child: _roleButton(
-                  'provider', l10n.serviceProviderLabel, Icons.work),
+              child: _roleButton('provider',
+                  l10n?.serviceProviderLabel ?? 'Service Provider', Icons.work),
             ),
           ],
         ),
