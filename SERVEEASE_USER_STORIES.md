@@ -430,24 +430,12 @@ ServeEase is a comprehensive service marketplace platform connecting service pro
   - Users can request data deletion (GDPR compliance)
   - Regular security audits are performed
 
-**US-034: Secure Payment Processing**
-- **As a** user
-- **I want to** make secure payments for services
-- **So that** I can complete transactions safely
-- **Acceptance Criteria:**
-  - Integration with secure payment processors
-  - Payment information is never stored on platform servers
-  - Transaction history is available to users
-  - Refund processing for cancelled services
-  - Fraud detection and prevention measures
-
----
 
 ## Technical User Stories
 
 ### Performance & Reliability
 
-**US-035: Mobile App Performance**
+**US-034: Mobile App Performance**
 - **As a** mobile user
 - **I want to** have a fast and responsive app experience
 - **So that** I can efficiently use the platform on my device
@@ -458,7 +446,7 @@ ServeEase is a comprehensive service marketplace platform connecting service pro
   - Efficient image loading and caching
   - Battery usage optimization
 
-**US-036: Real-time Synchronization**
+**US-035: Real-time Synchronization**
 - **As a** user
 - **I want to** have data synchronized across all my devices
 - **So that** I can access current information anywhere

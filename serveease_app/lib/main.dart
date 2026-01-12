@@ -166,10 +166,11 @@ class _AuthWrapperState extends State<AuthWrapper> {
       // Then initialize auth provider
       await context.read<AuthProvider>().initialize();
 
-      // Initialize chat service when user is authenticated
+      // Initialize chat service and AI when user is authenticated
       final authProvider = context.read<AuthProvider>();
       if (authProvider.isAuthenticated) {
         _initializeChat();
+        _initializeAI();
       }
     });
   }
@@ -177,6 +178,15 @@ class _AuthWrapperState extends State<AuthWrapper> {
   void _initializeChat() async {
     final baseUrl = dotenv.env['API_BASE_URL'] ?? 'http://localhost:5000';
     await context.read<ChatProvider>().initialize(baseUrl);
+  }
+
+  void _initializeAI() async {
+    final authProvider = context.read<AuthProvider>();
+    final aiProvider = context.read<AiProvider>();
+
+    if (authProvider.user != null && !aiProvider.isInitialized) {
+      await aiProvider.initialize(authProvider.user);
+    }
   }
 
   @override
@@ -190,9 +200,10 @@ class _AuthWrapperState extends State<AuthWrapper> {
     }
 
     if (auth.isAuthenticated) {
-      // Initialize chat when authenticated
+      // Initialize chat and AI when authenticated
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _initializeChat();
+        _initializeAI();
       });
       return const HomeScreen();
     }

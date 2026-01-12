@@ -1,5 +1,6 @@
 // lib/core/services/employee_service.dart
 import 'package:serveease_app/core/models/employee_model.dart';
+import 'package:serveease_app/core/models/employee_performance_model.dart';
 import 'package:serveease_app/core/services/api_service.dart';
 
 class EmployeeService {
@@ -97,8 +98,134 @@ class EmployeeService {
   static Future<ApiResponse<List<Employee>>> availableForService(
       String serviceId) async {
     try {
-      final res =
-          await ApiService.get('${ApiService.employeeBase}/available/$serviceId');
+      final res = await ApiService.get(
+          '${ApiService.employeeBase}/available/$serviceId');
+      return ApiService.handleResponse<List<Employee>>(
+        res,
+        (json) => (json['employees'] as List<dynamic>? ?? [])
+            .map((e) => Employee.fromJson(e))
+            .toList(),
+      );
+    } catch (e) {
+      return ApiService.handleError<List<Employee>>(e);
+    }
+  }
+
+  /// Get employees with matching skills for a service request
+  static Future<ApiResponse<List<Employee>>> getEmployeesWithMatchingSkills({
+    required List<String> requiredSkills,
+    String? organizationId,
+  }) async {
+    try {
+      final queryParams = {
+        'skills': requiredSkills.join(','),
+        if (organizationId != null) 'organizationId': organizationId,
+      };
+
+      final res = await ApiService.get(
+        '${ApiService.employeeBase}/matching-skills',
+        params: queryParams,
+      );
+
+      return ApiService.handleResponse<List<Employee>>(
+        res,
+        (json) => (json['employees'] as List<dynamic>? ?? [])
+            .map((e) => Employee.fromJson(e))
+            .toList(),
+      );
+    } catch (e) {
+      return ApiService.handleError<List<Employee>>(e);
+    }
+  }
+
+  /// Get employee performance metrics
+  static Future<ApiResponse<EmployeePerformance>> getEmployeePerformance(
+    String employeeId, {
+    DateTime? startDate,
+    DateTime? endDate,
+  }) async {
+    try {
+      final queryParams = <String, String>{};
+      if (startDate != null) {
+        queryParams['startDate'] = startDate.toIso8601String();
+      }
+      if (endDate != null) {
+        queryParams['endDate'] = endDate.toIso8601String();
+      }
+
+      final res = await ApiService.get(
+        '${ApiService.employeeBase}/$employeeId/performance',
+        params: queryParams,
+      );
+
+      return ApiService.handleResponse<EmployeePerformance>(
+        res,
+        (json) => EmployeePerformance.fromJson(json['performance'] ?? json),
+      );
+    } catch (e) {
+      return ApiService.handleError<EmployeePerformance>(e);
+    }
+  }
+
+  /// Get employee availability schedule
+  static Future<ApiResponse<AvailabilitySchedule>> getEmployeeAvailability(
+    String employeeId,
+  ) async {
+    try {
+      final res = await ApiService.get(
+        '${ApiService.employeeBase}/$employeeId/availability',
+      );
+
+      return ApiService.handleResponse<AvailabilitySchedule>(
+        res,
+        (json) => AvailabilitySchedule.fromJson(json['availability'] ?? json),
+      );
+    } catch (e) {
+      return ApiService.handleError<AvailabilitySchedule>(e);
+    }
+  }
+
+  /// Update employee availability schedule
+  static Future<ApiResponse<AvailabilitySchedule>> updateEmployeeAvailability(
+    String employeeId,
+    AvailabilitySchedule availability,
+  ) async {
+    try {
+      final res = await ApiService.put(
+        '${ApiService.employeeBase}/$employeeId/availability',
+        body: availability.toJson(),
+      );
+
+      return ApiService.handleResponse<AvailabilitySchedule>(
+        res,
+        (json) => AvailabilitySchedule.fromJson(json['availability'] ?? json),
+      );
+    } catch (e) {
+      return ApiService.handleError<AvailabilitySchedule>(e);
+    }
+  }
+
+  /// Get available employees for a specific time slot
+  static Future<ApiResponse<List<Employee>>> getAvailableEmployeesForTimeSlot({
+    required DateTime startTime,
+    required DateTime endTime,
+    List<String>? requiredSkills,
+    String? organizationId,
+  }) async {
+    try {
+      final queryParams = {
+        'startTime': startTime.toIso8601String(),
+        'endTime': endTime.toIso8601String(),
+        if (requiredSkills != null && requiredSkills.isNotEmpty)
+          'skills': requiredSkills.join(','),
+        if (organizationId != null) 'organizationId': organizationId,
+      };
+
+      final res = await ApiService.get(
+        '${ApiService.employeeBase}/available-for-slot',
+        params: queryParams,
+      );
+
       return ApiService.handleResponse<List<Employee>>(
         res,
         (json) => (json['employees'] as List<dynamic>? ?? [])
@@ -110,4 +237,3 @@ class EmployeeService {
     }
   }
 }
-

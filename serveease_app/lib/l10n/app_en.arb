@@ -16,18 +16,57 @@
   },
   
   "verifyEmailTitle": "Verify Email",
+  "@verifyEmailTitle": {
+    "description": "Email verification page title"
+  },
   "verifyEmailInfo": "We sent a 6-digit verification code to:",
+  "@verifyEmailInfo": {
+    "description": "Email verification information text"
+  },
   "verificationCodeLabel": "Enter 6-digit Code",
+  "@verificationCodeLabel": {
+    "description": "Verification code input label"
+  },
   "verifyButtonLabel": "VERIFY EMAIL",
+  "@verifyButtonLabel": {
+    "description": "Email verification button text"
+  },
   "resendCodeLabel": "RESEND CODE",
+  "@resendCodeLabel": {
+    "description": "Resend verification code button text"
+  },
   "backToLoginLabel": "Back to Login",
+  "@backToLoginLabel": {
+    "description": "Back to login button text"
+  },
   "emptyVerificationCode": "Please enter the 6-digit code",
+  "@emptyVerificationCode": {
+    "description": "Empty verification code validation message"
+  },
   "emailVerifiedMessage": "Email verified successfully! Please login to continue.",
+  "@emailVerifiedMessage": {
+    "description": "Email verification success message"
+  },
   "didntReceiveCode": "Didn't receive the code? ",
+  "@didntReceiveCode": {
+    "description": "Didn't receive code prompt text"
+  },
   "tryAnotherEmail": "Try another email",
+  "@tryAnotherEmail": {
+    "description": "Try another email link text"
+  },
   "whatHappensNext": "What happens next?",
+  "@whatHappensNext": {
+    "description": "What happens next section title"
+  },
   "afterVerificationProvider": "After verification, you will be redirected to complete your provider profile setup.",
+  "@afterVerificationProvider": {
+    "description": "Post-verification message for providers"
+  },
   "afterVerificationSeeker": "After verification, you will be taken to your dashboard.",
+  "@afterVerificationSeeker": {
+    "description": "Post-verification message for seekers"
+  },
   
   "register": "Register",
   "@register": {
@@ -47,6 +86,141 @@
   "confirmPassword": "Confirm Password",
   "@confirmPassword": {
     "description": "Confirm password field label"
+  },
+
+  "aiAssistant": "AI Assistant",
+  "@aiAssistant": {
+    "description": "AI Assistant title"
+  },
+
+  "aiChatTitle": "ServeEase AI Assistant",
+  "@aiChatTitle": {
+    "description": "AI Chat screen title"
+  },
+
+  "newConversation": "New Conversation",
+  "@newConversation": {
+    "description": "Start new conversation button"
+  },
+
+  "quickHelp": "Quick Help",
+  "@quickHelp": {
+    "description": "Quick help section title"
+  },
+
+  "suggestions": "Suggestions",
+  "@suggestions": {
+    "description": "AI suggestions section title"
+  },
+
+  "askAnything": "Ask anything about the ServeEase platform...",
+  "@askAnything": {
+    "description": "Default AI chat input hint"
+  },
+
+  "askAboutServices": "Ask about finding services, booking, or platform features...",
+  "@askAboutServices": {
+    "description": "AI chat hint for seekers"
+  },
+
+  "askAboutProfile": "Ask about creating profiles, adding services, or getting approved...",
+  "@askAboutProfile": {
+    "description": "AI chat hint for individual providers"
+  },
+
+  "askAboutManagement": "Ask about managing employees, assignments, or analytics...",
+  "@askAboutManagement": {
+    "description": "AI chat hint for organization providers"
+  },
+
+  "findServices": "Find Services",
+  "@findServices": {
+    "description": "Quick action for finding services"
+  },
+
+  "myRequests": "My Requests",
+  "@myRequests": {
+    "description": "Quick action for viewing requests"
+  },
+
+  "howToBook": "How to Book",
+  "@howToBook": {
+    "description": "Quick action for booking help"
+  },
+
+  "createProfile": "Create Profile",
+  "@createProfile": {
+    "description": "Quick action for creating profile"
+  },
+
+  "addServices": "Add Services",
+  "@addServices": {
+    "description": "Quick action for adding services"
+  },
+
+  "uploadCertificates": "Upload Certificates",
+  "@uploadCertificates": {
+    "description": "Quick action for uploading certificates"
+  },
+
+  "manageEmployees": "Manage Employees",
+  "@manageEmployees": {
+    "description": "Quick action for managing employees"
+  },
+
+  "assignTasks": "Assign Tasks",
+  "@assignTasks": {
+    "description": "Quick action for assigning tasks"
+  },
+
+  "viewAnalytics": "View Analytics",
+  "@viewAnalytics": {
+    "description": "Quick action for viewing analytics"
+  },
+
+  "platformOverview": "Platform Overview",
+  "@platformOverview": {
+    "description": "Quick action for platform overview"
+  },
+
+  "gettingStarted": "Getting Started",
+  "@gettingStarted": {
+    "description": "Quick action for getting started guide"
+  },
+
+  "justNow": "Just now",
+  "@justNow": {
+    "description": "Timestamp for very recent messages"
+  },
+
+  "minutesAgo": "{minutes}m ago",
+  "@minutesAgo": {
+    "description": "Timestamp for messages from minutes ago",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+
+  "hoursAgo": "{hours}h ago",
+  "@hoursAgo": {
+    "description": "Timestamp for messages from hours ago",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+
+  "daysAgo": "{days}d ago",
+  "@daysAgo": {
+    "description": "Timestamp for messages from days ago",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
   },
   
   "name": "Name",
@@ -117,11 +291,6 @@
   "services": "Services",
   "@services": {
     "description": "Services page title"
-  },
-  
-  "findServices": "Find Services",
-  "@findServices": {
-    "description": "Find services page title"
   },
   
   "myServices": "My Services",
@@ -202,11 +371,6 @@
   "requests": "Requests",
   "@requests": {
     "description": "Requests page title"
-  },
-  
-  "myRequests": "My Requests",
-  "@myRequests": {
-    "description": "My requests page title"
   },
   
   "requestService": "Request Service",
@@ -337,11 +501,6 @@
   "certificates": "Certificates",
   "@certificates": {
     "description": "Certificates label"
-  },
-  
-  "uploadCertificates": "Upload Certificates",
-  "@uploadCertificates": {
-    "description": "Upload certificates button text"
   },
   
   "employees": "Employees",
@@ -1022,5 +1181,370 @@
   "resetCodeSentMessage": "Password reset code has been sent to your email",
   "@resetCodeSentMessage": {
     "description": "Message shown when reset code is sent"
+  },
+
+  "requestDetails": "Request Details",
+  "@requestDetails": {
+    "description": "Request details page title"
+  },
+
+  "serviceDetails": "Service Details",
+  "@serviceDetails": {
+    "description": "Service details section title"
+  },
+
+  "statusTimeline": "Status & Timeline",
+  "@statusTimeline": {
+    "description": "Status timeline section title"
+  },
+
+  "parties": "Parties",
+  "@parties": {
+    "description": "Parties section title"
+  },
+
+  "employeeAssignment": "Employee Assignment",
+  "@employeeAssignment": {
+    "description": "Employee assignment section title"
+  },
+
+  "actions": "Actions",
+  "@actions": {
+    "description": "Actions section title"
+  },
+
+  "ratingsReviews": "Ratings & Reviews",
+  "@ratingsReviews": {
+    "description": "Ratings and reviews section title"
+  },
+
+  "statusHistory": "Status History",
+  "@statusHistory": {
+    "description": "Status history label"
+  },
+
+  "noStatusHistory": "No status history available",
+  "@noStatusHistory": {
+    "description": "Message when no status history is available"
+  },
+
+  "customerRating": "Customer Rating",
+  "@customerRating": {
+    "description": "Customer rating label"
+  },
+
+  "providerRating": "Provider Rating",
+  "@providerRating": {
+    "description": "Provider rating label"
+  },
+
+  "rateThisService": "Rate this service",
+  "@rateThisService": {
+    "description": "Rate service button text"
+  },
+
+  "rateThisCustomer": "Rate this customer",
+  "@rateThisCustomer": {
+    "description": "Rate customer button text"
+  },
+
+  "rateCustomer": "Rate Customer",
+  "@rateCustomer": {
+    "description": "Rate customer dialog title"
+  },
+
+  "rateServiceProvider": "Rate Service Provider",
+  "@rateServiceProvider": {
+    "description": "Rate service provider dialog title"
+  },
+
+  "shareExperienceCustomer": "Share your experience with this customer...",
+  "@shareExperienceCustomer": {
+    "description": "Review placeholder for rating customer"
+  },
+
+  "shareExperienceService": "Share your experience with this service...",
+  "@shareExperienceService": {
+    "description": "Review placeholder for rating service"
+  },
+
+  "reviewOptional": "Review (Optional)",
+  "@reviewOptional": {
+    "description": "Review section title in rating dialog"
+  },
+
+  "ratingSubmitted": "Rating submitted successfully!",
+  "@ratingSubmitted": {
+    "description": "Rating submitted success message"
+  },
+
+  "poor": "Poor",
+  "@poor": {
+    "description": "1-star rating text"
+  },
+
+  "fair": "Fair",
+  "@fair": {
+    "description": "2-star rating text"
+  },
+
+  "good": "Good",
+  "@good": {
+    "description": "3-star rating text"
+  },
+
+  "veryGood": "Very Good",
+  "@veryGood": {
+    "description": "4-star rating text"
+  },
+
+  "excellent": "Excellent",
+  "@excellent": {
+    "description": "5-star rating text"
+  },
+
+  "selectEmployee": "Select Employee",
+  "@selectEmployee": {
+    "description": "Select employee section title"
+  },
+
+  "noAvailableEmployees": "No available employees found",
+  "@noAvailableEmployees": {
+    "description": "Message when no employees are available"
+  },
+
+  "assignmentNotes": "Assignment Notes (Optional)",
+  "@assignmentNotes": {
+    "description": "Assignment notes field label"
+  },
+
+  "assignmentNotesHint": "Add any special instructions or notes...",
+  "@assignmentNotesHint": {
+    "description": "Assignment notes field hint"
+  },
+
+  "reassign": "Reassign",
+  "@reassign": {
+    "description": "Reassign employee button text"
+  },
+
+  "assign": "Assign",
+  "@assign": {
+    "description": "Assign employee button text"
+  },
+
+  "employeeAssignedSuccess": "Employee assigned successfully!",
+  "@employeeAssignedSuccess": {
+    "description": "Employee assigned success message"
+  },
+
+  "employeeAssignmentRequired": "Employee assignment required",
+  "@employeeAssignmentRequired": {
+    "description": "Message when employee assignment is required"
+  },
+
+  "updateStatus": "Update Status",
+  "@updateStatus": {
+    "description": "Update status dialog title and button text"
+  },
+
+  "currentStatus": "Current",
+  "@currentStatus": {
+    "description": "Current status label prefix"
+  },
+
+  "newStatus": "New Status",
+  "@newStatus": {
+    "description": "New status field label"
+  },
+
+  "selectNewStatus": "Select new status",
+  "@selectNewStatus": {
+    "description": "New status field hint"
+  },
+
+  "noStatusTransitions": "No status transitions available from current state",
+  "@noStatusTransitions": {
+    "description": "Message when no status transitions are available"
+  },
+
+  "scheduledDateOptional": "Scheduled Date (Optional)",
+  "@scheduledDateOptional": {
+    "description": "Scheduled date field label"
+  },
+
+  "selectScheduledDate": "Select scheduled date",
+  "@selectScheduledDate": {
+    "description": "Scheduled date field hint"
+  },
+
+  "completionDate": "Completion Date",
+  "@completionDate": {
+    "description": "Completion date field label"
+  },
+
+  "selectCompletionDate": "Select completion date",
+  "@selectCompletionDate": {
+    "description": "Completion date field hint"
+  },
+
+  "reasonRequired": "Reason (Required)",
+  "@reasonRequired": {
+    "description": "Reason field label when required"
+  },
+
+  "rejectReasonHint": "Why are you rejecting this request?",
+  "@rejectReasonHint": {
+    "description": "Rejection reason field hint"
+  },
+
+  "cancelReasonHint": "Why is this request being cancelled?",
+  "@cancelReasonHint": {
+    "description": "Cancellation reason field hint"
+  },
+
+  "notesOptional": "Notes (Optional)",
+  "@notesOptional": {
+    "description": "Optional notes field label"
+  },
+
+  "additionalNotesHint": "Add any additional notes...",
+  "@additionalNotesHint": {
+    "description": "Additional notes field hint"
+  },
+
+  "statusUpdatedSuccess": "Status updated successfully!",
+  "@statusUpdatedSuccess": {
+    "description": "Status updated success message"
+  },
+
+  "accept": "Accept",
+  "@accept": {
+    "description": "Accept button text"
+  },
+
+  "reject": "Reject",
+  "@reject": {
+    "description": "Reject button text"
+  },
+
+  "startWork": "Start Work",
+  "@startWork": {
+    "description": "Start work button text"
+  },
+
+  "complete": "Complete",
+  "@complete": {
+    "description": "Complete button text"
+  },
+
+  "cancelRequest": "Cancel Request",
+  "@cancelRequest": {
+    "description": "Cancel request dialog title"
+  },
+
+  "rejectReasonPrompt": "Please provide a reason for rejection:",
+  "@rejectReasonPrompt": {
+    "description": "Rejection reason dialog prompt"
+  },
+
+  "cancelReasonPrompt": "Please provide a reason for cancellation:",
+  "@cancelReasonPrompt": {
+    "description": "Cancellation reason dialog prompt"
+  },
+
+  "confirm": "Confirm",
+  "@confirm": {
+    "description": "Confirm button text"
+  },
+
+  "requestNotFound": "Request not found",
+  "@requestNotFound": {
+    "description": "Message when request is not found"
+  },
+
+  "scheduled": "Scheduled",
+  "@scheduled": {
+    "description": "Scheduled label prefix"
+  },
+
+  "priority": "Priority",
+  "@priority": {
+    "description": "Priority label prefix"
+  },
+
+  "low": "Low",
+  "@low": {
+    "description": "Low priority"
+  },
+
+  "medium": "Medium",
+  "@medium": {
+    "description": "Medium priority"
+  },
+
+  "high": "High",
+  "@high": {
+    "description": "High priority"
+  },
+
+  "urgent": "Urgent",
+  "@urgent": {
+    "description": "Urgent priority"
+  },
+
+  "customer": "Customer",
+  "@customer": {
+    "description": "Customer label"
+  },
+
+  "justNowTimestamp": "Just now",
+  "@justNowTimestamp": {
+    "description": "Just now timestamp"
+  },
+
+  "minutesAgoTimestamp": "{minutes}m ago",
+  "@minutesAgoTimestamp": {
+    "description": "Minutes ago timestamp",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+
+  "hoursAgoTimestamp": "{hours}h ago",
+  "@hoursAgoTimestamp": {
+    "description": "Hours ago timestamp",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+
+  "daysAgoTimestamp": "{days}d ago",
+  "@daysAgoTimestamp": {
+    "description": "Days ago timestamp",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+
+  "changedBy": "by {name}",
+  "@changedBy": {
+    "description": "Changed by label",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+
+  "reason": "Reason",
+  "@reason": {
+    "description": "Reason label prefix"
   }
 }
