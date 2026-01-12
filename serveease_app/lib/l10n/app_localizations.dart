@@ -101,7 +101,407 @@ abstract class AppLocalizations {
   /// **'ServeEase'**
   String get appTitle;
 
+<<<<<<< HEAD
   /// Welcome message
+=======
+  /// No description provided for @englishLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'EN'**
+  String get englishLabel;
+
+  /// No description provided for @amharicLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'AM'**
+  String get amharicLabel;
+
+  /// No description provided for @loginWelcomeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome Back'**
+  String get loginWelcomeTitle;
+
+  /// No description provided for @providerInfoNote.
+  ///
+  /// In en, this message translates to:
+  /// **'As a provider, you will need to set up your profile after verifying your email.'**
+  String get providerInfoNote;
+
+  /// No description provided for @nameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Name'**
+  String get nameLabel;
+
+  /// No description provided for @nameValidation.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your name'**
+  String get nameValidation;
+
+  /// No description provided for @loginSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Login to your account to continue'**
+  String get loginSubtitle;
+
+  /// No description provided for @emailLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get emailLabel;
+
+  /// No description provided for @emailHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email'**
+  String get emailHint;
+
+  /// No description provided for @passwordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  ///
+  
+  String get passwordLabel;
+  /// No description provided for @passwordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your password'**
+  String get passwordHint;
+  /// No description provided for @forgotPasswordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot Password?'**
+  String get forgotPasswordLabel;
+
+  /// No description provided for @loginButtonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Login'**
+  String get loginButtonLabel;
+
+  /// No description provided for @signupRedirectPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have an account? '**
+  String get signupRedirectPrefix;
+
+  /// No description provided for @signupRedirectAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign up'**
+  String get signupRedirectAction;
+
+  /// No description provided for @loginRedirectPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account? '**
+  String get loginRedirectPrefix;
+
+  /// No description provided for @loginRedirectAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Log In'**
+  String get loginRedirectAction;
+
+  /// No description provided for @loginSuccessMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Login successful!'**
+  String get loginSuccessMessage;
+
+  /// No description provided for @loginFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Login failed'**
+  String loginFailed(Object reason);
+
+  /// No description provided for @errorWithMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Error: {message}'**
+  String errorWithMessage(Object message);
+
+  /// No description provided for @unknownError.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get unknownError;
+
+  /// No description provided for @createAccountTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Your Account'**
+  String get createAccountTitle;
+
+  /// No description provided for @signupSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Join ServeEase to connect with services or offer your expertise.'**
+  String get signupSubtitle;
+
+  /// No description provided for @confirmPasswordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Password'**
+  String get confirmPasswordLabel;
+
+  /// No description provided for @joinAsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Join as:'**
+  String get joinAsLabel;
+
+  /// No description provided for @providerDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Provider details'**
+  String get providerDetailsTitle;
+
+  /// No description provided for @businessNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Business / brand name'**
+  String get businessNameLabel;
+
+  /// No description provided for @serviceDescriptionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Service description'**
+  String get serviceDescriptionLabel;
+
+  /// No description provided for @providerBusinessValidation.
+  ///
+  /// In en, this message translates to:
+  /// **'Business name is required for providers'**
+  String get providerBusinessValidation;
+
+  /// No description provided for @signupSubmitLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Up'**
+  String get signupSubmitLabel;
+
+  /// No description provided for @providerSubmitLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit provider request'**
+  String get providerSubmitLabel;
+
+  /// No description provided for @serviceSeekerLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Service Seeker'**
+  String get serviceSeekerLabel;
+
+  /// No description provided for @serviceProviderLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Service Provider'**
+  String get serviceProviderLabel;
+
+  /// No description provided for @validationEmailRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Email is required'**
+  String get validationEmailRequired;
+
+  /// No description provided for @validationEmailInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid email'**
+  String get validationEmailInvalid;
+
+  /// No description provided for @validationPasswordRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Password is required'**
+  String get validationPasswordRequired;
+
+  /// No description provided for @validationPasswordLength.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters'**
+  String get validationPasswordLength;
+
+  /// No description provided for @validationConfirmPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm password'**
+  String get validationConfirmPassword;
+
+  /// No description provided for @validationPasswordsMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get validationPasswordsMismatch;
+
+  /// No description provided for @verifyEmailTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify Email'**
+  String get verifyEmailTitle;
+
+  /// No description provided for @verifyEmailInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'A verification code was sent to {email}.'**
+  String verifyEmailInfo(Object email);
+
+  /// No description provided for @verificationCodeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification code'**
+  String get verificationCodeLabel;
+
+  /// No description provided for @verifyButtonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify'**
+  String get verifyButtonLabel;
+
+  /// No description provided for @missingEmailError.
+  ///
+  /// In en, this message translates to:
+  /// **'Missing email'**
+  String get missingEmailError;
+
+  /// No description provided for @emailVerifiedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Email verified. Please log in.'**
+  String get emailVerifiedMessage;
+
+  /// No description provided for @homeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'ServeEase Home'**
+  String get homeTitle;
+
+  /// No description provided for @homeWelcome.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to ServeEase!'**
+  String get homeWelcome;
+
+  /// No description provided for @homeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore services, request bookings, and manage your account.'**
+  String get homeSubtitle;
+
+  /// No description provided for @homeExploreButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore Services'**
+  String get homeExploreButton;
+
+  /// No description provided for @backToLoginLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Login'**
+  String get backToLoginLabel;
+
+  /// No description provided for @emptyVerificationCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter the verification code'**
+  String get emptyVerificationCode;
+
+  /// No description provided for @forgotPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot Password?'**
+  String get forgotPasswordTitle;
+
+  /// No description provided for @forgotPasswordSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email and we\'ll send you instructions to reset your password.'**
+  String get forgotPasswordSubtitle;
+
+  /// No description provided for @sendResetLinkButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Reset Link'**
+  String get sendResetLinkButton;
+
+  /// No description provided for @rememberPasswordPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Remembered your password? '**
+  String get rememberPasswordPrefix;
+
+  /// No description provided for @rememberPasswordAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Log In'**
+  String get rememberPasswordAction;
+
+  /// No description provided for @resetCodeSentMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The reset code has been sent to your email.'**
+  String get resetCodeSentMessage;
+
+  /// No description provided for @didntReceiveCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Didn\'t receive the code? '**
+  String get didntReceiveCode;
+
+  /// No description provided for @resendCodeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend Code'**
+  String get resendCodeLabel;
+
+  /// No description provided for @tryAnotherEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Try another email'**
+  String get tryAnotherEmail;
+
+  /// No description provided for @providerCategoryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get providerCategoryLabel;
+
+  /// No description provided for @providerDescriptionValidation.
+  ///
+  /// In en, this message translates to:
+  /// **'Description is required'**
+  String get providerDescriptionValidation;
+
+  /// No description provided for @providerCategoryValidation.
+  ///
+  /// In en, this message translates to:
+  /// **'Category is required'**
+  String get providerCategoryValidation;
+
+  /// No description provided for @providerProfileSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Provider profile created successfully!'**
+  String get providerProfileSuccess;
+
+  /// No description provided for @providerProfileSetup.
+  ///
+  /// In en, this message translates to:
+  /// **'Provider Profile Setup'**
+  String get providerProfileSetup;
+
+  /// No description provided for @selectLoginRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select login role'**
+  String get selectLoginRole;
+
+  /// No description provided for @welcome.
+>>>>>>> bc880ce957d53bbe4cca033a664fa74a78d4ce24
   ///
   /// In en, this message translates to:
   /// **'Welcome'**

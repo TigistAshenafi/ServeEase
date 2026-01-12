@@ -15,6 +15,20 @@
     "description": "Login button text"
   },
   
+  "verifyEmailTitle": "Verify Email",
+  "verifyEmailInfo": "We sent a 6-digit verification code to:",
+  "verificationCodeLabel": "Enter 6-digit Code",
+  "verifyButtonLabel": "VERIFY EMAIL",
+  "resendCodeLabel": "RESEND CODE",
+  "backToLoginLabel": "Back to Login",
+  "emptyVerificationCode": "Please enter the 6-digit code",
+  "emailVerifiedMessage": "Email verified successfully! Please login to continue.",
+  "didntReceiveCode": "Didn't receive the code? ",
+  "tryAnotherEmail": "Try another email",
+  "whatHappensNext": "What happens next?",
+  "afterVerificationProvider": "After verification, you will be redirected to complete your provider profile setup.",
+  "afterVerificationSeeker": "After verification, you will be taken to your dashboard.",
+  
   "register": "Register",
   "@register": {
     "description": "Register button text"

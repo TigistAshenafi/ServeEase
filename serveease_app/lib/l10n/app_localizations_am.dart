@@ -594,5 +594,87 @@ class AppLocalizationsAm extends AppLocalizations {
   String get loginRedirectPrefix => 'መለያ አለዎት?';
 
   @override
+<<<<<<< HEAD
   String get loginRedirectAction => 'ግቡ';
+=======
+  String get missingEmailError => 'ኢሜል አልተገኘም';
+
+  @override
+  String get emailVerifiedMessage => 'ኢሜሉ ተረጋገጠ። እባክዎ ይግቡ።';
+
+  @override
+  String get homeTitle => 'ServeEase መነሻ';
+
+  @override
+  String get homeWelcome => 'እንኳን ወደ ServeEase በደህና መጡ!';
+
+  @override
+  String get homeSubtitle => 'አገልግሎቶችን ይመልከቱ፣ ጥያቄዎችን ያቀርቡ እና መለያዎን ያቆጣጠሩ።';
+
+  @override
+  String get homeExploreButton => 'አገልግሎቶችን ይመልከቱ';
+
+  @override
+  String get backToLoginLabel => 'ወደ መግቢያ ተመለስ';
+
+  @override
+  String get emptyVerificationCode => 'የማረጋገጫ ኮድ ያስገቡ';
+
+  @override
+  String get forgotPasswordTitle => 'የምስጢር ቃል ይረሳዎታል?';
+
+  @override
+  String get forgotPasswordSubtitle => 'ኢሜሎን እና አዲስ የምስጢር ቃል መቀየር መመሪያ እንዲልክልዎ ያስገቡ።';
+
+  @override
+  String get sendResetLinkButton => 'የማስመለሻ አገናኝ ላክ';
+
+  @override
+  String get rememberPasswordPrefix => 'የይለፍ ቃልዎን ያስታውሱ? ';
+
+  @override
+  String get rememberPasswordAction => 'ግባ';
+
+  @override
+  String get resetCodeSentMessage => 'የማስመለሻ ኮድ ወደ ኢሜሎዎ ተልኳል።';
+
+  @override
+  String get providerCategoryLabel => 'ምድብ';
+
+  @override
+  String get providerDescriptionValidation => 'ለፈላጊዎች የምታቀርቡትን አገልግሎት ይግለጹ';
+
+  @override
+  String get providerCategoryValidation => 'ምድብ አስፈላጊ ነው';
+
+  @override
+  String get providerProfileSuccess => 'የአቅራቢ መግለጫ በተሳካ ሁኔታ ተፈጥሯል!';
+
+  @override
+  String get providerProfileSetup => 'የአቅራቢ መግለጫ ቅጽ';
+
+  @override
+  String get selectLoginRole => 'እባክዎ የመግቢያ ሚና ይምረጡ';
+
+  @override
+  String get welcome => 'እንኳን ደህና መጡ';
+
+  @override
+  String get loginAsRole => 'እንደ ማን ይግቡ';
+
+  @override
+  String get provider => 'አቅራቢ';
+
+  @override
+  String get seeker => 'ፍለጋ የሚያደርግ';
+
+  @override
+  String get didntReceiveCode => 'ኮዱን አልተቀበሉም? ';
+
+  @override
+  String get resendCodeLabel => 'ኮድ እንደገና ላክ';
+
+  @override
+  String get tryAnotherEmail => 'ሌላ ኢሜል ይሞክሩ';
+>>>>>>> bc880ce957d53bbe4cca033a664fa74a78d4ce24
 }

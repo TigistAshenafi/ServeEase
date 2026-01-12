@@ -27,6 +27,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
+<<<<<<< HEAD
+=======
+  // bool _obscurePassword = true;
+  // bool _obscureConfirmPassword = true;
+>>>>>>> bc880ce957d53bbe4cca033a664fa74a78d4ce24
   Role _role = Role.seeker;
   bool get _isProvider => _role == Role.provider;
 

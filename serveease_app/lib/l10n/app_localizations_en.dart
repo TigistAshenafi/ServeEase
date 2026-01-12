@@ -594,5 +594,87 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginRedirectPrefix => 'Already have an account?';
 
   @override
+<<<<<<< HEAD
   String get loginRedirectAction => 'Sign in';
+=======
+  String get missingEmailError => 'Missing email';
+
+  @override
+  String get emailVerifiedMessage => 'Email verified. Please log in.';
+
+  @override
+  String get homeTitle => 'ServeEase Home';
+
+  @override
+  String get homeWelcome => 'Welcome to ServeEase!';
+
+  @override
+  String get homeSubtitle => 'Explore services, request bookings, and manage your account.';
+
+  @override
+  String get homeExploreButton => 'Explore Services';
+
+  @override
+  String get backToLoginLabel => 'Back to Login';
+
+  @override
+  String get emptyVerificationCode => 'Please enter the verification code';
+
+  @override
+  String get forgotPasswordTitle => 'Forgot Password?';
+
+  @override
+  String get forgotPasswordSubtitle => 'Enter your email and we\'ll send you instructions to reset your password.';
+
+  @override
+  String get sendResetLinkButton => 'Send Reset Link';
+
+  @override
+  String get rememberPasswordPrefix => 'Remembered your password? ';
+
+  @override
+  String get rememberPasswordAction => 'Log In';
+
+  @override
+  String get resetCodeSentMessage => 'The reset code has been sent to your email.';
+
+  @override
+  String get didntReceiveCode => 'Didn\'t receive the code? ';
+
+  @override
+  String get resendCodeLabel => 'Resend Code';
+
+  @override
+  String get tryAnotherEmail => 'Try another email';
+
+  @override
+  String get providerCategoryLabel => 'Category';
+
+  @override
+  String get providerDescriptionValidation => 'Description is required';
+
+  @override
+  String get providerCategoryValidation => 'Category is required';
+
+  @override
+  String get providerProfileSuccess => 'Provider profile created successfully!';
+
+  @override
+  String get providerProfileSetup => 'Provider Profile Setup';
+
+  @override
+  String get selectLoginRole => 'Please select login role';
+
+  @override
+  String get welcome => 'Welcome';
+
+  @override
+  String get loginAsRole => 'Login as';
+
+  @override
+  String get provider => 'Provider';
+
+  @override
+  String get seeker => 'Seeker';
+>>>>>>> bc880ce957d53bbe4cca033a664fa74a78d4ce24
 }
