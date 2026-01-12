@@ -18,9 +18,11 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      final serviceProvider = context.read<provider.ServiceProvider>();
-      serviceProvider.loadCategories();
-      serviceProvider.loadMyServices();
+      if (mounted) {
+        final serviceProvider = context.read<provider.ServiceProvider>();
+        serviceProvider.loadCategories();
+        serviceProvider.loadMyServices();
+      }
     });
   }
 
@@ -135,7 +137,7 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
                                               id: service.id,
                                               isActive: val,
                                             );
-                                            if (mounted && !result.success) {
+                                            if (mounted && !result.success && context.mounted) {
                                               ScaffoldMessenger.of(context).showSnackBar(
                                                 SnackBar(
                                                   content: Text('Failed to update service: ${result.message}'),
@@ -423,7 +425,7 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
                           );
                         }
                         
-                        if (mounted) {
+                        if (mounted && context.mounted) {
                           Navigator.pop(context);
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
@@ -439,7 +441,7 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
                           );
                         }
                       } catch (e) {
-                        if (mounted) {
+                        if (mounted && context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text('Error: ${e.toString()}'),
@@ -484,7 +486,7 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
               final serviceProvider = context.read<provider.ServiceProvider>();
               final result = await serviceProvider.deleteService(service.id);
               
-              if (mounted) {
+              if (mounted && context.mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(

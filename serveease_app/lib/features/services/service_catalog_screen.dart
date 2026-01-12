@@ -1,9 +1,7 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:serveease_app/providers/service_provider.dart';
-import 'package:serveease_app/shared/widgets/app_bar_language_toggle.dart';
+
 import 'service_detail_screen.dart';
 
 class ServiceCatalogScreen extends StatefulWidget {
@@ -17,7 +15,11 @@ class _ServiceCatalogScreenState extends State<ServiceCatalogScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => context.read<ServiceProvider>().loadCategories());
+    Future.microtask(() {
+      if (mounted) {
+        context.read<ServiceProvider>().loadCategories();
+      }
+    });
   }
 
   @override
@@ -26,13 +28,6 @@ class _ServiceCatalogScreenState extends State<ServiceCatalogScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Service Categories'),
-        actions: const [
-          AppBarLanguageToggle(
-            iconColor: Colors.grey,
-            textColor: Colors.black,
-            isCompact: true,
-          ),
-        ],
       ),
       body: provider.isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -49,15 +44,17 @@ class _ServiceCatalogScreenState extends State<ServiceCatalogScreen> {
                     onTap: () async {
                       await provider.loadCategoryServices(category.id);
                       if (!mounted) return;
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => ServiceDetailScreen(
-                            categoryName: category.name,
-                            services: provider.categoryServices,
+                      if (context.mounted) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => ServiceDetailScreen(
+                              categoryName: category.name,
+                              services: provider.categoryServices,
+                            ),
                           ),
-                        ),
-                      );
+                        );
+                      }
                     },
                   );
                 },
@@ -66,3 +63,4 @@ class _ServiceCatalogScreenState extends State<ServiceCatalogScreen> {
     );
   }
 }
+

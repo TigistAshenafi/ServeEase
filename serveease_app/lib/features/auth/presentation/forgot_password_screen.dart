@@ -13,10 +13,10 @@ class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
 
   @override
-  ForgotPasswordScreenState createState() => ForgotPasswordScreenState();
+  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
 }
 
-class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   bool _isCodeSent = false;
@@ -41,8 +41,7 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         final l10n = AppLocalizations.of(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(
-                l10n?.resetCodeSentMessage ?? 'Reset code sent to your email'),
+            content: Text(l10n?.resetCodeSentMessage ?? 'Reset code sent to your email'),
             backgroundColor: Colors.green,
             duration: const Duration(seconds: 3),
           ),
@@ -56,8 +55,7 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: Text(response.message), backgroundColor: Colors.red),
+          SnackBar(content: Text(response.message), backgroundColor: Colors.red),
         );
       }
     }
@@ -91,12 +89,9 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Language toggle
-            const AppBarLanguageToggle(
-              iconColor: Colors.grey,
-              textColor: Colors.black,
-            ),
+            const AppBarLanguageToggle(),
             const SizedBox(height: 16),
-
+            
             // Icon - Similar to Login
             Center(
               child: Icon(
@@ -106,7 +101,7 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               ),
             ),
             SizedBox(height: 48.h),
-
+            
             // Title - Similar styling to Login
             Center(
               child: Text(
@@ -118,13 +113,12 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               ),
             ),
             SizedBox(height: 12.h),
-
+            
             // Description text
             Text(
               _isCodeSent
                   ? 'We sent a 6-digit verification code to $_sentEmail\nPlease check your email and enter the code below.'
-                  : l10n?.forgotPasswordSubtitle ??
-                      'Enter your email address and we\'ll send you a verification code to reset your password.',
+                  : l10n?.forgotPasswordSubtitle ?? 'Enter your email address and we\'ll send you a verification code to reset your password.',
               style: theme.textTheme.bodyLarge?.copyWith(
                 color: colorScheme.onSurfaceVariant,
               ),
@@ -146,11 +140,10 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       prefixIcon: const Icon(Icons.email_outlined),
                     ),
                     keyboardType: TextInputType.emailAddress,
-                    validator: (value) =>
-                        Validators.validateEmail(context, value),
+                    validator: (value) => Validators.validateEmail(context, value),
                   ),
                   SizedBox(height: 24.h),
-
+                  
                   if (authProvider.isLoading)
                     const Center(child: CircularProgressIndicator())
                   else
@@ -187,8 +180,7 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(l10n?.rememberPasswordPrefix ??
-                        'Remembered your password? '),
+                    Text(l10n?.rememberPasswordPrefix ?? 'Remembered your password? '),
                     TextButton(
                       onPressed: () => Navigator.pop(context),
                       child: Text(
@@ -222,35 +214,25 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           ? SizedBox(
                               width: 20.w,
                               height: 20.h,
-                              child: const CircularProgressIndicator(
-                                  strokeWidth: 2),
+                              child: const CircularProgressIndicator(strokeWidth: 2),
                             )
                           : TextButton(
                               onPressed: () async {
-                                if (_sentEmail != null &&
-                                    _sentEmail!.isNotEmpty) {
+                                if (_sentEmail != null && _sentEmail!.isNotEmpty) {
                                   setState(() => _isResending = true);
                                   try {
-                                    final authProvider =
-                                        Provider.of<AuthProvider>(context,
-                                            listen: false);
-                                    await authProvider
-                                        .forgotPassword(_sentEmail!);
+                                    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+                                    await authProvider.forgotPassword(_sentEmail!);
                                     if (mounted) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
+                                      ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(
-                                          content: Text(
-                                              l10n?.resetCodeSentMessage ??
-                                                  'Code resent successfully'),
+                                          content: Text(l10n?.resetCodeSentMessage ?? 'Code resent successfully'),
                                           backgroundColor: Colors.green,
                                         ),
                                       );
                                     }
                                   } finally {
-                                    if (mounted) {
-                                      setState(() => _isResending = false);
-                                    }
+                                    if (mounted) setState(() => _isResending = false);
                                   }
                                 }
                               },

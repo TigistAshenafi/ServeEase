@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../../../providers/employee_provider.dart';
+import '../../../shared/widgets/animated_input_field.dart';
 import '../../../shared/widgets/glassmorphic_card.dart';
 import '../../../shared/widgets/gradient_button.dart';
-import '../../../shared/widgets/animated_input_field.dart';
 
 class EmployeeManagementScreen extends StatefulWidget {
   const EmployeeManagementScreen({super.key});
 
   @override
-  State<EmployeeManagementScreen> createState() =>
-      _EmployeeManagementScreenState();
+  State<EmployeeManagementScreen> createState() => _EmployeeManagementScreenState();
 }
 
 class _EmployeeManagementScreenState extends State<EmployeeManagementScreen> {
@@ -70,8 +70,7 @@ class _EmployeeManagementScreenState extends State<EmployeeManagementScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.people_outline,
-                      size: 64, color: Colors.grey.shade400),
+                  Icon(Icons.people_outline, size: 64, color: Colors.grey.shade400),
                   const SizedBox(height: 16),
                   Text(
                     'No employees added yet',
@@ -116,8 +115,7 @@ class _EmployeeManagementScreenState extends State<EmployeeManagementScreen> {
     );
   }
 
-  Widget _buildEmployeeCard(
-      dynamic employee, EmployeeProvider employeeProvider) {
+  Widget _buildEmployeeCard(dynamic employee, EmployeeProvider employeeProvider) {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       child: GlassmorphicCard(
@@ -129,12 +127,9 @@ class _EmployeeManagementScreenState extends State<EmployeeManagementScreen> {
               Row(
                 children: [
                   CircleAvatar(
-                    backgroundColor:
-                        Theme.of(context).primaryColor.withValues(alpha: 0.1),
+                    backgroundColor: Theme.of(context).primaryColor.withValues(alpha: 0.1),
                     child: Text(
-                      employee.name.isNotEmpty
-                          ? employee.name[0].toUpperCase()
-                          : 'E',
+                      employee.name.isNotEmpty ? employee.name[0].toUpperCase() : 'E',
                       style: TextStyle(
                         color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.bold,
@@ -164,17 +159,12 @@ class _EmployeeManagementScreenState extends State<EmployeeManagementScreen> {
                     ),
                   ),
                   Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      color: employee.isActive
-                          ? Colors.green.withValues(alpha: 0.1)
-                          : Colors.red.withValues(alpha: 0.1),
+                      color: employee.isActive ? Colors.green.withValues(alpha: 0.1) : Colors.red.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: employee.isActive
-                            ? Colors.green.withValues(alpha: 0.3)
-                            : Colors.red.withValues(alpha: 0.3),
+                        color: employee.isActive ? Colors.green.withValues(alpha: 0.3) : Colors.red.withValues(alpha: 0.3),
                       ),
                     ),
                     child: Text(
@@ -202,23 +192,20 @@ class _EmployeeManagementScreenState extends State<EmployeeManagementScreen> {
                 Wrap(
                   spacing: 6,
                   runSpacing: 6,
-                  children: employee.skills
-                      .map((skill) => Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 4),
-                            decoration: BoxDecoration(
-                              color: Colors.blue.withValues(alpha: 0.1),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Text(
-                              skill,
-                              style: TextStyle(
-                                color: Colors.blue.shade700,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ))
-                      .toList(),
+                  children: employee.skills.map((skill) => Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: Colors.blue.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      skill,
+                      style: TextStyle(
+                        color: Colors.blue.shade700,
+                        fontSize: 12,
+                      ),
+                    ),
+                  )).toList(),
                 ),
               ],
               const SizedBox(height: 12),
@@ -234,17 +221,14 @@ class _EmployeeManagementScreenState extends State<EmployeeManagementScreen> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: OutlinedButton.icon(
-                      onPressed: () =>
-                          _toggleEmployeeStatus(employee, employeeProvider),
+                      onPressed: () => _toggleEmployeeStatus(employee, employeeProvider),
                       icon: Icon(
                         employee.isActive ? Icons.pause : Icons.play_arrow,
                         size: 16,
                       ),
-                      label:
-                          Text(employee.isActive ? 'Deactivate' : 'Activate'),
+                      label: Text(employee.isActive ? 'Deactivate' : 'Activate'),
                       style: OutlinedButton.styleFrom(
-                        foregroundColor:
-                            employee.isActive ? Colors.red : Colors.green,
+                        foregroundColor: employee.isActive ? Colors.red : Colors.green,
                       ),
                     ),
                   ),
@@ -269,8 +253,7 @@ class _EmployeeManagementScreenState extends State<EmployeeManagementScreen> {
     final nameController = TextEditingController(text: employee?.name ?? '');
     final emailController = TextEditingController(text: employee?.email ?? '');
     final phoneController = TextEditingController(text: employee?.phone ?? '');
-    final positionController =
-        TextEditingController(text: employee?.position ?? '');
+    final positionController = TextEditingController(text: employee?.position ?? '');
     final skillsController = TextEditingController(
       text: employee?.skills?.join(', ') ?? '',
     );
@@ -362,13 +345,8 @@ class _EmployeeManagementScreenState extends State<EmployeeManagementScreen> {
       return;
     }
 
-    final skills = skillsText
-        .split(',')
-        .map((s) => s.trim())
-        .where((s) => s.isNotEmpty)
-        .toList();
-    final employeeProvider =
-        Provider.of<EmployeeProvider>(context, listen: false);
+    final skills = skillsText.split(',').map((s) => s.trim()).where((s) => s.isNotEmpty).toList();
+    final employeeProvider = Provider.of<EmployeeProvider>(context, listen: false);
 
     final result = employeeId == null
         ? await employeeProvider.addEmployee(
@@ -393,9 +371,7 @@ class _EmployeeManagementScreenState extends State<EmployeeManagementScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(employeeId == null
-                ? 'Employee added successfully'
-                : 'Employee updated successfully'),
+            content: Text(employeeId == null ? 'Employee added successfully' : 'Employee updated successfully'),
             backgroundColor: Colors.green,
           ),
         );
@@ -412,16 +388,14 @@ class _EmployeeManagementScreenState extends State<EmployeeManagementScreen> {
     }
   }
 
-  Future<void> _toggleEmployeeStatus(
-      dynamic employee, EmployeeProvider employeeProvider) async {
+  Future<void> _toggleEmployeeStatus(dynamic employee, EmployeeProvider employeeProvider) async {
     final result = await employeeProvider.toggleEmployeeStatus(employee.id);
 
     if (result.success) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(
-                'Employee ${employee.isActive ? 'deactivated' : 'activated'} successfully'),
+            content: Text('Employee ${employee.isActive ? 'deactivated' : 'activated'} successfully'),
             backgroundColor: Colors.green,
           ),
         );
@@ -430,8 +404,7 @@ class _EmployeeManagementScreenState extends State<EmployeeManagementScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content:
-                Text('Failed to update employee status: ${result.message}'),
+            content: Text('Failed to update employee status: ${result.message}'),
             backgroundColor: Colors.red,
           ),
         );

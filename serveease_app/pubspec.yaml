@@ -23,7 +23,7 @@ dependencies:
   fluttertoast: ^9.0.0
   image_picker: ^1.0.5
   logging: ^1.1.1
-  file_picker: ^10.0.0  # New version
+  file_picker: ^10.0.0
   path_provider: ^2.0.15
   flutter_dotenv: ^5.0.2
   provider: ^6.0.5
@@ -44,6 +44,7 @@ dependencies:
 
   # Enhanced functionality
   geolocator: ^10.1.0
+  geocoding: ^3.0.0
   permission_handler: ^11.1.0
   url_launcher: ^6.2.1
   share_plus: ^7.2.1
@@ -62,7 +63,7 @@ dependencies:
 
   # Icons
   cupertino_icons: ^1.0.5
-  flutter_gen: ^5.10.0  # CHANGED: Downgraded to resolve conflict with lottie
+  flutter_gen: ^5.10.0
 
 dev_dependencies:
   flutter_test:
