@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:serveease_app/providers/ai_provider.dart';
+import 'package:serveease_app/shared/widgets/app_bar_language_toggle.dart';
 
 class AiChatScreen extends StatefulWidget {
   const AiChatScreen({super.key});
@@ -43,6 +44,13 @@ class _AiChatScreenState extends State<AiChatScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('ServeEase AI'),
+        actions: const [
+          AppBarLanguageToggle(
+            iconColor: Colors.grey,
+            textColor: Colors.black,
+            isCompact: true,
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -63,9 +71,8 @@ class _AiChatScreenState extends State<AiChatScreen> {
                     constraints: BoxConstraints(
                         maxWidth: MediaQuery.of(context).size.width * 0.8),
                     decoration: BoxDecoration(
-                      color: isUser
-                          ? Colors.blue.shade600
-                          : Colors.grey.shade200,
+                      color:
+                          isUser ? Colors.blue.shade600 : Colors.grey.shade200,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
@@ -110,4 +117,3 @@ class _AiChatScreenState extends State<AiChatScreen> {
     );
   }
 }
-

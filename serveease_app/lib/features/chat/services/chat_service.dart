@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:socket_io_client/socket_io_client.dart' as io;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:logging/logging.dart';
 import '../models/conversation.dart';
 
 class ChatService {
@@ -10,38 +11,47 @@ class ChatService {
   factory ChatService() => _instance;
   ChatService._internal();
 
+  static final Logger _logger = Logger('ChatService');
+
   final Dio _dio = Dio();
-  IO.Socket? _socket;
+  io.Socket? _socket;
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
-  
+
   // Stream controllers for real-time events
-  final StreamController<Message> _newMessageController = StreamController<Message>.broadcast();
-  final StreamController<List<Conversation>> _conversationsController = StreamController<List<Conversation>>.broadcast();
-  final StreamController<TypingIndicator> _typingController = StreamController<TypingIndicator>.broadcast();
-  final StreamController<Map<String, dynamic>> _messageStatusController = StreamController<Map<String, dynamic>>.broadcast();
-  final StreamController<Map<String, dynamic>> _userStatusController = StreamController<Map<String, dynamic>>.broadcast();
+  final StreamController<Message> _newMessageController =
+      StreamController<Message>.broadcast();
+  final StreamController<List<Conversation>> _conversationsController =
+      StreamController<List<Conversation>>.broadcast();
+  final StreamController<TypingIndicator> _typingController =
+      StreamController<TypingIndicator>.broadcast();
+  final StreamController<Map<String, dynamic>> _messageStatusController =
+      StreamController<Map<String, dynamic>>.broadcast();
+  final StreamController<Map<String, dynamic>> _userStatusController =
+      StreamController<Map<String, dynamic>>.broadcast();
 
   // Getters for streams
   Stream<Message> get newMessageStream => _newMessageController.stream;
-  Stream<List<Conversation>> get conversationsStream => _conversationsController.stream;
+  Stream<List<Conversation>> get conversationsStream =>
+      _conversationsController.stream;
   Stream<TypingIndicator> get typingStream => _typingController.stream;
-  Stream<Map<String, dynamic>> get messageStatusStream => _messageStatusController.stream;
-  Stream<Map<String, dynamic>> get userStatusStream => _userStatusController.stream;
+  Stream<Map<String, dynamic>> get messageStatusStream =>
+      _messageStatusController.stream;
+  Stream<Map<String, dynamic>> get userStatusStream =>
+      _userStatusController.stream;
 
   String? _baseUrl;
-  String? _currentUserId;
   bool _isConnected = false;
 
   bool get isConnected => _isConnected;
 
   Future<void> initialize(String baseUrl) async {
     _baseUrl = baseUrl;
-    
+
     // Configure Dio
     _dio.options.baseUrl = '$baseUrl/api/chat';
     _dio.options.connectTimeout = const Duration(seconds: 10);
     _dio.options.receiveTimeout = const Duration(seconds: 10);
-    
+
     // Add auth interceptor
     _dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
@@ -52,7 +62,7 @@ class ChatService {
         handler.next(options);
       },
       onError: (error, handler) {
-        print('Chat API Error: ${error.message}');
+        _logger.severe('Chat API Error: ${error.message}');
         handler.next(error);
       },
     ));
@@ -69,26 +79,26 @@ class ChatService {
         throw Exception('No auth token found');
       }
 
-      _socket = IO.io(_baseUrl, 
-        IO.OptionBuilder()
-          .setTransports(['websocket'])
-          .enableAutoConnect()
-          .setAuth({'token': token})
-          .build()
-      );
+      _socket = io.io(
+          _baseUrl,
+          io.OptionBuilder()
+              .setTransports(['websocket'])
+              .enableAutoConnect()
+              .setAuth({'token': token})
+              .build());
 
       _socket!.onConnect((_) {
-        print('Chat socket connected');
+        _logger.info('Chat socket connected');
         _isConnected = true;
       });
 
       _socket!.onDisconnect((_) {
-        print('Chat socket disconnected');
+        _logger.info('Chat socket disconnected');
         _isConnected = false;
       });
 
       _socket!.onConnectError((error) {
-        print('Chat socket connection error: $error');
+        _logger.severe('Chat socket connection error: $error');
         _isConnected = false;
       });
 
@@ -98,7 +108,7 @@ class ChatService {
           final message = Message.fromJson(data);
           _newMessageController.add(message);
         } catch (e) {
-          print('Error parsing new message: $e');
+          _logger.warning('Error parsing new message: $e');
         }
       });
 
@@ -108,7 +118,7 @@ class ChatService {
           final typing = TypingIndicator.fromJson(data);
           _typingController.add(typing);
         } catch (e) {
-          print('Error parsing typing indicator: $e');
+          _logger.warning('Error parsing typing indicator: $e');
         }
       });
 
@@ -151,7 +161,7 @@ class ChatService {
 
       _socket!.connect();
     } catch (e) {
-      print('Error connecting to chat socket: $e');
+      _logger.severe('Error connecting to chat socket: $e');
       _isConnected = false;
     }
   }
@@ -193,7 +203,8 @@ class ChatService {
   // API Methods
 
   // Get conversations
-  Future<List<Conversation>> getConversations({int page = 1, int limit = 20}) async {
+  Future<List<Conversation>> getConversations(
+      {int page = 1, int limit = 20}) async {
     try {
       final response = await _dio.get('/conversations', queryParameters: {
         'page': page,
@@ -202,12 +213,15 @@ class ChatService {
 
       if (response.data['success']) {
         final List<dynamic> conversationsJson = response.data['conversations'];
-        return conversationsJson.map((json) => Conversation.fromJson(json)).toList();
+        return conversationsJson
+            .map((json) => Conversation.fromJson(json))
+            .toList();
       } else {
-        throw Exception(response.data['message'] ?? 'Failed to get conversations');
+        throw Exception(
+            response.data['message'] ?? 'Failed to get conversations');
       }
     } catch (e) {
-      print('Error getting conversations: $e');
+      _logger.severe('Error getting conversations: $e');
       rethrow;
     }
   }
@@ -220,10 +234,11 @@ class ChatService {
       if (response.data['success']) {
         return Conversation.fromJson(response.data['conversation']);
       } else {
-        throw Exception(response.data['message'] ?? 'Failed to get conversation');
+        throw Exception(
+            response.data['message'] ?? 'Failed to get conversation');
       }
     } catch (e) {
-      print('Error getting conversation: $e');
+      _logger.severe('Error getting conversation: $e');
       rethrow;
     }
   }
@@ -243,18 +258,21 @@ class ChatService {
         // Get the full conversation details
         return await getConversation(response.data['conversation']['id']);
       } else {
-        throw Exception(response.data['message'] ?? 'Failed to create conversation');
+        throw Exception(
+            response.data['message'] ?? 'Failed to create conversation');
       }
     } catch (e) {
-      print('Error creating conversation: $e');
+      _logger.severe('Error creating conversation: $e');
       rethrow;
     }
   }
 
   // Get messages
-  Future<List<Message>> getMessages(String conversationId, {int page = 1, int limit = 50}) async {
+  Future<List<Message>> getMessages(String conversationId,
+      {int page = 1, int limit = 50}) async {
     try {
-      final response = await _dio.get('/conversations/$conversationId/messages', queryParameters: {
+      final response = await _dio
+          .get('/conversations/$conversationId/messages', queryParameters: {
         'page': page,
         'limit': limit,
       });
@@ -266,7 +284,7 @@ class ChatService {
         throw Exception(response.data['message'] ?? 'Failed to get messages');
       }
     } catch (e) {
-      print('Error getting messages: $e');
+      _logger.severe('Error getting messages: $e');
       rethrow;
     }
   }
@@ -302,7 +320,8 @@ class ChatService {
     String? replyToMessageId,
   }) async {
     try {
-      final response = await _dio.post('/conversations/$conversationId/messages', data: {
+      final response =
+          await _dio.post('/conversations/$conversationId/messages', data: {
         'content': content,
         'messageType': messageType.name,
         'replyToMessageId': replyToMessageId,
@@ -314,7 +333,7 @@ class ChatService {
         throw Exception(response.data['message'] ?? 'Failed to send message');
       }
     } catch (e) {
-      print('Error sending message: $e');
+      _logger.severe('Error sending message: $e');
       rethrow;
     }
   }
@@ -323,7 +342,8 @@ class ChatService {
   Future<Map<String, dynamic>> uploadFile(File file) async {
     try {
       final formData = FormData.fromMap({
-        'file': await MultipartFile.fromFile(file.path, filename: file.path.split('/').last),
+        'file': await MultipartFile.fromFile(file.path,
+            filename: file.path.split('/').last),
       });
 
       final response = await _dio.post('/upload', data: formData);
@@ -334,13 +354,14 @@ class ChatService {
         throw Exception(response.data['message'] ?? 'Failed to upload file');
       }
     } catch (e) {
-      print('Error uploading file: $e');
+      _logger.severe('Error uploading file: $e');
       rethrow;
     }
   }
 
   // Mark messages as read
-  Future<void> markMessagesAsRead(String conversationId, {List<String>? messageIds}) async {
+  Future<void> markMessagesAsRead(String conversationId,
+      {List<String>? messageIds}) async {
     try {
       await _dio.post('/conversations/$conversationId/read', data: {
         'messageIds': messageIds,
@@ -354,7 +375,7 @@ class ChatService {
         });
       }
     } catch (e) {
-      print('Error marking messages as read: $e');
+      _logger.severe('Error marking messages as read: $e');
       rethrow;
     }
   }
@@ -370,7 +391,7 @@ class ChatService {
         throw Exception(response.data['message'] ?? 'Failed to edit message');
       }
     } catch (e) {
-      print('Error editing message: $e');
+      _logger.severe('Error editing message: $e');
       rethrow;
     }
   }
@@ -384,7 +405,7 @@ class ChatService {
         throw Exception(response.data['message'] ?? 'Failed to delete message');
       }
     } catch (e) {
-      print('Error deleting message: $e');
+      _logger.severe('Error deleting message: $e');
       rethrow;
     }
   }
@@ -395,10 +416,11 @@ class ChatService {
       final response = await _dio.put('/conversations/$conversationId/archive');
 
       if (!response.data['success']) {
-        throw Exception(response.data['message'] ?? 'Failed to archive conversation');
+        throw Exception(
+            response.data['message'] ?? 'Failed to archive conversation');
       }
     } catch (e) {
-      print('Error archiving conversation: $e');
+      _logger.severe('Error archiving conversation: $e');
       rethrow;
     }
   }
@@ -409,10 +431,11 @@ class ChatService {
       final response = await _dio.put('/conversations/$conversationId/block');
 
       if (!response.data['success']) {
-        throw Exception(response.data['message'] ?? 'Failed to block conversation');
+        throw Exception(
+            response.data['message'] ?? 'Failed to block conversation');
       }
     } catch (e) {
-      print('Error blocking conversation: $e');
+      _logger.severe('Error blocking conversation: $e');
       rethrow;
     }
   }

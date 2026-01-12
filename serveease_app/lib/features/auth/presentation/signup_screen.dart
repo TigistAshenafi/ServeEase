@@ -9,7 +9,7 @@ import 'package:serveease_app/providers/auth_provider.dart';
 import 'package:serveease_app/shared/widgets/custom_button.dart';
 import 'package:serveease_app/shared/widgets/custom_text_field.dart';
 import 'package:serveease_app/core/utils/responsive.dart';
-import 'package:serveease_app/shared/widgets/language_toggle.dart';
+import 'package:serveease_app/shared/widgets/app_bar_language_toggle.dart';
 import 'package:serveease_app/shared/widgets/role_selector.dart';
 import 'package:serveease_app/l10n/app_localizations.dart';
 
@@ -27,8 +27,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
-  final bool _obscurePassword = true;
-  final bool _obscureConfirmPassword = true;
   Role _role = Role.seeker;
   bool get _isProvider => _role == Role.provider;
 
@@ -99,15 +97,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
       backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: ResponsiveWidget(
-          mobile: _buildMobileLayout(context, authProvider, theme, colorScheme, loc),
-          tablet: _buildTabletLayout(context, authProvider, theme, colorScheme, loc),
-          desktop: _buildDesktopLayout(context, authProvider, theme, colorScheme, loc),
+          mobile: _buildMobileLayout(
+              context, authProvider, theme, colorScheme, loc),
+          tablet: _buildTabletLayout(
+              context, authProvider, theme, colorScheme, loc),
+          desktop: _buildDesktopLayout(
+              context, authProvider, theme, colorScheme, loc),
         ),
       ),
     );
   }
 
-  Widget _buildMobileLayout(BuildContext context, AuthProvider authProvider, ThemeData theme, ColorScheme colorScheme, AppLocalizations loc) {
+  Widget _buildMobileLayout(BuildContext context, AuthProvider authProvider,
+      ThemeData theme, ColorScheme colorScheme, AppLocalizations loc) {
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 32.h),
       child: Form(
@@ -115,7 +117,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const LanguageToggle(alignment: Alignment.centerRight),
+            const AppBarLanguageToggle(
+              iconColor: Colors.grey,
+              textColor: Colors.black,
+            ),
             SizedBox(height: 16.h),
             _buildHeader(context, theme, colorScheme, loc),
             SizedBox(height: 48.h),
@@ -126,16 +131,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  Widget _buildTabletLayout(BuildContext context, AuthProvider authProvider, ThemeData theme, ColorScheme colorScheme, AppLocalizations loc) {
+  Widget _buildTabletLayout(BuildContext context, AuthProvider authProvider,
+      ThemeData theme, ColorScheme colorScheme, AppLocalizations loc) {
     return Center(
       child: SizedBox(
         width: 500.w,
-        child: _buildMobileLayout(context, authProvider, theme, colorScheme, loc),
+        child:
+            _buildMobileLayout(context, authProvider, theme, colorScheme, loc),
       ),
     );
   }
 
-  Widget _buildDesktopLayout(BuildContext context, AuthProvider authProvider, ThemeData theme, ColorScheme colorScheme, AppLocalizations loc) {
+  Widget _buildDesktopLayout(BuildContext context, AuthProvider authProvider,
+      ThemeData theme, ColorScheme colorScheme, AppLocalizations loc) {
     return Row(
       children: [
         Expanded(
@@ -143,13 +151,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [colorScheme.primary, colorScheme.primary.withOpacity(0.85)],
+                colors: [
+                  colorScheme.primary,
+                  colorScheme.primary.withOpacity(0.85)
+                ],
               ),
             ),
             child: Center(
               child: Text(
                 'ServeEase',
-                style: theme.textTheme.displayLarge?.copyWith(color: Colors.white),
+                style:
+                    theme.textTheme.displayLarge?.copyWith(color: Colors.white),
               ).animate().fadeIn(),
             ),
           ),
@@ -159,7 +171,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Center(
             child: SizedBox(
               width: 420.w,
-              child: _buildMobileLayout(context, authProvider, theme, colorScheme, loc),
+              child: _buildMobileLayout(
+                  context, authProvider, theme, colorScheme, loc),
             ),
           ),
         ),
@@ -173,31 +186,32 @@ class _RegisterScreenState extends State<RegisterScreen> {
     ColorScheme colorScheme,
     AppLocalizations loc,
   ) {
-  return Center(
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(
-          loc.createAccountTitle,
-          style: theme.textTheme.displayMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: colorScheme.onSurface,
-          ),
-        ).animate().fadeIn(delay: 200.ms).slideX(begin: -0.2),
-        SizedBox(height: 8.h),
-        Text(
-          loc.signupSubtitle,
-          textAlign: TextAlign.center, // ensure subtitle is centered
-          style: theme.textTheme.bodyLarge?.copyWith(
-            color: colorScheme.onSurfaceVariant,
-          ),
-        ).animate().fadeIn(delay: 400.ms).slideX(begin: -0.2),
-      ],
-    ),
-  );
-}
+    return Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            loc.createAccountTitle,
+            style: theme.textTheme.displayMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: colorScheme.onSurface,
+            ),
+          ).animate().fadeIn(delay: 200.ms).slideX(begin: -0.2),
+          SizedBox(height: 8.h),
+          Text(
+            loc.signupSubtitle,
+            textAlign: TextAlign.center, // ensure subtitle is centered
+            style: theme.textTheme.bodyLarge?.copyWith(
+              color: colorScheme.onSurfaceVariant,
+            ),
+          ).animate().fadeIn(delay: 400.ms).slideX(begin: -0.2),
+        ],
+      ),
+    );
+  }
 
-  Widget _buildSignupForm(BuildContext context, AuthProvider authProvider, ThemeData theme, ColorScheme colorScheme, AppLocalizations loc) {
+  Widget _buildSignupForm(BuildContext context, AuthProvider authProvider,
+      ThemeData theme, ColorScheme colorScheme, AppLocalizations loc) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -205,7 +219,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
           controller: _nameController,
           label: loc.nameLabel,
           hint: loc.nameValidation,
-          validator: (v) => (v == null || v.trim().isEmpty) ? loc.nameValidation : (v.length < 3 ? loc.validationNameLength : null),
+          validator: (v) => (v == null || v.trim().isEmpty)
+              ? loc.nameValidation
+              : (v.length < 3 ? loc.validationNameLength : null),
         ).animate().fadeIn(delay: 600.ms).slideY(begin: 0.2),
         SizedBox(height: 24.h),
         EmailTextField(
@@ -213,7 +229,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
           label: loc.emailLabel,
           hint: loc.emailHint,
           validator: (v) {
-            if (v == null || v.trim().isEmpty) return loc.validationEmailRequired;
+            if (v == null || v.trim().isEmpty) {
+              return loc.validationEmailRequired;
+            }
             return null;
           },
         ).animate().fadeIn(delay: 700.ms).slideY(begin: 0.2),
@@ -244,13 +262,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   : null,
         ).animate().fadeIn(delay: 900.ms).slideY(begin: 0.2),
         SizedBox(height: 24.h),
-        _buildRoleSelection(theme, colorScheme, loc).animate().fadeIn(delay: 1000.ms).slideY(begin: 0.2),
+        _buildRoleSelection(theme, colorScheme, loc)
+            .animate()
+            .fadeIn(delay: 1000.ms)
+            .slideY(begin: 0.2),
         if (_isProvider)
           Padding(
             padding: EdgeInsets.only(top: 16.h),
             child: Text(
               loc.providerInfoNote,
-              style: theme.textTheme.bodySmall?.copyWith(color: colorScheme.primary),
+              style: theme.textTheme.bodySmall
+                  ?.copyWith(color: colorScheme.primary),
             ),
           ),
         SizedBox(height: 32.h),
@@ -267,10 +289,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
             children: [
               Text(
                 loc.loginRedirectPrefix,
-                style: theme.textTheme.bodyMedium?.copyWith(color: colorScheme.onSurfaceVariant),
+                style: theme.textTheme.bodyMedium
+                    ?.copyWith(color: colorScheme.onSurfaceVariant),
               ),
               TextButton(
-                onPressed: () => Navigator.pushReplacementNamed(context, '/login'),
+                onPressed: () =>
+                    Navigator.pushReplacementNamed(context, '/login'),
                 child: Text(
                   loc.loginRedirectAction,
                   style: TextStyle(fontWeight: FontWeight.w600),
@@ -283,13 +307,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  Widget _buildRoleSelection(ThemeData theme, ColorScheme colorScheme, AppLocalizations loc) {
+  Widget _buildRoleSelection(
+      ThemeData theme, ColorScheme colorScheme, AppLocalizations loc) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           loc.joinAsLabel,
-          style: theme.textTheme.labelLarge?.copyWith(color: colorScheme.onSurfaceVariant),
+          style: theme.textTheme.labelLarge
+              ?.copyWith(color: colorScheme.onSurfaceVariant),
         ),
         SizedBox(height: 12.h),
         Row(
@@ -300,22 +326,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 16.h),
                   decoration: BoxDecoration(
-                    color: _role == Role.seeker ? colorScheme.primary : Colors.transparent,
+                    color: _role == Role.seeker
+                        ? colorScheme.primary
+                        : Colors.transparent,
                     borderRadius: BorderRadius.circular(12),
                     border: _role == Role.seeker
                         ? null
-                        : Border.all(color: colorScheme.outline.withOpacity(0.3)),
+                        : Border.all(
+                            color: colorScheme.outline.withOpacity(0.3)),
                   ),
                   child: Column(
                     children: [
                       Icon(Icons.person_search_rounded,
-                          color: _role == Role.seeker ? Colors.white : colorScheme.onSurfaceVariant),
+                          color: _role == Role.seeker
+                              ? Colors.white
+                              : colorScheme.onSurfaceVariant),
                       SizedBox(height: 8.h),
                       Text(
                         loc.serviceSeekerLabel,
                         style: theme.textTheme.labelMedium?.copyWith(
-                          fontWeight: _role == Role.seeker ? FontWeight.w600 : FontWeight.w500,
-                          color: _role == Role.seeker ? Colors.white : colorScheme.onSurfaceVariant,
+                          fontWeight: _role == Role.seeker
+                              ? FontWeight.w600
+                              : FontWeight.w500,
+                          color: _role == Role.seeker
+                              ? Colors.white
+                              : colorScheme.onSurfaceVariant,
                         ),
                       ),
                     ],
@@ -330,22 +365,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 16.h),
                   decoration: BoxDecoration(
-                    color: _role == Role.provider ? colorScheme.primary : Colors.transparent,
+                    color: _role == Role.provider
+                        ? colorScheme.primary
+                        : Colors.transparent,
                     borderRadius: BorderRadius.circular(12),
                     border: _role == Role.provider
                         ? null
-                        : Border.all(color: colorScheme.outline.withOpacity(0.3)),
+                        : Border.all(
+                            color: colorScheme.outline.withOpacity(0.3)),
                   ),
                   child: Column(
                     children: [
                       Icon(Icons.work_rounded,
-                          color: _role == Role.provider ? Colors.white : colorScheme.onSurfaceVariant),
+                          color: _role == Role.provider
+                              ? Colors.white
+                              : colorScheme.onSurfaceVariant),
                       SizedBox(height: 8.h),
                       Text(
                         loc.serviceProviderLabel,
                         style: theme.textTheme.labelMedium?.copyWith(
-                          fontWeight: _role == Role.provider ? FontWeight.w600 : FontWeight.w500,
-                          color: _role == Role.provider ? Colors.white : colorScheme.onSurfaceVariant,
+                          fontWeight: _role == Role.provider
+                              ? FontWeight.w600
+                              : FontWeight.w500,
+                          color: _role == Role.provider
+                              ? Colors.white
+                              : colorScheme.onSurfaceVariant,
                         ),
                       ),
                     ],

@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-  "dev": "npx next dev --port 3001",
-  "build": "next build",
-  "start": "npx next start --port 3001",
-  "lint": "eslint"
+    "dev": "npx next dev --port 3001",
+    "build": "next build",
+    "start": "npx next start --port 3001",
+    "lint": "eslint"
   },
   "dependencies": {
     "@heroicons/react": "^2.0.18",

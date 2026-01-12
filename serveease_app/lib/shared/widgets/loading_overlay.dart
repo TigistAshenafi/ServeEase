@@ -1,4 +1,6 @@
 // lib/widgets/loading_overlay.dart
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 
 class LoadingOverlay extends StatelessWidget {

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:logging/logging.dart';
 
 /// Generic API response wrapper used across the app.
 class ApiResponse<T> {
@@ -23,6 +24,7 @@ class ApiService {
   static final ApiService _instance = ApiService._internal();
   factory ApiService() => _instance;
 
+  static final Logger _logger = Logger('ApiService');
   static final http.Client _client = http.Client();
 
   // Base URLs
@@ -31,10 +33,11 @@ class ApiService {
       return dotenv.env['API_BASE_URL'] ?? 'http://localhost:3000';
     } catch (e) {
       // Fallback if dotenv is not initialized
-      print('Warning: dotenv not initialized, using fallback URL');
+      _logger.warning('dotenv not initialized, using fallback URL: $e');
       return 'http://localhost:3000';
     }
   }
+
   static String get authBase => '$_baseHost/api/auth';
   static String get providerBase => '$_baseHost/api/provider';
   static String get servicesBase => '$_baseHost/api/services';
@@ -43,7 +46,8 @@ class ApiService {
   static String get aiBase => '$_baseHost/api/ai';
 
   static String? _accessToken;
-  static String? _refreshTokenCookie; // raw cookie string: refreshToken=xyz; Path=/
+  static String?
+      _refreshTokenCookie; // raw cookie string: refreshToken=xyz; Path=/
 
   /// Load stored tokens/cookies
   static Future<void> init() async {
@@ -74,8 +78,6 @@ class ApiService {
     await prefs.remove('access_token');
     await prefs.remove('refresh_cookie');
   }
-
-
 
   /// Common headers
   static Map<String, String> _headers({bool withAuth = true}) {
@@ -178,7 +180,8 @@ class ApiService {
       if (success) {
         T? data;
         if (fromJson != null) {
-          final payload = json['data'] ?? json['user'] ?? json['profile'] ?? json;
+          final payload =
+              json['data'] ?? json['user'] ?? json['profile'] ?? json;
           data = fromJson(payload);
         }
         return ApiResponse<T>(

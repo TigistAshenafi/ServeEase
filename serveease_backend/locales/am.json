@@ -1,0 +1,156 @@
+{
+  "auth": {
+    "loginSuccess": "በተሳካ ሁኔታ ገብተዋል",
+    "loginFailed": "ትክክል ያልሆነ ኢሜይል ወይም የይለፍ ቃል",
+    "registrationSuccess": "ተጠቃሚ በተሳካ ሁኔታ ተመዝግቧል። የማረጋገጫ ኮድ ለኢሜይልዎ ይፈትሹ።",
+    "registrationFailed": "ምዝገባ አልተሳካም",
+    "emailVerified": "ኢሜይል በተሳካ ሁኔታ ተረጋግጧል",
+    "emailVerificationFailed": "የኢሜይል ማረጋገጫ አልተሳካም",
+    "invalidVerificationCode": "ትክክል ያልሆነ ወይም ጊዜው ያለፈ የማረጋገጫ ኮድ",
+    "passwordResetSent": "የይለፍ ቃል ዳግም ማስጀመሪያ ኮድ ወደ ኢሜይልዎ ተልኳል",
+    "passwordResetSuccess": "የይለፍ ቃል ዳግም ማስጀመሪያ ተሳክቷል",
+    "passwordResetFailed": "የይለፍ ቃል ዳግም ማስጀመሪያ አልተሳካም",
+    "invalidResetCode": "ትክክል ያልሆነ ወይም ጊዜው ያለፈ ዳግም ማስጀመሪያ ኮድ",
+    "userNotFound": "ተጠቃሚ አልተገኘም",
+    "emailAlreadyExists": "በዚህ ኢሜይል ተጠቃሚ አስቀድሞ አለ",
+    "emailNotVerified": "ከመግባትዎ በፊት እባክዎ ኢሜይልዎን ያረጋግጡ",
+    "accountSuspended": "መለያዎ ታግዷል",
+    "sessionExpired": "ክፍለ ጊዜ አልፏል። እባክዎ እንደገና ይግቡ",
+    "accessDenied": "መዳረሻ ተከልክሏል",
+    "tokenRequired": "የመዳረሻ ቶከን ያስፈልጋል",
+    "invalidToken": "ትክክል ያልሆነ የመዳረሻ ቶከን"
+  },
+  "validation": {
+    "allFieldsRequired": "ሁሉም መስኮች ያስፈልጋሉ",
+    "invalidEmail": "እባክዎ ትክክለኛ ኢሜይል አድራሻ ያቅርቡ",
+    "passwordTooShort": "የይለፍ ቃል ቢያንስ 6 ቁምፊዎች መሆን አለበት",
+    "passwordsDoNotMatch": "የይለፍ ቃሎች አይዛመዱም",
+    "invalidRole": "ሚና ፈላጊ ወይም አቅራቢ መሆን አለበት",
+    "invalidProviderType": "የአቅራቢ አይነት ግለሰብ ወይም ድርጅት መሆን አለበት",
+    "certificatesRequired": "ግለሰብ አቅራቢዎች ቢያንስ አንድ ሰርተፊኬት መስቀል አለባቸው",
+    "invalidServiceCategory": "ትክክል ያልሆነ የአገልግሎት ምድብ",
+    "invalidPrice": "ዋጋ አዎንታዊ ቁጥር መሆን አለበት",
+    "invalidDuration": "ጊዜ አዎንታዊ ቁጥር መሆን አለበት"
+  },
+  "provider": {
+    "profileSaved": "የአቅራቢ መገለጫ በተሳካ ሁኔታ ተቀምጧል",
+    "profileNotFound": "የአቅራቢ መገለጫ አልተገኘም",
+    "approvalPending": "የአቅራቢ ማመልከቻዎ ፈቃድ በመጠባበቅ ላይ ነው",
+    "approvalApproved": "እንኳን ደስ አለዎት! የአቅራቢ ማመልከቻዎ ተፈቅዷል",
+    "approvalRejected": "የአቅራቢ ማመልከቻዎ ተቀባይነት አላገኘም",
+    "cannotCreateServices": "የተፈቀዱ አቅራቢዎች ብቻ አገልግሎቶችን መፍጠር ይችላሉ",
+    "employeeAdded": "ሰራተኛ በተሳካ ሁኔታ ተጨመረ",
+    "employeeUpdated": "ሰራተኛ በተሳካ ሁኔታ ተዘምኗል",
+    "employeeDeleted": "ሰራተኛ በተሳካ ሁኔታ ተሰርዟል",
+    "employeeNotFound": "ሰራተኛ አልተገኘም",
+    "organizationOnly": "ድርጅቶች ብቻ ሰራተኞችን ማስተዳደር ይችላሉ",
+    "employeeAlreadyExists": "በዚህ ኢሜይል ሰራተኛ አስቀድሞ አለ"
+  },
+  "service": {
+    "serviceCreated": "አገልግሎት በተሳካ ሁኔታ ተፈጠረ",
+    "serviceUpdated": "አገልግሎት በተሳካ ሁኔታ ተዘምኗል",
+    "serviceDeleted": "አገልግሎት በተሳካ ሁኔታ ተሰርዟል",
+    "serviceNotFound": "አገልግሎት አልተገኘም",
+    "serviceUnavailable": "አገልግሎት አልተገኘም ወይም አይገኝም",
+    "onlyOwnerCanModify": "የአገልግሎት ባለቤት ብቻ ይህንን አገልግሎት ማሻሻል ይችላል"
+  },
+  "request": {
+    "requestCreated": "የአገልግሎት ጥያቄ በተሳካ ሁኔታ ተፈጠረ",
+    "requestUpdated": "የአገልግሎት ጥያቄ በተሳካ ሁኔታ ተዘምኗል",
+    "requestNotFound": "የአገልግሎት ጥያቄ አልተገኘም",
+    "requestAccepted": "የአገልግሎት ጥያቄ ተቀባይነት አግኝቷል",
+    "requestRejected": "የአገልግሎት ጥያቄ ተቀባይነት አላገኘም",
+    "requestCompleted": "የአገልግሎት ጥያቄ ተጠናቋል",
+    "requestCancelled": "የአገልግሎት ጥያቄ ተሰርዟል",
+    "employeeAssigned": "ሰራተኛ ለአገልግሎት ጥያቄ ተመድቧል",
+    "cannotModifyRequest": "ይህንን የአገልግሎት ጥያቄ ማሻሻል አይችሉም",
+    "invalidStatus": "ትክክል ያልሆነ የጥያቄ ሁኔታ",
+    "alreadyRated": "ይህንን የአገልግሎት ጥያቄ አስቀድመው ደረጃ ሰጥተውታል"
+  },
+  "chat": {
+    "conversationCreated": "ውይይት በተሳካ ሁኔታ ተፈጠረ",
+    "conversationNotFound": "ውይይት አልተገኘም",
+    "messageNotFound": "መልዕክት አልተገኘም",
+    "messageSent": "መልዕክት በተሳካ ሁኔታ ተላከ",
+    "messageDeleted": "መልዕክት በተሳካ ሁኔታ ተሰርዟል",
+    "accessDenied": "ለዚህ ውይይት መዳረሻ የለዎትም",
+    "fileUploadFailed": "ፋይል መስቀል አልተሳካም",
+    "fileTooLarge": "የፋይል መጠን በጣም ትልቅ ነው። ከፍተኛ መጠን 10MB ነው",
+    "invalidFileType": "ትክክል ያልሆነ የፋይል አይነት"
+  },
+  "admin": {
+    "providerApproved": "አቅራቢ በተሳካ ሁኔታ ተፈቅዷል",
+    "providerRejected": "አቅራቢ በተሳካ ሁኔታ ተቀባይነት አላገኘም",
+    "userSuspended": "ተጠቃሚ በተሳካ ሁኔታ ታግዷል",
+    "userActivated": "ተጠቃሚ በተሳካ ሁኔታ ነቃ",
+    "userDeleted": "ተጠቃሚ በተሳካ ሁኔታ ተሰርዟል",
+    "cannotSuspendAdmin": "የአስተዳዳሪ ተጠቃሚዎችን ማገድ አይቻልም",
+    "cannotDeleteAdmin": "የአስተዳዳሪ ተጠቃሚዎችን መሰረዝ አይቻልም",
+    "adminOnly": "የአስተዳዳሪ መዳረሻ ያስፈልጋል"
+  },
+  "email": {
+    "verificationSubject": "የሰርቭኢዝ መለያዎን ያረጋግጡ",
+    "passwordResetSubject": "የሰርቭኢዝ የይለፍ ቃልዎን ዳግም ያስጀምሩ",
+    "providerApprovalSubject": "የአቅራቢ ማመልከቻ ሁኔታ - ሰርቭኢዝ",
+    "serviceRequestSubject": "አዲስ የአገልግሎት ጥያቄ - ሰርቭኢዝ",
+    "requestStatusSubject": "የአገልግሎት ጥያቄ ዝመና - ሰርቭኢዝ"
+  },
+  "errors": {
+    "internalServerError": "የውስጥ አገልጋይ ስህተት",
+    "badRequest": "መጥፎ ጥያቄ",
+    "notFound": "ሀብት አልተገኘም",
+    "unauthorized": "ያልተፈቀደ መዳረሻ",
+    "forbidden": "መዳረሻ ተከልክሏል",
+    "validationError": "የማረጋገጫ ስህተት",
+    "databaseError": "የመረጃ ቋት ስህተት",
+    "emailSendFailed": "ኢሜይል መላክ አልተሳካም",
+    "fileUploadError": "የፋይል መስቀል ስህተት",
+    "networkError": "የኔትወርክ ስህተት"
+  },
+  "success": {
+    "operationSuccessful": "ክወና በተሳካ ሁኔታ ተጠናቋል",
+    "dataRetrieved": "መረጃ በተሳካ ሁኔታ ተወሰደ",
+    "recordCreated": "መዝገብ በተሳካ ሁኔታ ተፈጠረ",
+    "recordUpdated": "መዝገብ በተሳካ ሁኔታ ተዘምኗል",
+    "recordDeleted": "መዝገብ በተሳካ ሁኔታ ተሰርዟል"
+  },
+  "categories": {
+    "home_repair": "የቤት ጥገና",
+    "cleaning": "ጽዳት",
+    "gardening": "የአትክልት ስራ",
+    "it_support": "የአይቲ ድጋፍ",
+    "tutoring": "ትምህርት",
+    "delivery": "ማድረስ",
+    "beauty": "ውበት እና ጤንነት",
+    "automotive": "የመኪና ስራ",
+    "pet_care": "የቤት እንስሳት እንክብካቤ",
+    "event_planning": "የዝግጅት እቅድ"
+  },
+  "status": {
+    "pending": "በመጠባበቅ ላይ",
+    "accepted": "ተቀባይነት አግኝቷል",
+    "assigned": "ተመድቧል",
+    "in_progress": "በሂደት ላይ",
+    "completed": "ተጠናቋል",
+    "cancelled": "ተሰርዟል",
+    "active": "ንቁ",
+    "inactive": "ንቁ ያልሆነ",
+    "approved": "ተፈቅዷል",
+    "rejected": "ተቀባይነት አላገኘም",
+    "suspended": "ታግዷል"
+  },
+  "roles": {
+    "admin": "አስተዳዳሪ",
+    "provider": "የአገልግሎት አቅራቢ",
+    "seeker": "የአገልግሎት ፈላጊ"
+  },
+  "notifications": {
+    "newServiceRequest": "አዲስ የአገልግሎት ጥያቄ ደርሶዎታል",
+    "requestStatusUpdate": "የአገልግሎት ጥያቄዎ ሁኔታ ተዘምኗል",
+    "providerApproved": "የአቅራቢ ማመልከቻዎ ተፈቅዷል",
+    "providerRejected": "የአቅራቢ ማመልከቻዎ ተቀባይነት አላገኘም",
+    "newMessage": "አዲስ መልዕክት አለዎት",
+    "employeeAssigned": "ሰራተኛ ለጥያቄዎ ተመድቧል",
+    "serviceCompleted": "አገልግሎትዎ ተጠናቋል"
+  }
+}

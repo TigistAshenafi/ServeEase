@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 // import 'package:flutter_animate/flutter_animate.dart';
 
@@ -103,7 +105,8 @@ class _CustomButtonState extends State<CustomButton>
     );
   }
 
-  Widget _buildButton(BuildContext context, ThemeData theme, ColorScheme colorScheme) {
+  Widget _buildButton(
+      BuildContext context, ThemeData theme, ColorScheme colorScheme) {
     final content = _buildButtonContent(context, theme);
 
     switch (widget.type) {
@@ -114,11 +117,12 @@ class _CustomButtonState extends State<CustomButton>
             backgroundColor: colorScheme.primary,
             foregroundColor: colorScheme.onPrimary,
             elevation: 2,
-            shadowColor: colorScheme.primary.withOpacity(0.3),
+            shadowColor: colorScheme.primary.withValues(alpha: 0.3),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(widget.borderRadius),
             ),
-            padding: widget.padding ?? const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            padding: widget.padding ??
+                const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
             minimumSize: Size(0, widget.height ?? 52),
           ),
           child: content,
@@ -131,11 +135,12 @@ class _CustomButtonState extends State<CustomButton>
             backgroundColor: colorScheme.secondary,
             foregroundColor: colorScheme.onSecondary,
             elevation: 2,
-            shadowColor: colorScheme.secondary.withOpacity(0.3),
+            shadowColor: colorScheme.secondary.withValues(alpha: 0.3),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(widget.borderRadius),
             ),
-            padding: widget.padding ?? const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            padding: widget.padding ??
+                const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
             minimumSize: Size(0, widget.height ?? 52),
           ),
           child: content,
@@ -150,7 +155,8 @@ class _CustomButtonState extends State<CustomButton>
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(widget.borderRadius),
             ),
-            padding: widget.padding ?? const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            padding: widget.padding ??
+                const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
             minimumSize: Size(0, widget.height ?? 52),
           ),
           child: content,
@@ -164,7 +170,8 @@ class _CustomButtonState extends State<CustomButton>
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(widget.borderRadius),
             ),
-            padding: widget.padding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            padding: widget.padding ??
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             minimumSize: Size(0, widget.height ?? 48),
           ),
           child: content,

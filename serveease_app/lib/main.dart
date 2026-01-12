@@ -1,18 +1,17 @@
 // lib/main.dart
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:serveease_app/core/localization/locale_controller.dart';
+import 'package:serveease_app/core/localization/locale_provider.dart';
 
 import 'package:serveease_app/core/services/api_service.dart';
 import 'package:serveease_app/core/theme/app_theme.dart';
 import 'package:serveease_app/l10n/app_localizations.dart';
-
-// 🔥 Locale controller (YOUR EXISTING ONE)
-// import 'package:serveease_app/core/controllers/locale_controller.dart';
 
 import 'package:serveease_app/features/admin/provider_approvals_screen.dart';
 import 'package:serveease_app/features/ai/ai_chat_screen.dart';
@@ -70,6 +69,7 @@ class MyApp extends StatelessWidget {
       builder: (_, __) {
         return MultiProvider(
           providers: [
+            ChangeNotifierProvider(create: (_) => LocaleProvider()),
             ChangeNotifierProvider(create: (_) => AuthProvider()),
             ChangeNotifierProvider(create: (_) => ProviderProfileProvider()),
             ChangeNotifierProvider(create: (_) => ServiceProvider()),
@@ -79,16 +79,17 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(create: (_) => AdminProvider()),
             ChangeNotifierProvider(create: (_) => ChatProvider()),
           ],
-          child: AnimatedBuilder(
-            animation: localeController,
-            builder: (context, _) {
+          child: Consumer<LocaleProvider>(
+            builder: (context, localeProvider, child) {
               return MaterialApp(
                 debugShowCheckedModeBanner: false,
 
-                // 🌍 LOCALIZATION (CONNECTED TO CONTROLLER)
-
-                locale: localeController.locale,
-                supportedLocales: LocaleController.supportedLocales,
+                // 🌍 LOCALIZATION
+                locale: localeProvider.currentLocale,
+                supportedLocales: const [
+                  Locale('en'),
+                  Locale('am'),
+                ],
                 localizationsDelegates: const [
                   AppLocalizations.delegate,
                   GlobalMaterialLocalizations.delegate,
@@ -130,7 +131,8 @@ class MyApp extends StatelessWidget {
                   if (settings.name?.startsWith('/chat/') == true) {
                     final conversationId = settings.name!.split('/')[2];
                     return MaterialPageRoute(
-                      builder: (context) => ChatScreen(conversationId: conversationId),
+                      builder: (context) =>
+                          ChatScreen(conversationId: conversationId),
                     );
                   }
                   return null;
@@ -157,9 +159,13 @@ class _AuthWrapperState extends State<AuthWrapper> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<AuthProvider>().initialize();
-      
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // Initialize locale provider first
+      await context.read<LocaleProvider>().initialize();
+
+      // Then initialize auth provider
+      await context.read<AuthProvider>().initialize();
+
       // Initialize chat service when user is authenticated
       final authProvider = context.read<AuthProvider>();
       if (authProvider.isAuthenticated) {

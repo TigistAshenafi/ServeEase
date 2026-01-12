@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+// import { useTranslations } from 'next-intl';
 import {
   HomeIcon,
   UsersIcon,
@@ -16,6 +17,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { logout, getCurrentUser } from '@/lib/auth';
 import { User } from '@/lib/types';
+// import LanguageSwitcher from './LanguageSwitcher';
 
 
 
@@ -23,19 +25,22 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 
-const navigation = [
-  { name: 'Dashboard', href: '/', icon: HomeIcon },
-  { name: 'Provider Approvals', href: '/providers', icon: BuildingOfficeIcon },
-  { name: 'User Management', href: '/users', icon: UsersIcon },
-  { name: 'Service Moderation', href: '/services', icon: WrenchScrewdriverIcon },
-  { name: 'Reports & Activity', href: '/reports', icon: ChartBarIcon },
-  { name: 'Documents Review', href: '/documents', icon: DocumentTextIcon },
-];
-
 export default function Layout({ children }: LayoutProps) {
+  // Temporarily disable translations for testing
+  // const t = useTranslations('navigation');
+  // const tCommon = useTranslations('common');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const pathname = usePathname();
+
+  const navigation = [
+    { name: 'Dashboard', href: '/', icon: HomeIcon },
+    { name: 'Providers', href: '/providers', icon: BuildingOfficeIcon },
+    { name: 'Users', href: '/users', icon: UsersIcon },
+    { name: 'Services', href: '/services', icon: WrenchScrewdriverIcon },
+    { name: 'Reports', href: '/reports', icon: ChartBarIcon },
+    { name: 'Documents Review', href: '/documents', icon: DocumentTextIcon },
+  ];
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -129,7 +134,7 @@ export default function Layout({ children }: LayoutProps) {
               className="flex w-full items-center px-2 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50 hover:text-gray-900"
             >
               <ArrowRightOnRectangleIcon className="mr-3 h-5 w-5" />
-              Sign out
+              Logout
             </button>
           </div>
         </div>
@@ -150,6 +155,8 @@ export default function Layout({ children }: LayoutProps) {
           <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
             <div className="flex flex-1"></div>
             <div className="flex items-center gap-x-4 lg:gap-x-6">
+              {/* <LanguageSwitcher /> */}
+              <div className="text-sm text-gray-500">Language Switcher (Disabled)</div>
               {user && (
                 <div className="hidden lg:block">
                   <p className="text-sm font-medium text-gray-900">{user.name}</p>

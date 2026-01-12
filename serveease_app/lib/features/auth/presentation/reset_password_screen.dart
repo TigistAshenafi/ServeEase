@@ -1,19 +1,21 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:serveease_app/providers/auth_provider.dart';
-import 'package:serveease_app/l10n/app_localizations.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({super.key});
 
   @override
-  _ResetPasswordScreenState createState() => _ResetPasswordScreenState();
+  ResetPasswordScreenState createState() => ResetPasswordScreenState();
 }
 
-class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
+class ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
-  final List<TextEditingController> _codeControllers = List.generate(6, (_) => TextEditingController());
+  final List<TextEditingController> _codeControllers =
+      List.generate(6, (_) => TextEditingController());
   final List<FocusNode> _codeFocusNodes = List.generate(6, (_) => FocusNode());
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
@@ -31,14 +33,16 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    final args =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
     _email = args?['email'];
   }
 
   void _setupFocusListeners() {
     for (int i = 0; i < _codeControllers.length; i++) {
       _codeControllers[i].addListener(() {
-        if (_codeControllers[i].text.isNotEmpty && i < _codeControllers.length - 1) {
+        if (_codeControllers[i].text.isNotEmpty &&
+            i < _codeControllers.length - 1) {
           _codeFocusNodes[i + 1].requestFocus();
         }
       });
@@ -51,7 +55,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     if (_formKey.currentState!.validate()) {
       if (_passwordController.text != _confirmPasswordController.text) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Passwords do not match'), backgroundColor: Colors.red),
+          SnackBar(
+              content: Text('Passwords do not match'),
+              backgroundColor: Colors.red),
         );
         return;
       }
@@ -59,14 +65,17 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       final code = _getVerificationCode();
       if (code.length != 6) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Please enter the complete 6-digit code'), backgroundColor: Colors.red),
+          SnackBar(
+              content: Text('Please enter the complete 6-digit code'),
+              backgroundColor: Colors.red),
         );
         return;
       }
 
       if (_email == null || _email!.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Email is required'), backgroundColor: Colors.red),
+          SnackBar(
+              content: Text('Email is required'), backgroundColor: Colors.red),
         );
         return;
       }
@@ -79,14 +88,23 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       );
 
       if (response.success) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Password reset successfully!'), backgroundColor: Colors.green, duration: Duration(seconds: 3)),
-        );
-        Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                content: Text('Password reset successfully!'),
+                backgroundColor: Colors.green,
+                duration: Duration(seconds: 3)),
+          );
+          Navigator.pushNamedAndRemoveUntil(
+              context, '/login', (route) => false);
+        }
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(response.message), backgroundColor: Colors.red),
-        );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                content: Text(response.message), backgroundColor: Colors.red),
+          );
+        }
       }
     }
   }
@@ -98,7 +116,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         final authProvider = Provider.of<AuthProvider>(context, listen: false);
         await authProvider.forgotPassword(_email!);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Code resent successfully'), backgroundColor: Colors.green),
+          SnackBar(
+              content: Text('Code resent successfully'),
+              backgroundColor: Colors.green),
         );
       } finally {
         if (mounted) {
@@ -126,7 +146,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     final authProvider = Provider.of<AuthProvider>(context);
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: colorScheme.surface,
@@ -153,7 +172,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 ),
               ),
               SizedBox(height: 48.h),
-              
+
               // Title - Similar styling to Login
               Center(
                 child: Text(
@@ -165,7 +184,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 ),
               ),
               SizedBox(height: 8.h),
-              
+
               // Description text
               Text(
                 'Enter the 6-digit code sent to $_email',
@@ -194,7 +213,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         border: const OutlineInputBorder(),
                         filled: false, // Removed filled background
                       ),
-                      style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+                      style: theme.textTheme.headlineSmall
+                          ?.copyWith(fontWeight: FontWeight.bold),
                       onChanged: (value) {
                         if (value.isNotEmpty && index < 5) {
                           _codeFocusNodes[index + 1].requestFocus();
@@ -202,7 +222,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           _codeFocusNodes[index - 1].requestFocus();
                         }
                       },
-                      validator: (value) => (value == null || value.isEmpty) ? '' : null,
+                      validator: (value) =>
+                          (value == null || value.isEmpty) ? '' : null,
                     ),
                   );
                 }),
@@ -220,15 +241,22 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   prefixIcon: const Icon(Icons.lock_outline),
                   suffixIcon: IconButton(
                     icon: Icon(
-                      _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                      _obscurePassword
+                          ? Icons.visibility
+                          : Icons.visibility_off,
                     ),
-                    onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
+                    onPressed: () =>
+                        setState(() => _obscurePassword = !_obscurePassword),
                   ),
                   filled: false, // Removed filled background
                 ),
                 validator: (value) {
-                  if (value == null || value.isEmpty) return 'Please enter new password';
-                  if (value.length < 6) return 'Password must be at least 6 characters';
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter new password';
+                  }
+                  if (value.length < 6) {
+                    return 'Password must be at least 6 characters';
+                  }
                   return null;
                 },
               ),
@@ -245,15 +273,22 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   prefixIcon: const Icon(Icons.lock_outline),
                   suffixIcon: IconButton(
                     icon: Icon(
-                      _obscureConfirmPassword ? Icons.visibility : Icons.visibility_off,
+                      _obscureConfirmPassword
+                          ? Icons.visibility
+                          : Icons.visibility_off,
                     ),
-                    onPressed: () => setState(() => _obscureConfirmPassword = !_obscureConfirmPassword),
+                    onPressed: () => setState(() =>
+                        _obscureConfirmPassword = !_obscureConfirmPassword),
                   ),
                   filled: false, // Removed filled background
                 ),
                 validator: (value) {
-                  if (value == null || value.isEmpty) return 'Please confirm password';
-                  if (value != _passwordController.text) return 'Passwords do not match';
+                  if (value == null || value.isEmpty) {
+                    return 'Please confirm password';
+                  }
+                  if (value != _passwordController.text) {
+                    return 'Passwords do not match';
+                  }
                   return null;
                 },
               ),
@@ -267,7 +302,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   onPressed: _resetPassword,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: colorScheme.primary,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8)),
                     elevation: 2,
                   ),
                   child: authProvider.isLoading
@@ -298,7 +334,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       ? SizedBox(
                           width: 20.w,
                           height: 20.h,
-                          child: const CircularProgressIndicator(strokeWidth: 2),
+                          child:
+                              const CircularProgressIndicator(strokeWidth: 2),
                         )
                       : TextButton(
                           onPressed: _resendCode,

@@ -10,15 +10,14 @@ class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
 
   @override
-  _ForgotPasswordScreenState createState() => _ForgotPasswordScreenState();
+  ForgotPasswordScreenState createState() => ForgotPasswordScreenState();
 }
 
-class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   bool _isCodeSent = false;
   String? _sentEmail;
-  final bool _obscurePassword = true; // Added for password visibility toggle
   bool _isResending = false; // for resend code loading
 
   Future<void> _sendResetCode() async {
@@ -50,7 +49,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(response.message), backgroundColor: Colors.red),
+          SnackBar(
+              content: Text(response.message), backgroundColor: Colors.red),
         );
       }
     }
@@ -78,12 +78,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         ),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 32.h), // Updated padding
+        padding: EdgeInsets.symmetric(
+            horizontal: 24.w, vertical: 32.h), // Updated padding
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 16),
-            
+
             // Icon - Similar to Login
             Center(
               child: Icon(
@@ -93,7 +94,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               ),
             ),
             SizedBox(height: 48.h),
-            
+
             // Title - Similar styling to Login
             Center(
               child: Text(
@@ -105,7 +106,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               ),
             ),
             SizedBox(height: 12.h),
-            
+
             // Description text
             Text(
               _isCodeSent
@@ -134,13 +135,18 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     ),
                     keyboardType: TextInputType.emailAddress,
                     validator: (value) {
-                      if (value == null || value.isEmpty) return 'Please enter your email';
-                      if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) return 'Please enter a valid email';
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your email';
+                      }
+                      if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                          .hasMatch(value)) {
+                        return 'Please enter a valid email';
+                      }
                       return null;
                     },
                   ),
                   SizedBox(height: 24.h),
-                  
+
                   if (authProvider.isLoading)
                     const Center(child: CircularProgressIndicator())
                   else
@@ -207,23 +213,31 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           ? SizedBox(
                               width: 20.w,
                               height: 20.h,
-                              child: const CircularProgressIndicator(strokeWidth: 2),
+                              child: const CircularProgressIndicator(
+                                  strokeWidth: 2),
                             )
                           : TextButton(
                               onPressed: () async {
-                                if (_sentEmail != null && _sentEmail!.isNotEmpty) {
+                                if (_sentEmail != null &&
+                                    _sentEmail!.isNotEmpty) {
                                   setState(() => _isResending = true);
                                   try {
-                                    final authProvider = Provider.of<AuthProvider>(context, listen: false);
-                                    await authProvider.forgotPassword(_sentEmail!);
+                                    final authProvider =
+                                        Provider.of<AuthProvider>(context,
+                                            listen: false);
+                                    await authProvider
+                                        .forgotPassword(_sentEmail!);
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
-                                        content: Text('Code resent successfully'),
+                                        content:
+                                            Text('Code resent successfully'),
                                         backgroundColor: Colors.green,
                                       ),
                                     );
                                   } finally {
-                                    if (mounted) setState(() => _isResending = false);
+                                    if (mounted) {
+                                      setState(() => _isResending = false);
+                                    }
                                   }
                                 }
                               },

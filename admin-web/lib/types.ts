@@ -96,6 +96,7 @@ export interface DashboardStats {
   totalRequests: number;
   completedRequests: number;
   revenue: number;
+  totalRevenue: number; // Added for consistency with dashboard usage
   userGrowth: number;
   providerGrowth: number;
   serviceGrowth: number;

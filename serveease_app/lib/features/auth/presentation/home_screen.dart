@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:serveease_app/features/ai/ai_chat_screen.dart';
 import 'package:serveease_app/features/employees/employee_list_screen.dart';
 import 'package:serveease_app/features/requests/request_list_screen.dart';
@@ -9,6 +10,9 @@ import 'package:serveease_app/features/services/my_services_screen.dart';
 import 'package:serveease_app/features/services/service_catalog_screen.dart';
 import 'package:serveease_app/features/admin/provider_approvals_screen.dart';
 import 'package:serveease_app/providers/auth_provider.dart';
+import 'package:serveease_app/shared/widgets/app_bar_language_toggle.dart';
+import 'package:serveease_app/l10n/app_localizations.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -22,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<Widget> _buildTabs(String role) {
     if (role == 'admin') {
-      return  [
+      return [
         ProviderApprovalsScreen(),
         RequestListScreen(),
         AiChatScreen(),
@@ -30,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ];
     }
     if (role == 'provider') {
-      return  [
+      return [
         ProviderDashboardTab(),
         MyServicesScreen(),
         RequestListScreen(),
@@ -39,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ProfileTab(),
       ];
     }
-    return  [
+    return [
       SeekerDashboardTab(),
       ServiceCatalogScreen(),
       RequestListScreen(),
@@ -164,6 +168,14 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.blue[700],
         elevation: 2,
         actions: [
+          // Language Toggle
+          const Padding(
+            padding: EdgeInsets.only(right: 8.0),
+            child: AppBarLanguageToggle(
+              iconColor: Colors.white,
+              textColor: Colors.white,
+            ),
+          ),
           if (_loading)
             Padding(
               padding: const EdgeInsets.all(16.0),
@@ -231,7 +243,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildDrawer(BuildContext context, AuthProvider authProvider) {
     final user = authProvider.user;
-    
+
     return Drawer(
       child: Column(
         children: [
@@ -358,20 +370,23 @@ class SeekerDashboardTab extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.handyman, size: 60, color: Colors.white),
-                    SizedBox(height: 10),
+                    Icon(Icons.handyman, size: 60.sp, color: Colors.white),
+                    SizedBox(height: 10.h),
                     Text(
                       'Find Services Near You',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 22,
+                        fontSize: 22.sp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 5),
+                    SizedBox(height: 5.h),
                     Text(
                       'Book trusted professionals for any task',
-                      style: TextStyle(color: Colors.white70),
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 14.sp,
+                      ),
                     ),
                   ],
                 ),
@@ -380,25 +395,25 @@ class SeekerDashboardTab extends StatelessWidget {
           ),
         ),
         SliverPadding(
-          padding: EdgeInsets.all(16),
+          padding: EdgeInsets.all(16.w),
           sliver: SliverList(
             delegate: SliverChildListDelegate([
               // Quick Stats
               _buildStatsCard(context),
-              SizedBox(height: 20),
-              
+              SizedBox(height: 20.h),
+
               // Popular Categories
               Text(
-                'Popular Categories',
+                AppLocalizations.of(context)?.services ?? 'Popular Categories',
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 10),
-              _buildCategoriesGrid(),
-              SizedBox(height: 20),
-              
+              SizedBox(height: 10.h),
+              _buildCategoriesGrid(context),
+              SizedBox(height: 20.h),
+
               // Recent Bookings
               _buildRecentBookings(),
             ]),
@@ -411,8 +426,11 @@ class SeekerDashboardTab extends StatelessWidget {
   Widget _buildStatsCard(BuildContext context) {
     return Card(
       elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.r),
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.w),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -425,29 +443,30 @@ class SeekerDashboardTab extends StatelessWidget {
     );
   }
 
-  Widget _buildStatItem(String label, String value, IconData icon, Color color) {
+  Widget _buildStatItem(
+      String label, String value, IconData icon, Color color) {
     return Column(
       children: [
         Container(
-          padding: EdgeInsets.all(12),
+          padding: EdgeInsets.all(12.r),
           decoration: BoxDecoration(
-            color: color.withOpacity(0.1),
+            color: color.withValues(alpha: 0.1),
             shape: BoxShape.circle,
           ),
-          child: Icon(icon, color: color, size: 24),
+          child: Icon(icon, color: color, size: 24.sp),
         ),
-        SizedBox(height: 8),
+        SizedBox(height: 8.h),
         Text(
           value,
           style: TextStyle(
-            fontSize: 20,
+            fontSize: 20.sp,
             fontWeight: FontWeight.bold,
           ),
         ),
         Text(
           label,
           style: TextStyle(
-            fontSize: 12,
+            fontSize: 12.sp,
             color: Colors.grey,
           ),
         ),
@@ -455,46 +474,114 @@ class SeekerDashboardTab extends StatelessWidget {
     );
   }
 
-  Widget _buildCategoriesGrid() {
+  Widget _buildCategoriesGrid(BuildContext context) {
     final categories = [
       {'name': 'Plumbing', 'icon': Icons.plumbing, 'color': Colors.blue},
-      {'name': 'Electrical', 'icon': Icons.electrical_services, 'color': Colors.orange},
-      {'name': 'Cleaning', 'icon': Icons.cleaning_services, 'color': Colors.green},
+      {
+        'name': 'Electrical',
+        'icon': Icons.electrical_services,
+        'color': Colors.orange
+      },
+      {
+        'name': 'Cleaning',
+        'icon': Icons.cleaning_services,
+        'color': Colors.green
+      },
       {'name': 'Moving', 'icon': Icons.local_shipping, 'color': Colors.purple},
       {'name': 'Repair', 'icon': Icons.build, 'color': Colors.red},
       {'name': 'More', 'icon': Icons.more_horiz, 'color': Colors.grey},
     ];
 
+    // Get screen width to determine responsive layout
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    // Determine cross axis count based on screen size
+    int crossAxisCount;
+    double childAspectRatio;
+    double iconSize;
+    double fontSize;
+
+    if (screenWidth < 600) {
+      // Mobile phones
+      crossAxisCount = 3;
+      childAspectRatio = 0.85;
+      iconSize = 20.sp; // Reduced from 28.sp
+      fontSize = 11.sp;
+    } else if (screenWidth < 900) {
+      // Tablets
+      crossAxisCount = 4;
+      childAspectRatio = 0.9;
+      iconSize = 24.sp; // Reduced from 32.sp
+      fontSize = 12.sp;
+    } else {
+      // Large tablets/Desktop
+      crossAxisCount = 6;
+      childAspectRatio = 1.0;
+      iconSize = 28.sp; // Reduced from 36.sp
+      fontSize = 13.sp;
+    }
+
     return GridView.builder(
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-        childAspectRatio: 1,
+        crossAxisCount: crossAxisCount,
+        crossAxisSpacing: 8.w,
+        mainAxisSpacing: 8.h,
+        childAspectRatio: childAspectRatio,
       ),
       itemCount: categories.length,
       itemBuilder: (context, index) {
         final category = categories[index];
         return Card(
           elevation: 2,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.r),
+          ),
           child: InkWell(
             onTap: () {
               // Navigate to category
-            },
-            borderRadius: BorderRadius.circular(8),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(category['icon'] as IconData, color: category['color'] as Color, size: 30),
-                SizedBox(height: 8),
-                Text(
-                  category['name'] as String,
-                  style: TextStyle(fontSize: 12),
-                  textAlign: TextAlign.center,
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('${category['name']} category selected'),
+                  duration: const Duration(seconds: 1),
                 ),
-              ],
+              );
+            },
+            borderRadius: BorderRadius.circular(12.r),
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 4.w),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(8.r),
+                    decoration: BoxDecoration(
+                      color:
+                          (category['color'] as Color).withValues(alpha: 0.1),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      category['icon'] as IconData,
+                      color: category['color'] as Color,
+                      size: iconSize,
+                    ),
+                  ),
+                  SizedBox(height: 6.h),
+                  Flexible(
+                    child: Text(
+                      category['name'] as String,
+                      style: TextStyle(
+                        fontSize: fontSize,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         );
@@ -529,21 +616,25 @@ class SeekerDashboardTab extends StatelessWidget {
               ],
             ),
             SizedBox(height: 10),
-            _buildBookingItem('Plumber', 'Today, 10 AM', 'Confirmed', Colors.green),
-            _buildBookingItem('Electrician', 'Tomorrow, 2 PM', 'Pending', Colors.orange),
-            _buildBookingItem('Cleaner', 'Dec 12, 9 AM', 'Completed', Colors.blue),
+            _buildBookingItem(
+                'Plumber', 'Today, 10 AM', 'Confirmed', Colors.green),
+            _buildBookingItem(
+                'Electrician', 'Tomorrow, 2 PM', 'Pending', Colors.orange),
+            _buildBookingItem(
+                'Cleaner', 'Dec 12, 9 AM', 'Completed', Colors.blue),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildBookingItem(String service, String time, String status, Color statusColor) {
+  Widget _buildBookingItem(
+      String service, String time, String status, Color statusColor) {
     return ListTile(
       leading: Container(
         padding: EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: Colors.blue.withOpacity(0.1),
+          color: Colors.blue.withValues(alpha: 0.1),
           shape: BoxShape.circle,
         ),
         child: Icon(Icons.work, color: Colors.blue),
@@ -611,7 +702,7 @@ class ProviderDashboardTab extends StatelessWidget {
               // Earnings Summary
               _buildEarningsCard(),
               SizedBox(height: 20),
-              
+
               // Quick Actions
               Text(
                 'Quick Actions',
@@ -623,7 +714,7 @@ class ProviderDashboardTab extends StatelessWidget {
               SizedBox(height: 10),
               _buildQuickActions(),
               SizedBox(height: 20),
-              
+
               // Today's Appointments
               _buildTodayAppointments(),
             ]),
@@ -698,7 +789,11 @@ class ProviderDashboardTab extends StatelessWidget {
   Widget _buildQuickActions() {
     final actions = [
       {'label': 'Add Service', 'icon': Icons.add_circle, 'color': Colors.blue},
-      {'label': 'Schedule', 'icon': Icons.calendar_today, 'color': Colors.green},
+      {
+        'label': 'Schedule',
+        'icon': Icons.calendar_today,
+        'color': Colors.green
+      },
       {'label': 'Messages', 'icon': Icons.message, 'color': Colors.purple},
       {'label': 'Reviews', 'icon': Icons.star, 'color': Colors.orange},
     ];
@@ -726,7 +821,8 @@ class ProviderDashboardTab extends StatelessWidget {
               padding: const EdgeInsets.all(12.0),
               child: Row(
                 children: [
-                  Icon(action['icon'] as IconData, color: action['color'] as Color),
+                  Icon(action['icon'] as IconData,
+                      color: action['color'] as Color),
                   SizedBox(width: 12),
                   Text(
                     action['label'] as String,
@@ -778,7 +874,7 @@ class ProviderDashboardTab extends StatelessWidget {
   Widget _buildAppointmentItem(String name, String service, String time) {
     return ListTile(
       leading: CircleAvatar(
-        backgroundColor: Colors.blue.withOpacity(0.1),
+        backgroundColor: Colors.blue.withValues(alpha: 0.1),
         child: Icon(Icons.person, color: Colors.blue),
       ),
       title: Text(name, style: TextStyle(fontWeight: FontWeight.w500)),
@@ -941,7 +1037,7 @@ class ProfileTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
     final user = authProvider.user;
-    
+
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -999,7 +1095,7 @@ class ProfileTab extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20),
-            
+
             // Account Info
             Text(
               'Account Information',
@@ -1014,13 +1110,14 @@ class ProfileTab extends StatelessWidget {
                 children: [
                   _buildProfileItem('Email', user?.email ?? 'N/A'),
                   _buildProfileItem('Member Since', 'Nov 2024'),
-                  _buildProfileItem('Status', 'Active', isVerified: user?.emailVerified ?? false),
+                  _buildProfileItem('Status', 'Active',
+                      isVerified: user?.emailVerified ?? false),
                   _buildProfileItem('Total Bookings', '15'),
                 ],
               ),
             ),
             SizedBox(height: 20),
-            
+
             // Settings
             Text(
               'Settings',
@@ -1035,7 +1132,8 @@ class ProfileTab extends StatelessWidget {
                 children: [
                   _buildSettingItem('Edit Profile', Icons.edit),
                   _buildSettingItem('Change Password', Icons.lock),
-                  _buildSettingItem('Notification Settings', Icons.notifications),
+                  _buildSettingItem(
+                      'Notification Settings', Icons.notifications),
                   _buildSettingItem('Privacy', Icons.privacy_tip),
                   _buildSettingItem('Help & Support', Icons.help),
                 ],
@@ -1047,13 +1145,12 @@ class ProfileTab extends StatelessWidget {
     );
   }
 
-  Widget _buildProfileItem(String label, String value, {bool isVerified = false}) {
+  Widget _buildProfileItem(String label, String value,
+      {bool isVerified = false}) {
     return ListTile(
       title: Text(label, style: TextStyle(fontWeight: FontWeight.w500)),
       subtitle: Text(value),
-      trailing: isVerified
-          ? Icon(Icons.verified, color: Colors.green)
-          : null,
+      trailing: isVerified ? Icon(Icons.verified, color: Colors.green) : null,
     );
   }
 

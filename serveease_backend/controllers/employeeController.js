@@ -1,4 +1,5 @@
 import { query } from '../config/database.js';
+import { formatErrorResponse, formatSuccessResponse } from '../middleware/i18n.js';
 
 // Get all employees for an organization
 const getEmployees = async (req, res) => {
@@ -12,10 +13,9 @@ const getEmployees = async (req, res) => {
     );
 
     if (orgResult.rows.length === 0) {
-      return res.status(403).json({
-        success: false,
-        message: 'Access denied. Only organizations can manage employees.'
-      });
+      return res.status(403).json(
+        formatErrorResponse(req, 'provider.organizationOnly', 403)
+      );
     }
 
     const organizationId = orgResult.rows[0].id;
@@ -29,35 +29,35 @@ const getEmployees = async (req, res) => {
       [organizationId]
     );
 
-    res.json({
-      success: true,
-      employees: result.rows.map(employee => ({
-        id: employee.id,
-        organizationId: employee.organization_id,
-        userId: employee.user_id,
-        employeeName: employee.employee_name,
-        email: employee.email,
-        phone: employee.phone,
-        role: employee.role,
-        skills: employee.skills,
-        isActive: employee.is_active,
-        hireDate: employee.hire_date,
-        documents: employee.documents,
-        user: employee.user_id ? {
-          name: employee.user_name,
-          email: employee.user_email
-        } : null,
-        createdAt: employee.created_at,
-        updatedAt: employee.updated_at
-      }))
-    });
+    res.json(
+      formatSuccessResponse(req, 'success.dataRetrieved', {
+        employees: result.rows.map(employee => ({
+          id: employee.id,
+          organizationId: employee.organization_id,
+          userId: employee.user_id,
+          employeeName: employee.employee_name,
+          email: employee.email,
+          phone: employee.phone,
+          role: employee.role,
+          skills: employee.skills,
+          isActive: employee.is_active,
+          hireDate: employee.hire_date,
+          documents: employee.documents,
+          user: employee.user_id ? {
+            name: employee.user_name,
+            email: employee.user_email
+          } : null,
+          createdAt: employee.created_at,
+          updatedAt: employee.updated_at
+        }))
+      })
+    );
 
   } catch (error) {
     console.error('Get employees error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Internal server error'
-    });
+    res.status(500).json(
+      formatErrorResponse(req, 'errors.internalServerError', 500)
+    );
   }
 };
 

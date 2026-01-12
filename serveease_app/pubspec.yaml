@@ -9,6 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   flutter_bloc: ^9.1.0
   dio: ^5.2.1
   http: ^1.1.0
@@ -26,6 +28,7 @@ dependencies:
   flutter_dotenv: ^5.0.2
   provider: ^6.0.5
   flutter_screenutil: ^5.9.3
+  intl: ^0.20.2
 
   # Enhanced UI/UX packages
   google_fonts: ^6.1.0
@@ -63,9 +66,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_localizations:
-    sdk: flutter
-  intl: ^0.20.2
   build_runner: ^2.4.6
   flutter_lints: ^6.0.0
   intl_utils: ^2.8.13
@@ -89,3 +89,4 @@ gen-l10n:
   output-class: AppLocalizations
   supported-locales:
     - en
+    - am

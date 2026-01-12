@@ -1,4 +1,6 @@
 // lib/widgets/profile_header.dart
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:serveease_app/core/models/provider_model.dart';
 

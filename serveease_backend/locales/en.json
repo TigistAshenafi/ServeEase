@@ -1,0 +1,156 @@
+{
+  "auth": {
+    "loginSuccess": "Login successful",
+    "loginFailed": "Invalid email or password",
+    "registrationSuccess": "User registered successfully. Check your email for verification code.",
+    "registrationFailed": "Registration failed",
+    "emailVerified": "Email verified successfully",
+    "emailVerificationFailed": "Email verification failed",
+    "invalidVerificationCode": "Invalid or expired verification code",
+    "passwordResetSent": "Password reset code sent to your email",
+    "passwordResetSuccess": "Password reset successful",
+    "passwordResetFailed": "Password reset failed",
+    "invalidResetCode": "Invalid or expired reset code",
+    "userNotFound": "User not found",
+    "emailAlreadyExists": "User with this email already exists",
+    "emailNotVerified": "Please verify your email before logging in",
+    "accountSuspended": "Your account has been suspended",
+    "sessionExpired": "Session expired. Please login again",
+    "accessDenied": "Access denied",
+    "tokenRequired": "Access token required",
+    "invalidToken": "Invalid access token"
+  },
+  "validation": {
+    "allFieldsRequired": "All fields are required",
+    "invalidEmail": "Please provide a valid email address",
+    "passwordTooShort": "Password must be at least 6 characters long",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "invalidRole": "Role must be either seeker or provider",
+    "invalidProviderType": "Provider type must be either individual or organization",
+    "certificatesRequired": "Individual providers must upload at least one certificate",
+    "invalidServiceCategory": "Invalid service category",
+    "invalidPrice": "Price must be a positive number",
+    "invalidDuration": "Duration must be a positive number"
+  },
+  "provider": {
+    "profileSaved": "Provider profile saved successfully",
+    "profileNotFound": "Provider profile not found",
+    "approvalPending": "Your provider application is pending approval",
+    "approvalApproved": "Congratulations! Your provider application has been approved",
+    "approvalRejected": "Your provider application has been rejected",
+    "cannotCreateServices": "Only approved providers can create services",
+    "employeeAdded": "Employee added successfully",
+    "employeeUpdated": "Employee updated successfully",
+    "employeeDeleted": "Employee deleted successfully",
+    "employeeNotFound": "Employee not found",
+    "organizationOnly": "Only organizations can manage employees",
+    "employeeAlreadyExists": "Employee with this email already exists"
+  },
+  "service": {
+    "serviceCreated": "Service created successfully",
+    "serviceUpdated": "Service updated successfully",
+    "serviceDeleted": "Service deleted successfully",
+    "serviceNotFound": "Service not found",
+    "serviceUnavailable": "Service not found or unavailable",
+    "onlyOwnerCanModify": "Only the service owner can modify this service"
+  },
+  "request": {
+    "requestCreated": "Service request created successfully",
+    "requestUpdated": "Service request updated successfully",
+    "requestNotFound": "Service request not found",
+    "requestAccepted": "Service request accepted",
+    "requestRejected": "Service request rejected",
+    "requestCompleted": "Service request completed",
+    "requestCancelled": "Service request cancelled",
+    "employeeAssigned": "Employee assigned to service request",
+    "cannotModifyRequest": "You cannot modify this service request",
+    "invalidStatus": "Invalid request status",
+    "alreadyRated": "You have already rated this service request"
+  },
+  "chat": {
+    "conversationCreated": "Conversation created successfully",
+    "conversationNotFound": "Conversation not found",
+    "messageNotFound": "Message not found",
+    "messageSent": "Message sent successfully",
+    "messageDeleted": "Message deleted successfully",
+    "accessDenied": "You don't have access to this conversation",
+    "fileUploadFailed": "File upload failed",
+    "fileTooLarge": "File size too large. Maximum size is 10MB",
+    "invalidFileType": "Invalid file type"
+  },
+  "admin": {
+    "providerApproved": "Provider approved successfully",
+    "providerRejected": "Provider rejected successfully",
+    "userSuspended": "User suspended successfully",
+    "userActivated": "User activated successfully",
+    "userDeleted": "User deleted successfully",
+    "cannotSuspendAdmin": "Cannot suspend admin users",
+    "cannotDeleteAdmin": "Cannot delete admin users",
+    "adminOnly": "Admin access required"
+  },
+  "email": {
+    "verificationSubject": "Verify your ServeEase account",
+    "passwordResetSubject": "Reset your ServeEase password",
+    "providerApprovalSubject": "Provider Application Status - ServeEase",
+    "serviceRequestSubject": "New Service Request - ServeEase",
+    "requestStatusSubject": "Service Request Update - ServeEase"
+  },
+  "errors": {
+    "internalServerError": "Internal server error",
+    "badRequest": "Bad request",
+    "notFound": "Resource not found",
+    "unauthorized": "Unauthorized access",
+    "forbidden": "Access forbidden",
+    "validationError": "Validation error",
+    "databaseError": "Database error",
+    "emailSendFailed": "Failed to send email",
+    "fileUploadError": "File upload error",
+    "networkError": "Network error"
+  },
+  "success": {
+    "operationSuccessful": "Operation completed successfully",
+    "dataRetrieved": "Data retrieved successfully",
+    "recordCreated": "Record created successfully",
+    "recordUpdated": "Record updated successfully",
+    "recordDeleted": "Record deleted successfully"
+  },
+  "categories": {
+    "home_repair": "Home Repair",
+    "cleaning": "Cleaning",
+    "gardening": "Gardening",
+    "it_support": "IT Support",
+    "tutoring": "Tutoring",
+    "delivery": "Delivery",
+    "beauty": "Beauty & Wellness",
+    "automotive": "Automotive",
+    "pet_care": "Pet Care",
+    "event_planning": "Event Planning"
+  },
+  "status": {
+    "pending": "Pending",
+    "accepted": "Accepted",
+    "assigned": "Assigned",
+    "in_progress": "In Progress",
+    "completed": "Completed",
+    "cancelled": "Cancelled",
+    "active": "Active",
+    "inactive": "Inactive",
+    "approved": "Approved",
+    "rejected": "Rejected",
+    "suspended": "Suspended"
+  },
+  "roles": {
+    "admin": "Administrator",
+    "provider": "Service Provider",
+    "seeker": "Service Seeker"
+  },
+  "notifications": {
+    "newServiceRequest": "You have received a new service request",
+    "requestStatusUpdate": "Your service request status has been updated",
+    "providerApproved": "Your provider application has been approved",
+    "providerRejected": "Your provider application has been rejected",
+    "newMessage": "You have a new message",
+    "employeeAssigned": "An employee has been assigned to your request",
+    "serviceCompleted": "Your service has been completed"
+  }
+}

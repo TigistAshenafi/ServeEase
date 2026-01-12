@@ -460,6 +460,7 @@ export const getDashboardStats = async (req, res) => {
       totalRequests,
       completedRequests,
       revenue,
+      totalRevenue: revenue, // Add totalRevenue for frontend consistency
       userGrowth,
       providerGrowth,
       serviceGrowth,

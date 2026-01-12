@@ -1,171 +1,982 @@
 {
   "@@locale": "en",
-  
   "appTitle": "ServeEase",
-  "englishLabel": "EN",
-  "amharicLabel": "AM",
-  
-  "loginWelcomeTitle": "Welcome Back",
-  "loginSubtitle": "Sign in to continue to ServeEase",
-  "emailLabel": "Email Address",
-  "emailHint": "you@example.com",
-  "forgotPasswordLabel": "Forgot Password?",
-  "loginButtonLabel": "Sign In",
-  "signupRedirectPrefix": "Don't have an account? ",
-  "signupRedirectAction": "Sign Up",
-  "loginRedirectPrefix": "Already have an account? ",
-  "loginRedirectAction": "Sign In",
-  "loginSuccessMessage": "Login successful!",
-  "loginFailed": "Login failed: {reason}",
-  "@loginFailed": {
-    "placeholders": {
-      "reason": {
-        "example": "Invalid credentials"
-      }
-    }
+  "@appTitle": {
+    "description": "The title of the application"
   },
-  "selectLoginRole": "Please select your role",
-  "loginAsRole": "Login as",
-  "provider": "Provider",
-  "seeker": "Seeker",
   
-  "createAccountTitle": "Create Your Account",
-  "signupSubtitle": "Join ServeEase to connect with services or offer your expertise",
-  "nameLabel": "Full Name",
-  "nameValidation": "Please enter your name",
-  "confirmPasswordLabel": "Confirm Password",
-  "joinAsLabel": "Join as:",
-  "signupSubmitLabel": "Create Account",
-  "serviceSeekerLabel": "Service Seeker",
-  "serviceProviderLabel": "Service Provider",
-  "providerInfoNote": "As a provider, you will need to set up your profile after verifying your email",
+  "welcome": "Welcome",
+  "@welcome": {
+    "description": "Welcome message"
+  },
   
-  "verifyEmailTitle": "Verify Email",
-  "verifyEmailInfo": "We sent a 6-digit verification code to:",
-  "verificationCodeLabel": "Enter 6-digit Code",
-  "verifyButtonLabel": "VERIFY EMAIL",
-  "resendCodeLabel": "RESEND CODE",
-  "backToLoginLabel": "Back to Login",
-  "emptyVerificationCode": "Please enter the 6-digit code",
-  "emailVerifiedMessage": "Email verified successfully! Please login to continue.",
-  "didntReceiveCode": "Didn't receive the code? ",
-  "whatHappensNext": "What happens next?",
-  "afterVerificationProvider": "After verification, you will be redirected to complete your provider profile setup.",
-  "afterVerificationSeeker": "After verification, you will be taken to your dashboard.",
+  "login": "Login",
+  "@login": {
+    "description": "Login button text"
+  },
   
-  "forgotPasswordTitle": "Forgot Password?",
-  "forgotPasswordSubtitle": "Enter your email and we'll send you instructions to reset your password",
-  "sendResetLinkButton": "Send Reset Code",
-  "rememberPasswordPrefix": "Remembered your password? ",
-  "rememberPasswordAction": "Sign In",
-  "resetCodeSentMessage": "Password reset code sent to email",
+  "register": "Register",
+  "@register": {
+    "description": "Register button text"
+  },
   
-  "homeTitle": "ServeEase",
-  "homeWelcome": "Welcome to ServeEase!",
-  "homeSubtitle": "Explore services, request bookings, and manage your account",
-  "homeExploreButton": "Explore Services",
+  "email": "Email",
+  "@email": {
+    "description": "Email field label"
+  },
   
-  "providerProfileSetup": "Become a Provider",
-  "editProfile": "Edit Profile",
-  "providerProfileSuccess": "Profile Saved!",
-  "providerType": "Provider Type",
-  "individual": "Individual",
-  "organization": "Organization",
-  "individualSubtitle": "Freelancer or sole proprietor",
-  "organizationSubtitle": "Company or business",
-  "personalInformation": "Personal Information",
-  "businessInformation": "Business Information",
-  "yourName": "Your Name",
-  "businessName": "Business Name",
-  "enterFullName": "Enter your full name",
-  "enterBusinessName": "Enter business name",
-  "description": "Description",
-  "describeServices": "Describe your services in detail...",
-  "serviceCategory": "Service Category",
-  "selectCategory": "Select your service category",
-  "contactInformation": "Contact Information",
-  "location": "Location",
+  "password": "Password",
+  "@password": {
+    "description": "Password field label"
+  },
+  
+  "confirmPassword": "Confirm Password",
+  "@confirmPassword": {
+    "description": "Confirm password field label"
+  },
+  
+  "name": "Name",
+  "@name": {
+    "description": "Name field label"
+  },
+  
   "phone": "Phone",
-  "cityState": "City, State",
-  "certificatesQualifications": "Certificates & Qualifications",
-  "uploadCertificates": "Upload your professional certificates or licenses",
-  "noCertificatesUploaded": "No certificates uploaded",
-  "uploadCertificatePrompt": "Upload at least one certificate to verify your qualifications",
-  "addCertificate": "ADD CERTIFICATE",
-  "createProfile": "CREATE PROFILE",
-  "updateProfile": "UPDATE PROFILE",
-  "viewProfile": "VIEW PROFILE",
-  "editProfileButton": "Edit Profile",
-  
-  "profileApproved": "Profile Approved",
-  "pendingApproval": "Pending Approval",
-  "profileActiveMessage": "Your profile is active and visible to customers.",
-  "profileReviewMessage": "Your profile is under review by our team.",
-  "approvedOn": "Approved on: {date}",
-  "@approvedOn": {
-    "placeholders": {
-      "date": {
-        "example": "12/25/2023"
-      }
-    }
+  "@phone": {
+    "description": "Phone field label"
   },
-  "businessInformationCard": "Business Information",
-  "serviceDescriptionCard": "Service Description",
-  "certificatesCard": "Certificates & Qualifications",
-  "accountInformationCard": "Account Information",
-  "adminNotesCard": "Admin Notes",
-  "memberSince": "Member Since",
-  "lastUpdated": "Last Updated",
-  "noProfileFound": "No Profile Found",
-  "createProviderProfile": "Create a provider profile to start offering services.",
+  
+  "forgotPassword": "Forgot Password?",
+  "@forgotPassword": {
+    "description": "Forgot password link text"
+  },
+  
+  "dontHaveAccount": "Don't have an account?",
+  "@dontHaveAccount": {
+    "description": "Sign up prompt text"
+  },
+  
+  "alreadyHaveAccount": "Already have an account?",
+  "@alreadyHaveAccount": {
+    "description": "Sign in prompt text"
+  },
+  
+  "signUp": "Sign Up",
+  "@signUp": {
+    "description": "Sign up button text"
+  },
+  
+  "signIn": "Sign In",
+  "@signIn": {
+    "description": "Sign in button text"
+  },
+  
+  "logout": "Logout",
+  "@logout": {
+    "description": "Logout button text"
+  },
+  
+  "profile": "Profile",
+  "@profile": {
+    "description": "Profile page title"
+  },
+  
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings page title"
+  },
+  
+  "language": "Language",
+  "@language": {
+    "description": "Language setting label"
+  },
+  
+  "english": "English",
+  "@english": {
+    "description": "English language option"
+  },
+  
+  "amharic": "አማርኛ",
+  "@amharic": {
+    "description": "Amharic language option"
+  },
+  
+  "services": "Services",
+  "@services": {
+    "description": "Services page title"
+  },
+  
+  "findServices": "Find Services",
+  "@findServices": {
+    "description": "Find services page title"
+  },
+  
+  "myServices": "My Services",
+  "@myServices": {
+    "description": "My services page title"
+  },
+  
+  "addService": "Add Service",
+  "@addService": {
+    "description": "Add service button text"
+  },
+  
+  "editService": "Edit Service",
+  "@editService": {
+    "description": "Edit service button text"
+  },
+  
+  "deleteService": "Delete Service",
+  "@deleteService": {
+    "description": "Delete service button text"
+  },
+  
+  "serviceTitle": "Service Title",
+  "@serviceTitle": {
+    "description": "Service title field label"
+  },
+  
+  "serviceDescription": "Service Description",
+  "@serviceDescription": {
+    "description": "Service description field label"
+  },
+  
+  "servicePrice": "Price",
+  "@servicePrice": {
+    "description": "Service price field label"
+  },
+  
+  "serviceDuration": "Duration (hours)",
+  "@serviceDuration": {
+    "description": "Service duration field label"
+  },
+  
+  "serviceCategory": "Category",
+  "@serviceCategory": {
+    "description": "Service category field label"
+  },
+  
+  "homeRepair": "Home Repair",
+  "@homeRepair": {
+    "description": "Home repair service category"
+  },
+  
+  "cleaning": "Cleaning",
+  "@cleaning": {
+    "description": "Cleaning service category"
+  },
+  
+  "gardening": "Gardening",
+  "@gardening": {
+    "description": "Gardening service category"
+  },
+  
+  "itSupport": "IT Support",
+  "@itSupport": {
+    "description": "IT support service category"
+  },
+  
+  "tutoring": "Tutoring",
+  "@tutoring": {
+    "description": "Tutoring service category"
+  },
+  
+  "delivery": "Delivery",
+  "@delivery": {
+    "description": "Delivery service category"
+  },
+  
+  "requests": "Requests",
+  "@requests": {
+    "description": "Requests page title"
+  },
+  
+  "myRequests": "My Requests",
+  "@myRequests": {
+    "description": "My requests page title"
+  },
+  
+  "requestService": "Request Service",
+  "@requestService": {
+    "description": "Request service button text"
+  },
+  
+  "requestStatus": "Status",
+  "@requestStatus": {
+    "description": "Request status label"
+  },
+  
+  "pending": "Pending",
+  "@pending": {
+    "description": "Pending status"
+  },
+  
+  "accepted": "Accepted",
+  "@accepted": {
+    "description": "Accepted status"
+  },
+  
+  "assigned": "Assigned",
+  "@assigned": {
+    "description": "Assigned status"
+  },
+  
+  "inProgress": "In Progress",
+  "@inProgress": {
+    "description": "In progress status"
+  },
+  
+  "completed": "Completed",
+  "@completed": {
+    "description": "Completed status"
+  },
+  
+  "cancelled": "Cancelled",
+  "@cancelled": {
+    "description": "Cancelled status"
+  },
+  
+  "chat": "Chat",
+  "@chat": {
+    "description": "Chat page title"
+  },
+  
+  "messages": "Messages",
+  "@messages": {
+    "description": "Messages page title"
+  },
+  
+  "typeMessage": "Type a message...",
+  "@typeMessage": {
+    "description": "Message input placeholder"
+  },
+  
+  "send": "Send",
+  "@send": {
+    "description": "Send button text"
+  },
+  
+  "attachFile": "Attach File",
+  "@attachFile": {
+    "description": "Attach file button text"
+  },
+  
+  "takePhoto": "Take Photo",
+  "@takePhoto": {
+    "description": "Take photo button text"
+  },
+  
+  "chooseFromGallery": "Choose from Gallery",
+  "@chooseFromGallery": {
+    "description": "Choose from gallery button text"
+  },
+  
+  "rating": "Rating",
+  "@rating": {
+    "description": "Rating label"
+  },
+  
+  "rateService": "Rate Service",
+  "@rateService": {
+    "description": "Rate service button text"
+  },
+  
+  "writeReview": "Write a review...",
+  "@writeReview": {
+    "description": "Review input placeholder"
+  },
+  
+  "submitReview": "Submit Review",
+  "@submitReview": {
+    "description": "Submit review button text"
+  },
+  
+  "provider": "Provider",
+  "@provider": {
+    "description": "Provider label"
+  },
+  
+  "seeker": "Seeker",
+  "@seeker": {
+    "description": "Seeker label"
+  },
+  
+  "individual": "Individual",
+  "@individual": {
+    "description": "Individual provider type"
+  },
+  
+  "organization": "Organization",
+  "@organization": {
+    "description": "Organization provider type"
+  },
+  
+  "businessName": "Business Name",
+  "@businessName": {
+    "description": "Business name field label"
+  },
+  
+  "location": "Location",
+  "@location": {
+    "description": "Location field label"
+  },
+  
+  "certificates": "Certificates",
+  "@certificates": {
+    "description": "Certificates label"
+  },
+  
+  "uploadCertificates": "Upload Certificates",
+  "@uploadCertificates": {
+    "description": "Upload certificates button text"
+  },
+  
+  "employees": "Employees",
+  "@employees": {
+    "description": "Employees page title"
+  },
+  
+  "addEmployee": "Add Employee",
+  "@addEmployee": {
+    "description": "Add employee button text"
+  },
+  
+  "employeeName": "Employee Name",
+  "@employeeName": {
+    "description": "Employee name field label"
+  },
+  
+  "employeeRole": "Role",
+  "@employeeRole": {
+    "description": "Employee role field label"
+  },
+  
+  "skills": "Skills",
+  "@skills": {
+    "description": "Skills field label"
+  },
+  
+  "save": "Save",
+  "@save": {
+    "description": "Save button text"
+  },
+  
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  
+  "delete": "Delete",
+  "@delete": {
+    "description": "Delete button text"
+  },
+  
+  "edit": "Edit",
+  "@edit": {
+    "description": "Edit button text"
+  },
+  
+  "search": "Search",
+  "@search": {
+    "description": "Search button text"
+  },
+  
+  "searchServices": "Search services...",
+  "@searchServices": {
+    "description": "Search services placeholder"
+  },
+  
+  "filter": "Filter",
+  "@filter": {
+    "description": "Filter button text"
+  },
+  
+  "sort": "Sort",
+  "@sort": {
+    "description": "Sort button text"
+  },
+  
+  "priceRange": "Price Range",
+  "@priceRange": {
+    "description": "Price range filter label"
+  },
+  
+  "distance": "Distance",
+  "@distance": {
+    "description": "Distance filter label"
+  },
+  
+  "notifications": "Notifications",
+  "@notifications": {
+    "description": "Notifications page title"
+  },
+  
+  "noNotifications": "No notifications",
+  "@noNotifications": {
+    "description": "No notifications message"
+  },
+  
+  "markAsRead": "Mark as Read",
+  "@markAsRead": {
+    "description": "Mark as read button text"
+  },
+  
+  "error": "Error",
+  "@error": {
+    "description": "Error message title"
+  },
+  
+  "success": "Success",
+  "@success": {
+    "description": "Success message title"
+  },
+  
+  "warning": "Warning",
+  "@warning": {
+    "description": "Warning message title"
+  },
+  
+  "info": "Info",
+  "@info": {
+    "description": "Info message title"
+  },
+  
+  "loading": "Loading...",
+  "@loading": {
+    "description": "Loading message"
+  },
+  
+  "retry": "Retry",
+  "@retry": {
+    "description": "Retry button text"
+  },
+  
+  "noInternetConnection": "No internet connection",
+  "@noInternetConnection": {
+    "description": "No internet connection message"
+  },
+  
+  "somethingWentWrong": "Something went wrong",
+  "@somethingWentWrong": {
+    "description": "Generic error message"
+  },
+  
+  "emailVerification": "Email Verification",
+  "@emailVerification": {
+    "description": "Email verification page title"
+  },
+  
+  "verificationCode": "Verification Code",
+  "@verificationCode": {
+    "description": "Verification code field label"
+  },
+  
+  "verify": "Verify",
+  "@verify": {
+    "description": "Verify button text"
+  },
+  
+  "resendCode": "Resend Code",
+  "@resendCode": {
+    "description": "Resend code button text"
+  },
+  
+  "codeExpired": "Code expired",
+  "@codeExpired": {
+    "description": "Code expired message"
+  },
+  
+  "invalidCode": "Invalid code",
+  "@invalidCode": {
+    "description": "Invalid code message"
+  },
+  
+  "emailVerified": "Email verified successfully",
+  "@emailVerified": {
+    "description": "Email verified success message"
+  },
+  
+  "selectRole": "Select Role",
+  "@selectRole": {
+    "description": "Select role prompt"
+  },
+  
+  "providerType": "Provider Type",
+  "@providerType": {
+    "description": "Provider type field label"
+  },
+  
+  "pendingApproval": "Pending Approval",
+  "@pendingApproval": {
+    "description": "Pending approval status"
+  },
+  
+  "approved": "Approved",
+  "@approved": {
+    "description": "Approved status"
+  },
+  
+  "rejected": "Rejected",
+  "@rejected": {
+    "description": "Rejected status"
+  },
+  
+  "applicationStatus": "Application Status",
+  "@applicationStatus": {
+    "description": "Application status label"
+  },
+  
+  "viewDetails": "View Details",
+  "@viewDetails": {
+    "description": "View details button text"
+  },
+  
+  "contactProvider": "Contact Provider",
+  "@contactProvider": {
+    "description": "Contact provider button text"
+  },
+  
+  "bookService": "Book Service",
+  "@bookService": {
+    "description": "Book service button text"
+  },
+  
+  "serviceBooked": "Service booked successfully",
+  "@serviceBooked": {
+    "description": "Service booked success message"
+  },
+  
+  "notes": "Notes",
+  "@notes": {
+    "description": "Notes field label"
+  },
+  
+  "additionalNotes": "Additional Notes",
+  "@additionalNotes": {
+    "description": "Additional notes field label"
+  },
+  
+  "acceptRequest": "Accept Request",
+  "@acceptRequest": {
+    "description": "Accept request button text"
+  },
+  
+  "rejectRequest": "Reject Request",
+  "@rejectRequest": {
+    "description": "Reject request button text"
+  },
+  
+  "assignEmployee": "Assign Employee",
+  "@assignEmployee": {
+    "description": "Assign employee button text"
+  },
+  
+  "markInProgress": "Mark In Progress",
+  "@markInProgress": {
+    "description": "Mark in progress button text"
+  },
+  
+  "markCompleted": "Mark Completed",
+  "@markCompleted": {
+    "description": "Mark completed button text"
+  },
+  
+  "requestAccepted": "Request accepted",
+  "@requestAccepted": {
+    "description": "Request accepted message"
+  },
+  
+  "requestRejected": "Request rejected",
+  "@requestRejected": {
+    "description": "Request rejected message"
+  },
+  
+  "employeeAssigned": "Employee assigned",
+  "@employeeAssigned": {
+    "description": "Employee assigned message"
+  },
+  
+  "serviceCompleted": "Service completed",
+  "@serviceCompleted": {
+    "description": "Service completed message"
+  },
+  
+  "reviewSubmitted": "Review submitted successfully",
+  "@reviewSubmitted": {
+    "description": "Review submitted success message"
+  },
+  
+  "profileUpdated": "Profile updated successfully",
+  "@profileUpdated": {
+    "description": "Profile updated success message"
+  },
+  
+  "serviceCreated": "Service created successfully",
+  "@serviceCreated": {
+    "description": "Service created success message"
+  },
+  
+  "serviceUpdated": "Service updated successfully",
+  "@serviceUpdated": {
+    "description": "Service updated success message"
+  },
+  
+  "serviceDeleted": "Service deleted successfully",
+  "@serviceDeleted": {
+    "description": "Service deleted success message"
+  },
+  
+  "employeeAdded": "Employee added successfully",
+  "@employeeAdded": {
+    "description": "Employee added success message"
+  },
+  
+  "employeeUpdated": "Employee updated successfully",
+  "@employeeUpdated": {
+    "description": "Employee updated success message"
+  },
+  
+  "employeeDeleted": "Employee deleted successfully",
+  "@employeeDeleted": {
+    "description": "Employee deleted success message"
+  },
+  
+  "confirmDelete": "Are you sure you want to delete this item?",
+  "@confirmDelete": {
+    "description": "Confirm delete dialog message"
+  },
+  
+  "yes": "Yes",
+  "@yes": {
+    "description": "Yes button text"
+  },
+  
+  "no": "No",
+  "@no": {
+    "description": "No button text"
+  },
+  
+  "ok": "OK",
+  "@ok": {
+    "description": "OK button text"
+  },
+  
+  "close": "Close",
+  "@close": {
+    "description": "Close button text"
+  },
+  
+  "back": "Back",
+  "@back": {
+    "description": "Back button text"
+  },
+  
+  "next": "Next",
+  "@next": {
+    "description": "Next button text"
+  },
+  
+  "previous": "Previous",
+  "@previous": {
+    "description": "Previous button text"
+  },
+  
+  "finish": "Finish",
+  "@finish": {
+    "description": "Finish button text"
+  },
+  
+  "skip": "Skip",
+  "@skip": {
+    "description": "Skip button text"
+  },
+  
+  "continueButton": "Continue",
+  "@continueButton": {
+    "description": "Continue button text"
+  },
+
+  "englishLabel": "English",
+  "@englishLabel": {
+    "description": "English language label"
+  },
+
+  "amharicLabel": "አማርኛ",
+  "@amharicLabel": {
+    "description": "Amharic language label"
+  },
+  
+  "done": "Done",
+  "@done": {
+    "description": "Done button text"
+  },
+  
+  "refresh": "Refresh",
+  "@refresh": {
+    "description": "Refresh button text"
+  },
+  
+  "update": "Update",
+  "@update": {
+    "description": "Update button text"
+  },
+  
+  "create": "Create",
+  "@create": {
+    "description": "Create button text"
+  },
+  
+  "submit": "Submit",
+  "@submit": {
+    "description": "Submit button text"
+  },
+  
+  "apply": "Apply",
+  "@apply": {
+    "description": "Apply button text"
+  },
+  
+  "clear": "Clear",
+  "@clear": {
+    "description": "Clear button text"
+  },
+  
+  "reset": "Reset",
+  "@reset": {
+    "description": "Reset button text"
+  },
+  
+  "home": "Home",
+  "@home": {
+    "description": "Home page title"
+  },
+  
+  "dashboard": "Dashboard",
+  "@dashboard": {
+    "description": "Dashboard page title"
+  },
+  
+  "about": "About",
+  "@about": {
+    "description": "About page title"
+  },
+  
+  "help": "Help",
+  "@help": {
+    "description": "Help page title"
+  },
+  
+  "support": "Support",
+  "@support": {
+    "description": "Support page title"
+  },
+  
+  "contactUs": "Contact Us",
+  "@contactUs": {
+    "description": "Contact us page title"
+  },
+  
+  "termsOfService": "Terms of Service",
+  "@termsOfService": {
+    "description": "Terms of service page title"
+  },
+  
+  "privacyPolicy": "Privacy Policy",
+  "@privacyPolicy": {
+    "description": "Privacy policy page title"
+  },
+  
+  "version": "Version",
+  "@version": {
+    "description": "Version label"
+  },
   
   "validationEmailRequired": "Email is required",
-  "validationEmailInvalid": "Please provide a valid email",
-  "validationPasswordRequired": "Password is required",
-  "validationPasswordLength": "Password must be at least 6 characters long",
-  "validationConfirmPassword": "Please confirm your password",
-  "validationPasswordsMismatch": "Passwords do not match",
-  "validationDescriptionRequired": "Description is required",
-  "validationDescriptionLength": "Description must be at least 10 characters",
-  "validationLocationRequired": "Location is required",
-  "validationPhoneRequired": "Phone number is required",
-  "validationPhoneInvalid": "Please enter a valid phone number",
-  "validationCategoryRequired": "Please select a category",
-  "validationCertificatesRequired": "Individual providers must upload at least one certificate",
-  
-  "errorWithMessage": "Error: {message}",
-  "@errorWithMessage": {
-    "placeholders": {
-      "message": {
-        "example": "Network error"
-      }
-    }
+  "@validationEmailRequired": {
+    "description": "Email required validation message"
   },
-  "unknownError": "Something went wrong. Please try again.",
-  "networkError": "Network error. Please check your connection.",
-  "serverError": "Server error. Please try again.",
-  "loadingCategories": "Loading categories...",
-  "failedToLoadCategories": "Failed to load categories",
-
+  
+  "validationEmailInvalid": "Please enter a valid email address",
+  "@validationEmailInvalid": {
+    "description": "Invalid email validation message"
+  },
+  
+  "validationPasswordRequired": "Password is required",
+  "@validationPasswordRequired": {
+    "description": "Password required validation message"
+  },
+  
+  "validationPasswordLength": "Password must be at least 6 characters long",
+  "@validationPasswordLength": {
+    "description": "Password length validation message"
+  },
+  
+  "validationConfirmPassword": "Please confirm your password",
+  "@validationConfirmPassword": {
+    "description": "Confirm password required validation message"
+  },
+  
+  "validationPasswordsMismatch": "Passwords do not match",
+  "@validationPasswordsMismatch": {
+    "description": "Password mismatch validation message"
+  },
+  
+  "validationRequired": "This field is required",
+  "@validationRequired": {
+    "description": "Generic required field validation message"
+  },
+  
+  "validationPhoneRequired": "Phone number is required",
+  "@validationPhoneRequired": {
+    "description": "Phone number required validation message"
+  },
+  
+  "validationPhoneInvalid": "Please enter a valid phone number",
+  "@validationPhoneInvalid": {
+    "description": "Invalid phone number validation message"
+  },
+  
+  "validationPriceRequired": "Price is required",
+  "@validationPriceRequired": {
+    "description": "Price required validation message"
+  },
+  
+  "validationPriceInvalid": "Please enter a valid price",
+  "@validationPriceInvalid": {
+    "description": "Invalid price validation message"
+  },
+  
+  "validationDurationRequired": "Duration is required",
+  "@validationDurationRequired": {
+    "description": "Duration required validation message"
+  },
+  
+  "validationDurationInvalid": "Please enter a valid duration in hours",
+  "@validationDurationInvalid": {
+    "description": "Invalid duration validation message"
+  },
+  
+  "selectRoleError": "Please select your role",
+  "@selectRoleError": {
+    "description": "Error message when no role is selected during login"
+  },
+  
+  "loginWelcomeTitle": "Welcome Back",
+  "@loginWelcomeTitle": {
+    "description": "Welcome title on login screen"
+  },
+  
+  "loginSubtitle": "Login to continue",
+  "@loginSubtitle": {
+    "description": "Subtitle on login screen"
+  },
+  
+  "emailLabel": "Email",
+  "@emailLabel": {
+    "description": "Email field label"
+  },
+  
+  "emailHint": "Enter your email",
+  "@emailHint": {
+    "description": "Email field hint text"
+  },
   
   "passwordLabel": "Password",
+  "@passwordLabel": {
+    "description": "Password field label"
+  },
+  
   "passwordHint": "Enter your password",
-  "selectRoleError": "Please select your role",
-  "loginAsLabel": "Login as",
-
-
-  "validationNameRequired": "Name is required",
-  "validationNameLength": "Name must be at least 3 characters",
-  "continue": "CONTINUE",
-  "cancel": "Cancel",
-  "save": "Save",
-  "delete": "Delete",
-  "edit": "Edit",
-  "close": "Close",
-  "ok": "OK",
-  "yes": "Yes",
-  "no": "No",
-  "loading": "Loading...",
-  "retry": "Retry",
-  "refresh": "Refresh"
+  "@passwordHint": {
+    "description": "Password field hint text"
+  },
+  
+  "loginButtonLabel": "Login",
+  "@loginButtonLabel": {
+    "description": "Login button text"
+  },
+  
+  "forgotPasswordLabel": "Forgot password?",
+  "@forgotPasswordLabel": {
+    "description": "Forgot password link text"
+  },
+  
+  "signupRedirectPrefix": "Don't have an account?",
+  "@signupRedirectPrefix": {
+    "description": "Text before signup link"
+  },
+  
+  "signupRedirectAction": "Sign up",
+  "@signupRedirectAction": {
+    "description": "Signup link text"
+  },
+  
+  "loginAsRole": "Login As",
+  "@loginAsRole": {
+    "description": "Role selection header text"
+  },
+  
+  "serviceSeekerLabel": "Service Seeker",
+  "@serviceSeekerLabel": {
+    "description": "Service seeker role label"
+  },
+  
+  "serviceProviderLabel": "Service Provider",
+  "@serviceProviderLabel": {
+    "description": "Service provider role label"
+  },
+  
+  "createAccountTitle": "Create Account",
+  "@createAccountTitle": {
+    "description": "Create account page title"
+  },
+  
+  "signupSubtitle": "Join ServeEase today",
+  "@signupSubtitle": {
+    "description": "Signup page subtitle"
+  },
+  
+  "nameLabel": "Full Name",
+  "@nameLabel": {
+    "description": "Name field label"
+  },
+  
+  "nameValidation": "Please enter your full name",
+  "@nameValidation": {
+    "description": "Name validation message"
+  },
+  
+  "validationNameLength": "Name must be at least 3 characters long",
+  "@validationNameLength": {
+    "description": "Name length validation message"
+  },
+  
+  "confirmPasswordLabel": "Confirm Password",
+  "@confirmPasswordLabel": {
+    "description": "Confirm password field label"
+  },
+  
+  "joinAsLabel": "Join as",
+  "@joinAsLabel": {
+    "description": "Role selection header"
+  },
+  
+  "providerInfoNote": "As a provider, you'll need admin approval before offering services",
+  "@providerInfoNote": {
+    "description": "Information note for providers"
+  },
+  
+  "signupSubmitLabel": "Create Account",
+  "@signupSubmitLabel": {
+    "description": "Signup submit button text"
+  },
+  
+  "loginRedirectPrefix": "Already have an account?",
+  "@loginRedirectPrefix": {
+    "description": "Text before login link"
+  },
+  
+  "loginRedirectAction": "Sign in",
+  "@loginRedirectAction": {
+    "description": "Login link text"
+  }
 }

@@ -10,8 +10,9 @@ import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import '../providers/chat_provider.dart';
 import '../models/conversation.dart';
 import '../widgets/message_bubble.dart';
-import '../widgets/typing_indicator.dart';
+import '../widgets/typing_indicator.dart' as typing_widget;
 import 'package:intl/intl.dart';
+import 'package:serveease_app/shared/widgets/app_bar_language_toggle.dart';
 
 class ChatScreen extends StatefulWidget {
   final String conversationId;
@@ -29,7 +30,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   final FocusNode _messageFocusNode = FocusNode();
-  
+
   bool _showEmojiPicker = false;
   Timer? _typingTimer;
   bool _isTyping = false;
@@ -52,7 +53,7 @@ class _ChatScreenState extends State<ChatScreen> {
     _scrollController.dispose();
     _messageFocusNode.dispose();
     _typingTimer?.cancel();
-    
+
     // Leave conversation when screen is disposed
     context.read<ChatProvider>().leaveCurrentConversation();
     super.dispose();
@@ -89,10 +90,10 @@ class _ChatScreenState extends State<ChatScreen> {
     if (text.isEmpty) return;
 
     context.read<ChatProvider>().sendMessage(
-      conversationId: widget.conversationId,
-      content: text,
-      replyToMessageId: _replyToMessage?.id,
-    );
+          conversationId: widget.conversationId,
+          content: text,
+          replyToMessageId: _replyToMessage?.id,
+        );
 
     _messageController.clear();
     _replyToMessage = null;
@@ -108,31 +109,31 @@ class _ChatScreenState extends State<ChatScreen> {
   void _pickImage() async {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-    
-    if (image != null) {
+
+    if (image != null && mounted) {
       final file = File(image.path);
       context.read<ChatProvider>().sendFileMessage(
-        conversationId: widget.conversationId,
-        file: file,
-        messageType: MessageType.image,
-      );
+            conversationId: widget.conversationId,
+            file: file,
+            messageType: MessageType.image,
+          );
     }
   }
 
   void _pickFile() async {
     final result = await FilePicker.platform.pickFiles();
-    
-    if (result != null && result.files.single.path != null) {
+
+    if (result != null && result.files.single.path != null && mounted) {
       final file = File(result.files.single.path!);
       context.read<ChatProvider>().sendFileMessage(
-        conversationId: widget.conversationId,
-        file: file,
-        messageType: MessageType.file,
-      );
+            conversationId: widget.conversationId,
+            file: file,
+            messageType: MessageType.file,
+          );
     }
   }
 
-  void _replyToMessage(Message message) {
+  void _setReplyToMessage(Message message) {
     setState(() {
       _replyToMessage = message;
     });
@@ -151,7 +152,8 @@ class _ChatScreenState extends State<ChatScreen> {
       appBar: _buildAppBar(),
       body: Consumer<ChatProvider>(
         builder: (context, chatProvider, child) {
-          if (chatProvider.isLoadingMessages && chatProvider.currentMessages.isEmpty) {
+          if (chatProvider.isLoadingMessages &&
+              chatProvider.currentMessages.isEmpty) {
             return const Center(
               child: CircularProgressIndicator(),
             );
@@ -164,7 +166,8 @@ class _ChatScreenState extends State<ChatScreen> {
                 child: ListView.builder(
                   controller: _scrollController,
                   padding: EdgeInsets.symmetric(vertical: 8.h),
-                  itemCount: chatProvider.currentMessages.length + 1, // +1 for typing indicator
+                  itemCount: chatProvider.currentMessages.length +
+                      1, // +1 for typing indicator
                   itemBuilder: (context, index) {
                     if (index == chatProvider.currentMessages.length) {
                       // Typing indicator at the end
@@ -172,15 +175,19 @@ class _ChatScreenState extends State<ChatScreen> {
                     }
 
                     final message = chatProvider.currentMessages[index];
-                    final previousMessage = index > 0 ? chatProvider.currentMessages[index - 1] : null;
-                    final showDateSeparator = _shouldShowDateSeparator(message, previousMessage);
+                    final previousMessage = index > 0
+                        ? chatProvider.currentMessages[index - 1]
+                        : null;
+                    final showDateSeparator =
+                        _shouldShowDateSeparator(message, previousMessage);
 
                     return Column(
                       children: [
-                        if (showDateSeparator) _buildDateSeparator(message.createdAt),
+                        if (showDateSeparator)
+                          _buildDateSeparator(message.createdAt),
                         MessageBubble(
                           message: message,
-                          onReply: () => _replyToMessage(message),
+                          onReply: () => _setReplyToMessage(message),
                           onEdit: (newContent) {
                             chatProvider.editMessage(message.id, newContent);
                           },
@@ -210,26 +217,21 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   PreferredSizeWidget _buildAppBar() {
-    return Consumer<ChatProvider>(
-      builder: (context, chatProvider, child) {
-        final conversation = chatProvider.currentConversation;
-        if (conversation == null) {
-          return AppBar(
-            title: const Text('Chat'),
-            backgroundColor: Colors.white,
-            foregroundColor: Colors.black,
-            elevation: 1,
-          );
-        }
+    return AppBar(
+      backgroundColor: Colors.white,
+      foregroundColor: Colors.black,
+      elevation: 1,
+      title: Consumer<ChatProvider>(
+        builder: (context, chatProvider, child) {
+          final conversation = chatProvider.currentConversation;
+          if (conversation == null) {
+            return const Text('Chat');
+          }
 
-        final otherUser = conversation.otherParticipant;
-        final isOnline = chatProvider.isUserOnline(otherUser.id);
+          final otherUser = conversation.otherParticipant;
+          final isOnline = chatProvider.isUserOnline(otherUser.id);
 
-        return AppBar(
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black,
-          elevation: 1,
-          title: Row(
+          return Row(
             children: [
               CircleAvatar(
                 radius: 18.r,
@@ -276,9 +278,19 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
               ),
             ],
-          ),
-          actions: [
-            PopupMenuButton<String>(
+          );
+        },
+      ),
+      actions: [
+        // Language Toggle
+        const AppBarLanguageToggle(
+          iconColor: Colors.grey,
+          textColor: Colors.black,
+          isCompact: true,
+        ),
+        Consumer<ChatProvider>(
+          builder: (context, chatProvider, child) {
+            return PopupMenuButton<String>(
               onSelected: (value) {
                 switch (value) {
                   case 'archive':
@@ -300,10 +312,10 @@ class _ChatScreenState extends State<ChatScreen> {
                   child: Text('Block'),
                 ),
               ],
-            ),
-          ],
-        );
-      },
+            );
+          },
+        ),
+      ],
     );
   }
 
@@ -333,7 +345,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ),
           SizedBox(width: 8.w),
-          const TypingIndicator(),
+          const typing_widget.TypingIndicator(),
         ],
       ),
     );
@@ -435,7 +447,7 @@ class _ChatScreenState extends State<ChatScreen> {
               _showAttachmentOptions();
             },
           ),
-          
+
           // Text input
           Expanded(
             child: Container(
@@ -481,9 +493,9 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
             ),
           ),
-          
+
           SizedBox(width: 8.w),
-          
+
           // Send button
           Container(
             decoration: BoxDecoration(
@@ -553,7 +565,8 @@ class _ChatScreenState extends State<ChatScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Block User'),
-        content: const Text('Are you sure you want to block this user? You won\'t receive messages from them anymore.'),
+        content: const Text(
+            'Are you sure you want to block this user? You won\'t receive messages from them anymore.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -574,7 +587,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   bool _shouldShowDateSeparator(Message current, Message? previous) {
     if (previous == null) return true;
-    
+
     final currentDate = DateTime(
       current.createdAt.year,
       current.createdAt.month,
@@ -585,7 +598,7 @@ class _ChatScreenState extends State<ChatScreen> {
       previous.createdAt.month,
       previous.createdAt.day,
     );
-    
+
     return !currentDate.isAtSameMomentAs(previousDate);
   }
 

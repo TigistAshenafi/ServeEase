@@ -16,7 +16,8 @@ class VerifyEmailScreen extends StatefulWidget {
 }
 
 class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
-  final List<TextEditingController> _controllers = List.generate(6, (_) => TextEditingController());
+  final List<TextEditingController> _controllers =
+      List.generate(6, (_) => TextEditingController());
   final List<FocusNode> _focusNodes = List.generate(6, (_) => FocusNode());
   String? _email;
   String? _userRole;
@@ -35,7 +36,8 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    final args =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
     _email = args?['email'];
     _userRole = args?['role'];
   }
@@ -92,12 +94,12 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
     setState(() => _isLoading = true);
 
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    
+
     final response = await authProvider.verifyEmail(
       email: _email!,
       code: code,
     );
-    
+
     setState(() => _isLoading = false);
 
     if (response.success && response.data != null) {
@@ -107,11 +109,12 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
     }
   }
 
-  Future<void> _handleSuccessfulVerification(User user, AuthProvider authProvider) async {
+  Future<void> _handleSuccessfulVerification(
+      User user, AuthProvider authProvider) async {
     _showSuccess('Email verified successfully!');
-    
+
     await Future.delayed(const Duration(milliseconds: 1500));
-    
+
     Navigator.pushNamedAndRemoveUntil(
       context,
       '/login',
@@ -119,7 +122,8 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
       arguments: {
         'email': _email,
         'message': 'Email verified successfully! Please login to continue.',
-        'redirectTo': user.role == 'provider' ? '/provider/create-profile' : '/home',
+        'redirectTo':
+            user.role == 'provider' ? '/provider/create-profile' : '/home',
       },
     );
   }
@@ -153,17 +157,17 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
     if (!_canResend) return;
 
     setState(() => _isLoading = true);
-    
+
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final response = await authProvider.resendVerificationCode(_email!);
-    
+
     setState(() => _isLoading = false);
-    
+
     if (response.success) {
       _showSuccess('Verification code resent successfully! Check your email.');
       _startTimer(); // Restart the timer
     } else {
-      _showError(response.message ?? 'Failed to resend code');
+      _showError(response.message);
     }
   }
 
@@ -183,13 +187,14 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    
+
     return Scaffold(
       backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 32.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 24.0, vertical: 32.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -217,7 +222,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                   ),
                 ),
                 const SizedBox(height: 32),
-                
+
                 // Title
                 Center(
                   child: Text(
@@ -230,7 +235,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                
+
                 // Description
                 Center(
                   child: Text(
@@ -242,14 +247,15 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                   ),
                 ),
                 const SizedBox(height: 12),
-                
+
                 // Email Display
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     color: colorScheme.primary.withOpacity(0.05),
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: colorScheme.primary.withOpacity(0.1)),
+                    border:
+                        Border.all(color: colorScheme.primary.withOpacity(0.1)),
                   ),
                   child: Row(
                     children: [
@@ -268,12 +274,13 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                   ),
                 ),
                 const SizedBox(height: 8),
-                
+
                 // User Role Info
                 if (_userRole != null)
                   Center(
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 6),
                       decoration: BoxDecoration(
                         color: _userRole == 'provider'
                             ? Colors.orange.withOpacity(0.1)
@@ -292,7 +299,9 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                           ),
                           const SizedBox(width: 6),
                           Text(
-                            _userRole == 'provider' ? 'Service Provider' : 'Service Seeker',
+                            _userRole == 'provider'
+                                ? 'Service Provider'
+                                : 'Service Seeker',
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
@@ -306,7 +315,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                     ),
                   ),
                 const SizedBox(height: 32),
-                
+
                 // Code Input Section
                 Text(
                   'Enter 6-digit Code',
@@ -317,7 +326,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                
+
                 // Code Input Fields with Auto Focus Management
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -344,7 +353,8 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(color: colorScheme.primary, width: 2),
+                            borderSide: BorderSide(
+                                color: colorScheme.primary, width: 2),
                           ),
                           filled: true,
                           fillColor: Colors.white,
@@ -356,11 +366,12 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                           } else if (value.isEmpty && index > 0) {
                             _focusNodes[index - 1].requestFocus();
                           }
-                          
+
                           // Auto-submit when last digit is entered
                           if (value.isNotEmpty && index == 5) {
                             // Submit after a small delay
-                            Future.delayed(const Duration(milliseconds: 300), () {
+                            Future.delayed(const Duration(milliseconds: 300),
+                                () {
                               _verifyEmail();
                             });
                           }
@@ -370,7 +381,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                   }),
                 ),
                 const SizedBox(height: 8),
-                
+
                 // Timer Display
                 Center(
                   child: Text(
@@ -386,11 +397,12 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                   ),
                 ),
                 const SizedBox(height: 32),
-                
+
                 // Action Buttons
                 if (_isLoading)
                   Center(
-                    child: CircularProgressIndicator(color: colorScheme.primary),
+                    child:
+                        CircularProgressIndicator(color: colorScheme.primary),
                   )
                 else
                   Column(
@@ -418,14 +430,15 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      
+
                       // Resend Code Button
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
                             "Didn't receive the code? ",
-                            style: TextStyle(color: colorScheme.onSurfaceVariant),
+                            style:
+                                TextStyle(color: colorScheme.onSurfaceVariant),
                           ),
                           GestureDetector(
                             onTap: _canResend ? _resendCode : null,
@@ -443,7 +456,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                         ],
                       ),
                       const SizedBox(height: 20),
-                      
+
                       // Timer Progress Bar
                       if (!_canResend)
                         SizedBox(
@@ -451,13 +464,15 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                           height: 4,
                           child: LinearProgressIndicator(
                             value: _resendTimer / 60,
-                            backgroundColor: colorScheme.surfaceContainerHighest,
-                            valueColor: AlwaysStoppedAnimation<Color>(colorScheme.primary),
+                            backgroundColor:
+                                colorScheme.surfaceContainerHighest,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                colorScheme.primary),
                           ),
                         ),
-                      
+
                       if (_canResend) const SizedBox(height: 20),
-                      
+
                       // Back to Login Button
                       Center(
                         child: TextButton(
@@ -475,7 +490,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                       ),
                     ],
                   ),
-                
+
                 // Info Box
                 const SizedBox(height: 32),
                 Container(
@@ -483,7 +498,9 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                   decoration: BoxDecoration(
                     color: colorScheme.surfaceContainerHighest.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: colorScheme.surfaceContainerHighest.withOpacity(0.3)),
+                    border: Border.all(
+                        color: colorScheme.surfaceContainerHighest
+                            .withOpacity(0.3)),
                   ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,

@@ -102,7 +102,7 @@ export default function LoginPage() {
             <p className="text-sm text-gray-600">
               Default admin credentials:<br />
               Email: admin@serveease.com<br />
-              Password: Admin@1234
+              Password: admin@123
             </p>
           </div>
         </form>

@@ -1,146 +1,982 @@
 {
   "@@locale": "am",
+  "appTitle": "ሰርቭኢዝ",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
   
-  "appTitle": "ServeEase",
-  "englishLabel": "EN",
-  "amharicLabel": "AM",
+  "welcome": "እንኳን ደህና መጡ",
+  "@welcome": {
+    "description": "Welcome message"
+  },
+  
+  "login": "ግባ",
+  "@login": {
+    "description": "Login button text"
+  },
+  
+  "register": "ተመዝገብ",
+  "@register": {
+    "description": "Register button text"
+  },
+  
+  "email": "ኢሜይል",
+  "@email": {
+    "description": "Email field label"
+  },
+  
+  "password": "የይለፍ ቃል",
+  "@password": {
+    "description": "Password field label"
+  },
+  
+  "confirmPassword": "የይለፍ ቃል አረጋግጥ",
+  "@confirmPassword": {
+    "description": "Confirm password field label"
+  },
+  
+  "name": "ስም",
+  "@name": {
+    "description": "Name field label"
+  },
+  
+  "phone": "ስልክ",
+  "@phone": {
+    "description": "Phone field label"
+  },
+  
+  "forgotPassword": "የይለፍ ቃልዎን ረሱት?",
+  "@forgotPassword": {
+    "description": "Forgot password link text"
+  },
+  
+  "dontHaveAccount": "መለያ የለዎትም?",
+  "@dontHaveAccount": {
+    "description": "Sign up prompt text"
+  },
+  
+  "alreadyHaveAccount": "መለያ አለዎት?",
+  "@alreadyHaveAccount": {
+    "description": "Sign in prompt text"
+  },
+  
+  "signUp": "ተመዝገብ",
+  "@signUp": {
+    "description": "Sign up button text"
+  },
+  
+  "signIn": "ግባ",
+  "@signIn": {
+    "description": "Sign in button text"
+  },
+  
+  "logout": "ውጣ",
+  "@logout": {
+    "description": "Logout button text"
+  },
+  
+  "profile": "መገለጫ",
+  "@profile": {
+    "description": "Profile page title"
+  },
+  
+  "settings": "ቅንብሮች",
+  "@settings": {
+    "description": "Settings page title"
+  },
+  
+  "language": "ቋንቋ",
+  "@language": {
+    "description": "Language setting label"
+  },
+  
+  "english": "English",
+  "@english": {
+    "description": "English language option"
+  },
+  
+  "amharic": "አማርኛ",
+  "@amharic": {
+    "description": "Amharic language option"
+  },
+  
+  "services": "አገልግሎቶች",
+  "@services": {
+    "description": "Services page title"
+  },
+  
+  "findServices": "አገልግሎቶችን ፈልግ",
+  "@findServices": {
+    "description": "Find services page title"
+  },
+  
+  "myServices": "የእኔ አገልግሎቶች",
+  "@myServices": {
+    "description": "My services page title"
+  },
+  
+  "addService": "አገልግሎት ጨምር",
+  "@addService": {
+    "description": "Add service button text"
+  },
+  
+  "editService": "አገልግሎት አርም",
+  "@editService": {
+    "description": "Edit service button text"
+  },
+  
+  "deleteService": "አገልግሎት ሰርዝ",
+  "@deleteService": {
+    "description": "Delete service button text"
+  },
+  
+  "serviceTitle": "የአገልግሎት ርዕስ",
+  "@serviceTitle": {
+    "description": "Service title field label"
+  },
+  
+  "serviceDescription": "የአገልግሎት መግለጫ",
+  "@serviceDescription": {
+    "description": "Service description field label"
+  },
+  
+  "servicePrice": "ዋጋ",
+  "@servicePrice": {
+    "description": "Service price field label"
+  },
+  
+  "serviceDuration": "ጊዜ (ሰዓት)",
+  "@serviceDuration": {
+    "description": "Service duration field label"
+  },
+  
+  "serviceCategory": "ምድብ",
+  "@serviceCategory": {
+    "description": "Service category field label"
+  },
+  
+  "homeRepair": "የቤት ጥገና",
+  "@homeRepair": {
+    "description": "Home repair service category"
+  },
+  
+  "cleaning": "ጽዳት",
+  "@cleaning": {
+    "description": "Cleaning service category"
+  },
+  
+  "gardening": "የአትክልት ስራ",
+  "@gardening": {
+    "description": "Gardening service category"
+  },
+  
+  "itSupport": "የአይቲ ድጋፍ",
+  "@itSupport": {
+    "description": "IT support service category"
+  },
+  
+  "tutoring": "ትምህርት",
+  "@tutoring": {
+    "description": "Tutoring service category"
+  },
+  
+  "delivery": "ማድረስ",
+  "@delivery": {
+    "description": "Delivery service category"
+  },
+  
+  "requests": "ጥያቄዎች",
+  "@requests": {
+    "description": "Requests page title"
+  },
+  
+  "myRequests": "የእኔ ጥያቄዎች",
+  "@myRequests": {
+    "description": "My requests page title"
+  },
+  
+  "requestService": "አገልግሎት ጠይቅ",
+  "@requestService": {
+    "description": "Request service button text"
+  },
+  
+  "requestStatus": "ሁኔታ",
+  "@requestStatus": {
+    "description": "Request status label"
+  },
+  
+  "pending": "በመጠባበቅ ላይ",
+  "@pending": {
+    "description": "Pending status"
+  },
+  
+  "accepted": "ተቀባይነት አግኝቷል",
+  "@accepted": {
+    "description": "Accepted status"
+  },
+  
+  "assigned": "ተመድቧል",
+  "@assigned": {
+    "description": "Assigned status"
+  },
+  
+  "inProgress": "በሂደት ላይ",
+  "@inProgress": {
+    "description": "In progress status"
+  },
+  
+  "completed": "ተጠናቋል",
+  "@completed": {
+    "description": "Completed status"
+  },
+  
+  "cancelled": "ተሰርዟል",
+  "@cancelled": {
+    "description": "Cancelled status"
+  },
+  
+  "chat": "ውይይት",
+  "@chat": {
+    "description": "Chat page title"
+  },
+  
+  "messages": "መልዕክቶች",
+  "@messages": {
+    "description": "Messages page title"
+  },
+  
+  "typeMessage": "መልዕክት ይጻፉ...",
+  "@typeMessage": {
+    "description": "Message input placeholder"
+  },
+  
+  "send": "ላክ",
+  "@send": {
+    "description": "Send button text"
+  },
+  
+  "attachFile": "ፋይል አያይዝ",
+  "@attachFile": {
+    "description": "Attach file button text"
+  },
+  
+  "takePhoto": "ፎቶ አንሳ",
+  "@takePhoto": {
+    "description": "Take photo button text"
+  },
+  
+  "chooseFromGallery": "ከጋለሪ ምረጥ",
+  "@chooseFromGallery": {
+    "description": "Choose from gallery button text"
+  },
+  
+  "rating": "ደረጃ",
+  "@rating": {
+    "description": "Rating label"
+  },
+  
+  "rateService": "አገልግሎት ደረጃ ስጥ",
+  "@rateService": {
+    "description": "Rate service button text"
+  },
+  
+  "writeReview": "ግምገማ ይጻፉ...",
+  "@writeReview": {
+    "description": "Review input placeholder"
+  },
+  
+  "submitReview": "ግምገማ አስገባ",
+  "@submitReview": {
+    "description": "Submit review button text"
+  },
+  
+  "provider": "አቅራቢ",
+  "@provider": {
+    "description": "Provider label"
+  },
+  
+  "seeker": "ፈላጊ",
+  "@seeker": {
+    "description": "Seeker label"
+  },
+  
+  "individual": "ግለሰብ",
+  "@individual": {
+    "description": "Individual provider type"
+  },
+  
+  "organization": "ድርጅት",
+  "@organization": {
+    "description": "Organization provider type"
+  },
+  
+  "businessName": "የንግድ ስም",
+  "@businessName": {
+    "description": "Business name field label"
+  },
+  
+  "location": "አድራሻ",
+  "@location": {
+    "description": "Location field label"
+  },
+  
+  "certificates": "ሰርተፊኬቶች",
+  "@certificates": {
+    "description": "Certificates label"
+  },
+  
+  "uploadCertificates": "ሰርተፊኬቶች ስቀል",
+  "@uploadCertificates": {
+    "description": "Upload certificates button text"
+  },
+  
+  "employees": "ሰራተኞች",
+  "@employees": {
+    "description": "Employees page title"
+  },
+  
+  "addEmployee": "ሰራተኛ ጨምር",
+  "@addEmployee": {
+    "description": "Add employee button text"
+  },
+  
+  "employeeName": "የሰራተኛ ስም",
+  "@employeeName": {
+    "description": "Employee name field label"
+  },
+  
+  "employeeRole": "ሚና",
+  "@employeeRole": {
+    "description": "Employee role field label"
+  },
+  
+  "skills": "ችሎታዎች",
+  "@skills": {
+    "description": "Skills field label"
+  },
+  
+  "save": "አስቀምጥ",
+  "@save": {
+    "description": "Save button text"
+  },
+  
+  "cancel": "ሰርዝ",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  
+  "delete": "ሰርዝ",
+  "@delete": {
+    "description": "Delete button text"
+  },
+  
+  "edit": "አርም",
+  "@edit": {
+    "description": "Edit button text"
+  },
+  
+  "search": "ፈልግ",
+  "@search": {
+    "description": "Search button text"
+  },
+  
+  "searchServices": "አገልግሎቶችን ፈልግ...",
+  "@searchServices": {
+    "description": "Search services placeholder"
+  },
+  
+  "filter": "ማጣሪያ",
+  "@filter": {
+    "description": "Filter button text"
+  },
+  
+  "sort": "ደርድር",
+  "@sort": {
+    "description": "Sort button text"
+  },
+  
+  "priceRange": "የዋጋ ክልል",
+  "@priceRange": {
+    "description": "Price range filter label"
+  },
+  
+  "distance": "ርቀት",
+  "@distance": {
+    "description": "Distance filter label"
+  },
+  
+  "notifications": "ማሳወቂያዎች",
+  "@notifications": {
+    "description": "Notifications page title"
+  },
+  
+  "noNotifications": "ማሳወቂያ የለም",
+  "@noNotifications": {
+    "description": "No notifications message"
+  },
+  
+  "markAsRead": "እንደተነበበ ምልክት አድርግ",
+  "@markAsRead": {
+    "description": "Mark as read button text"
+  },
+  
+  "error": "ስህተት",
+  "@error": {
+    "description": "Error message title"
+  },
+  
+  "success": "ተሳክቷል",
+  "@success": {
+    "description": "Success message title"
+  },
+  
+  "warning": "ማስጠንቀቂያ",
+  "@warning": {
+    "description": "Warning message title"
+  },
+  
+  "info": "መረጃ",
+  "@info": {
+    "description": "Info message title"
+  },
+  
+  "loading": "በመጫን ላይ...",
+  "@loading": {
+    "description": "Loading message"
+  },
+  
+  "retry": "እንደገና ሞክር",
+  "@retry": {
+    "description": "Retry button text"
+  },
+  
+  "noInternetConnection": "የኢንተርኔት ግንኙነት የለም",
+  "@noInternetConnection": {
+    "description": "No internet connection message"
+  },
+  
+  "somethingWentWrong": "የሆነ ችግር ተፈጥሯል",
+  "@somethingWentWrong": {
+    "description": "Generic error message"
+  },
+  
+  "emailVerification": "የኢሜይል ማረጋገጫ",
+  "@emailVerification": {
+    "description": "Email verification page title"
+  },
+  
+  "verificationCode": "የማረጋገጫ ኮድ",
+  "@verificationCode": {
+    "description": "Verification code field label"
+  },
+  
+  "verify": "አረጋግጥ",
+  "@verify": {
+    "description": "Verify button text"
+  },
+  
+  "resendCode": "ኮድ እንደገና ላክ",
+  "@resendCode": {
+    "description": "Resend code button text"
+  },
+  
+  "codeExpired": "ኮድ ጊዜው አልፏል",
+  "@codeExpired": {
+    "description": "Code expired message"
+  },
+  
+  "invalidCode": "ትክክል ያልሆነ ኮድ",
+  "@invalidCode": {
+    "description": "Invalid code message"
+  },
+  
+  "emailVerified": "ኢሜይል በተሳካ ሁኔታ ተረጋግጧል",
+  "@emailVerified": {
+    "description": "Email verified success message"
+  },
+  
+  "selectRole": "ሚና ምረጥ",
+  "@selectRole": {
+    "description": "Select role prompt"
+  },
+  
+  "providerType": "የአቅራቢ አይነት",
+  "@providerType": {
+    "description": "Provider type field label"
+  },
+  
+  "pendingApproval": "ፈቃድ በመጠባበቅ ላይ",
+  "@pendingApproval": {
+    "description": "Pending approval status"
+  },
+  
+  "approved": "ፈቃድ ተሰጥቷል",
+  "@approved": {
+    "description": "Approved status"
+  },
+  
+  "rejected": "ተቀባይነት አላገኘም",
+  "@rejected": {
+    "description": "Rejected status"
+  },
+  
+  "applicationStatus": "የመተግበሪያ ሁኔታ",
+  "@applicationStatus": {
+    "description": "Application status label"
+  },
+  
+  "viewDetails": "ዝርዝር ይመልከቱ",
+  "@viewDetails": {
+    "description": "View details button text"
+  },
+  
+  "contactProvider": "አቅራቢውን ያነጋግሩ",
+  "@contactProvider": {
+    "description": "Contact provider button text"
+  },
+  
+  "bookService": "አገልግሎት ይዘዙ",
+  "@bookService": {
+    "description": "Book service button text"
+  },
+  
+  "serviceBooked": "አገልግሎት በተሳካ ሁኔታ ተይዟል",
+  "@serviceBooked": {
+    "description": "Service booked success message"
+  },
+  
+  "notes": "ማስታወሻዎች",
+  "@notes": {
+    "description": "Notes field label"
+  },
+  
+  "additionalNotes": "ተጨማሪ ማስታወሻዎች",
+  "@additionalNotes": {
+    "description": "Additional notes field label"
+  },
+  
+  "acceptRequest": "ጥያቄ ተቀበል",
+  "@acceptRequest": {
+    "description": "Accept request button text"
+  },
+  
+  "rejectRequest": "ጥያቄ አትቀበል",
+  "@rejectRequest": {
+    "description": "Reject request button text"
+  },
+  
+  "assignEmployee": "ሰራተኛ ምደብ",
+  "@assignEmployee": {
+    "description": "Assign employee button text"
+  },
+  
+  "markInProgress": "በሂደት ላይ ምልክት አድርግ",
+  "@markInProgress": {
+    "description": "Mark in progress button text"
+  },
+  
+  "markCompleted": "ተጠናቋል ምልክት አድርግ",
+  "@markCompleted": {
+    "description": "Mark completed button text"
+  },
+  
+  "requestAccepted": "ጥያቄ ተቀባይነት አግኝቷል",
+  "@requestAccepted": {
+    "description": "Request accepted message"
+  },
+  
+  "requestRejected": "ጥያቄ ተቀባይነት አላገኘም",
+  "@requestRejected": {
+    "description": "Request rejected message"
+  },
+  
+  "employeeAssigned": "ሰራተኛ ተመድቧል",
+  "@employeeAssigned": {
+    "description": "Employee assigned message"
+  },
+  
+  "serviceCompleted": "አገልግሎት ተጠናቋል",
+  "@serviceCompleted": {
+    "description": "Service completed message"
+  },
+  
+  "reviewSubmitted": "ግምገማ በተሳካ ሁኔታ ተላከ",
+  "@reviewSubmitted": {
+    "description": "Review submitted success message"
+  },
+  
+  "profileUpdated": "መገለጫ በተሳካ ሁኔታ ተዘምኗል",
+  "@profileUpdated": {
+    "description": "Profile updated success message"
+  },
+  
+  "serviceCreated": "አገልግሎት በተሳካ ሁኔታ ተፈጠረ",
+  "@serviceCreated": {
+    "description": "Service created success message"
+  },
+  
+  "serviceUpdated": "አገልግሎት በተሳካ ሁኔታ ተዘምኗል",
+  "@serviceUpdated": {
+    "description": "Service updated success message"
+  },
+  
+  "serviceDeleted": "አገልግሎት በተሳካ ሁኔታ ተሰርዟል",
+  "@serviceDeleted": {
+    "description": "Service deleted success message"
+  },
+  
+  "employeeAdded": "ሰራተኛ በተሳካ ሁኔታ ተጨመረ",
+  "@employeeAdded": {
+    "description": "Employee added success message"
+  },
+  
+  "employeeUpdated": "ሰራተኛ በተሳካ ሁኔታ ተዘምኗል",
+  "@employeeUpdated": {
+    "description": "Employee updated success message"
+  },
+  
+  "employeeDeleted": "ሰራተኛ በተሳካ ሁኔታ ተሰርዟል",
+  "@employeeDeleted": {
+    "description": "Employee deleted success message"
+  },
+  
+  "confirmDelete": "ይህንን ንጥል መሰረዝ እርግጠኛ ነዎት?",
+  "@confirmDelete": {
+    "description": "Confirm delete dialog message"
+  },
+  
+  "yes": "አዎ",
+  "@yes": {
+    "description": "Yes button text"
+  },
+  
+  "no": "አይ",
+  "@no": {
+    "description": "No button text"
+  },
+  
+  "ok": "እሺ",
+  "@ok": {
+    "description": "OK button text"
+  },
+  
+  "close": "ዝጋ",
+  "@close": {
+    "description": "Close button text"
+  },
+  
+  "back": "ተመለስ",
+  "@back": {
+    "description": "Back button text"
+  },
+  
+  "next": "ቀጣይ",
+  "@next": {
+    "description": "Next button text"
+  },
+  
+  "previous": "ቀዳሚ",
+  "@previous": {
+    "description": "Previous button text"
+  },
+  
+  "finish": "ጨርስ",
+  "@finish": {
+    "description": "Finish button text"
+  },
+  
+  "skip": "ዝለል",
+  "@skip": {
+    "description": "Skip button text"
+  },
+  
+  "continueButton": "ቀጥል",
+  "@continueButton": {
+    "description": "Continue button text"
+  },
+
+  "englishLabel": "English",
+  "@englishLabel": {
+    "description": "English language label"
+  },
+
+  "amharicLabel": "አማርኛ",
+  "@amharicLabel": {
+    "description": "Amharic language label"
+  },
+  
+  "done": "ተጠናቋል",
+  "@done": {
+    "description": "Done button text"
+  },
+  
+  "refresh": "አድስ",
+  "@refresh": {
+    "description": "Refresh button text"
+  },
+  
+  "update": "አዘምን",
+  "@update": {
+    "description": "Update button text"
+  },
+  
+  "create": "ፍጠር",
+  "@create": {
+    "description": "Create button text"
+  },
+  
+  "submit": "አስገባ",
+  "@submit": {
+    "description": "Submit button text"
+  },
+  
+  "apply": "ተግብር",
+  "@apply": {
+    "description": "Apply button text"
+  },
+  
+  "clear": "አጽዳ",
+  "@clear": {
+    "description": "Clear button text"
+  },
+  
+  "reset": "እንደገና አስጀምር",
+  "@reset": {
+    "description": "Reset button text"
+  },
+  
+  "home": "ቤት",
+  "@home": {
+    "description": "Home page title"
+  },
+  
+  "dashboard": "ዳሽቦርድ",
+  "@dashboard": {
+    "description": "Dashboard page title"
+  },
+  
+  "about": "ስለ እኛ",
+  "@about": {
+    "description": "About page title"
+  },
+  
+  "help": "እርዳታ",
+  "@help": {
+    "description": "Help page title"
+  },
+  
+  "support": "ድጋፍ",
+  "@support": {
+    "description": "Support page title"
+  },
+  
+  "contactUs": "አግኙን",
+  "@contactUs": {
+    "description": "Contact us page title"
+  },
+  
+  "termsOfService": "የአገልግሎት ውሎች",
+  "@termsOfService": {
+    "description": "Terms of service page title"
+  },
+  
+  "privacyPolicy": "የግላዊነት ፖሊሲ",
+  "@privacyPolicy": {
+    "description": "Privacy policy page title"
+  },
+  
+  "version": "ስሪት",
+  "@version": {
+    "description": "Version label"
+  },
+  
+  "validationEmailRequired": "ኢሜይል ያስፈልጋል",
+  "@validationEmailRequired": {
+    "description": "Email required validation message"
+  },
+  
+  "validationEmailInvalid": "እባክዎ ትክክለኛ ኢሜይል አድራሻ ያስገቡ",
+  "@validationEmailInvalid": {
+    "description": "Invalid email validation message"
+  },
+  
+  "validationPasswordRequired": "የይለፍ ቃል ያስፈልጋል",
+  "@validationPasswordRequired": {
+    "description": "Password required validation message"
+  },
+  
+  "validationPasswordLength": "የይለፍ ቃል ቢያንስ 6 ቁምፊዎች መሆን አለበት",
+  "@validationPasswordLength": {
+    "description": "Password length validation message"
+  },
+  
+  "validationConfirmPassword": "እባክዎ የይለፍ ቃልዎን ያረጋግጡ",
+  "@validationConfirmPassword": {
+    "description": "Confirm password required validation message"
+  },
+  
+  "validationPasswordsMismatch": "የይለፍ ቃሎች አይዛመዱም",
+  "@validationPasswordsMismatch": {
+    "description": "Password mismatch validation message"
+  },
+  
+  "validationRequired": "ይህ መስክ ያስፈልጋል",
+  "@validationRequired": {
+    "description": "Generic required field validation message"
+  },
+  
+  "validationPhoneRequired": "ስልክ ቁጥር ያስፈልጋል",
+  "@validationPhoneRequired": {
+    "description": "Phone number required validation message"
+  },
+  
+  "validationPhoneInvalid": "እባክዎ ትክክለኛ ስልክ ቁጥር ያስገቡ",
+  "@validationPhoneInvalid": {
+    "description": "Invalid phone number validation message"
+  },
+  
+  "validationPriceRequired": "ዋጋ ያስፈልጋል",
+  "@validationPriceRequired": {
+    "description": "Price required validation message"
+  },
+  
+  "validationPriceInvalid": "እባክዎ ትክክለኛ ዋጋ ያስገቡ",
+  "@validationPriceInvalid": {
+    "description": "Invalid price validation message"
+  },
+  
+  "validationDurationRequired": "ጊዜ ያስፈልጋል",
+  "@validationDurationRequired": {
+    "description": "Duration required validation message"
+  },
+  
+  "validationDurationInvalid": "እባክዎ ትክክለኛ ጊዜ በሰዓት ያስገቡ",
+  "@validationDurationInvalid": {
+    "description": "Invalid duration validation message"
+  },
+  
+  "selectRoleError": "እባክዎ ሚናዎን ይምረጡ",
+  "@selectRoleError": {
+    "description": "Error message when no role is selected during login"
+  },
   
   "loginWelcomeTitle": "እንኳን ደህና መጡ",
-  "loginSubtitle": "ወደ ServEase ለመቀጠል ይግቡ",
-  "emailLabel": "ኢሜል አድራሻ",
-  "passwordLabel": "የይለፍ ቃል",
-  "forgotPasswordLabel": "የይለፍ ቃልዎን ረሱት?",
-  "loginButtonLabel": "ግባ",
-  "signupRedirectPrefix": "መለያ የለዎትም? ",
-  "signupRedirectAction": "ይመዝገቡ",
-  "loginRedirectPrefix": "መለያ አለዎት? ",
-  "loginRedirectAction": "ግባ",
-  "loginSuccessMessage": "መግቢያ ተሳክቷል!",
-  "loginFailed": "መግቢያ አልተሳካም: {reason}",
-  "selectLoginRole": "እባክዎ ሚናዎን ይምረጡ",
-  "loginAsRole": "እንደ ግባ",
-  "provider": "አቅራቢ",
-  "seeker": "ፈላጊ",
+  "@loginWelcomeTitle": {
+    "description": "Welcome title on login screen"
+  },
   
-  "createAccountTitle": "መለያዎን ይፍጠሩ",
-  "signupSubtitle": "ከአገልግሎቶች ጋር ለመገናኘት ወይም ባለሙያነትዎን ለማቅረብ ሰርቭኢዝ ይቀላቀሉ",
-  "nameLabel": "ሙሉ ስም",
-  "nameValidation": "እባክዎ ስምዎን ያስገቡ",
-  "confirmPasswordLabel": "የይለፍ ቃል ያረጋግጡ",
-  "joinAsLabel": "እንደ ይቀላቀሉ:",
-  "signupSubmitLabel": "መለያ ፍጠር",
-  "serviceSeekerLabel": "የአገልግሎት ፈላጊ",
-  "serviceProviderLabel": "የአገልግሎት አቅራቢ",
-  "providerInfoNote": "እንደ አቅራቢ፣ ኢሜልዎን ካረጋገጡ በኋላ መገለጫዎን ማዘጋጀት ያስፈልግዎታል",
+  "loginSubtitle": "ለመቀጠል ይግቡ",
+  "@loginSubtitle": {
+    "description": "Subtitle on login screen"
+  },
   
-  "verifyEmailTitle": "ኢሜልዎን ያረጋግጡ",
-  "verifyEmailInfo": "6-አሃዝ የማረጋገጫ ኮድ ወደ ላክነው:",
-  "verificationCodeLabel": "6-አሃዝ ኮድ ያስገቡ",
-  "verifyButtonLabel": "ኢሜል አረጋግጥ",
-  "resendCodeLabel": "ኮድ እንደገና ላክ",
-  "backToLoginLabel": "ወደ መግቢያ ተመለስ",
-  "emptyVerificationCode": "እባክዎ 6-አሃዝ ኮዱን ያስገቡ",
-  "emailVerifiedMessage": "ኢሜል በተሳካ ሁኔታ ተረጋግጧል! ለመቀጠል እባክዎ ይግቡ።",
-  "didntReceiveCode": "ኮዱን አልተቀበሉም? ",
-  "whatHappensNext": "ቀጥሎ ምን ይከሰታል?",
-  "afterVerificationProvider": "ከማረጋገጥ በኋላ፣ የአቅራቢ መገለጫ ማዘጋጃዎን ለማጠናቀቅ ይዛወራሉ።",
-  "afterVerificationSeeker": "ከማረጋገጥ በኋላ፣ ወደ ዳሽቦርድዎ ይወሰዳሉ።",
+  "emailLabel": "ኢሜይል",
+  "@emailLabel": {
+    "description": "Email field label"
+  },
   
-  "forgotPasswordTitle": "የይለፍ ቃልዎን ረሱት?",
-  "forgotPasswordSubtitle": "ኢሜልዎን ያስገቡ እና የይለፍ ቃልዎን እንዴት እንደሚዳግሙ መመሪያ እንልክልዎታለን",
-  "sendResetLinkButton": "የዳግም ማስተካከያ ኮድ ላክ",
-  "rememberPasswordPrefix": "የይለፍ ቃልዎን አስታወሱ? ",
-  "rememberPasswordAction": "ግባ",
-  "resetCodeSentMessage": "የይለፍ ቃል ዳግም ማስተካከያ ኮድ ወደ ኢሜል ተልኳል",
-  
-  "homeTitle": "ሰርቭኢዝ",
-  "homeWelcome": "ወደ ሰርቭኢዝ እንኳን ደህና መጡ!",
-  "homeSubtitle": "አገልግሎቶችን ያስሱ፣ ቦታ ማስያዝ ይጠይቁ እና መለያዎን ያስተዳድሩ",
-  "homeExploreButton": "አገልግሎቶችን ያስሱ",
-  
-  "providerProfileSetup": "አቅራቢ ይሁኑ",
-  "editProfile": "መገለጫ አርትዕ",
-  "providerProfileSuccess": "መገለጫ ተቀምጧል!",
-  "providerType": "የአቅራቢ አይነት",
-  "individual": "ግለሰብ",
-  "organization": "ድርጅት",
-  "individualSubtitle": "ነጻ ሰራተኛ ወይም ብቸኛ ባለቤት",
-  "organizationSubtitle": "ኩባንያ ወይም ንግድ",
-  "personalInformation": "የግል መረጃ",
-  "businessInformation": "የንግድ መረጃ",
-  "yourName": "ስምዎ",
-  "businessName": "የንግድ ስም",
-  "enterFullName": "ሙሉ ስምዎን ያስገቡ",
-  "enterBusinessName": "የንግድ ስም ያስገቡ",
-  "description": "መግለጫ",
-  "describeServices": "አገልግሎቶችዎን በዝርዝር ይግለጹ...",
-  "serviceCategory": "የአገልግሎት ምድብ",
-  "selectCategory": "የአገልግሎት ምድብዎን ይምረጡ",
-  "contactInformation": "የመገናኛ መረጃ",
-  "location": "አካባቢ",
-  "phone": "ስልክ",
-  "cityState": "ከተማ፣ ክልል",
-  "certificatesQualifications": "ሰርተፊኬቶች እና ብቃቶች",
-  "uploadCertificates": "የሙያ ሰርተፊኬቶችዎን ወይም ፈቃዶችዎን ይስቀሉ",
-  "noCertificatesUploaded": "ምንም ሰርተፊኬቶች አልተሰቀሉም",
-  "uploadCertificatePrompt": "ብቃቶችዎን ለማረጋገጥ ቢያንስ አንድ ሰርተፊኬት ይስቀሉ",
-  "addCertificate": "ሰርተፊኬት ጨምር",
-  "createProfile": "መገለጫ ፍጠር",
-  "updateProfile": "መገለጫ አዘምን",
-  "viewProfile": "መገለጫ ይመልከቱ",
-  "editProfileButton": "መገለጫ አርትዕ",
-  
-  "profileApproved": "መገለጫ ጸድቋል",
-  "pendingApproval": "ፈቃድ በመጠባበቅ ላይ",
-  "profileActiveMessage": "መገለጫዎ ንቁ ነው እና ለደንበኞች ይታያል።",
-  "profileReviewMessage": "መገለጫዎ በቡድናችን እየተገመገመ ነው።",
-  "approvedOn": "የጸደቀበት ቀን: {date}",
-  "businessInformationCard": "የንግድ መረጃ",
-  "serviceDescriptionCard": "የአገልግሎት መግለጫ",
-  "certificatesCard": "ሰርተፊኬቶች እና ብቃቶች",
-  "accountInformationCard": "የመለያ መረጃ",
-  "adminNotesCard": "የአስተዳዳሪ ማስታወሻዎች",
-  "memberSince": "አባል ከሆነበት ጊዜ",
-  "lastUpdated": "በመጨረሻ የተዘመነ",
-  "noProfileFound": "ምንም መገለጫ አልተገኘም",
-  "createProviderProfile": "አገልግሎቶችን ማቅረብ ለመጀመር የአቅራቢ መገለጫ ይፍጠሩ።",
-  
-  "validationEmailRequired": "ኢሜል ያስፈልጋል",
-  "validationEmailInvalid": "እባክዎ ትክክለኛ ኢሜል ያቅርቡ",
-  "validationPasswordRequired": "የይለፍ ቃል ያስፈልጋል",
-  "validationPasswordLength": "የይለፍ ቃል ቢያንስ 6 ቁምፊዎች መሆን አለበት",
-  "validationConfirmPassword": "እባክዎ የይለፍ ቃልዎን ያረጋግጡ",
-  "validationPasswordsMismatch": "የይለፍ ቃሎች አይዛመዱም",
-  "validationNameRequired": "ይህ መስክ ያስፈልጋል",
-  "validationDescriptionRequired": "መግለጫ ያስፈልጋል",
-  "validationDescriptionLength": "መግለጫ ቢያንስ 10 ቁምፊዎች መሆን አለበት",
-  "validationLocationRequired": "አካባቢ ያስፈልጋል",
-  "validationPhoneRequired": "ስልክ ቁጥር ያስፈልጋል",
-  "validationPhoneInvalid": "እባክዎ ትክክለኛ ስልክ ቁጥር ያስገቡ",
-  "validationCategoryRequired": "እባክዎ ምድብ ይምረጡ",
-  "validationCertificatesRequired": "ግለሰብ አቅራቢዎች ቢያንስ አንድ ሰርተፊኬት መስቀል አለባቸው",
-  
-  "errorWithMessage": "ስህተት: {message}",
-  "unknownError": "የሆነ ችግር ተፈጥሯል። እባክዎ እንደገና ይሞክሩ።",
-  "networkError": "የኔትወርክ ስህተት። እባክዎ ግንኙነትዎን ይፈትሹ።",
-  "serverError": "የአገልጋይ ስህተት። እባክዎ እንደገና ይሞክሩ።",
-  "loadingCategories": "ምድቦች እየተጫኑ ነው...",
-  "failedToLoadCategories": "ምድቦችን መጫን አልተሳካም",
-"selectRoleError": "እባክዎ ሚናዎን ይምረጡ",
-  "loginAsLabel": "እንደ ማን ይግቡ",
   "emailHint": "ኢሜይልዎን ያስገቡ",
+  "@emailHint": {
+    "description": "Email field hint text"
+  },
+  
+  "passwordLabel": "የይለፍ ቃል",
+  "@passwordLabel": {
+    "description": "Password field label"
+  },
+  
   "passwordHint": "የይለፍ ቃልዎን ያስገቡ",
-  "validationNameLength": "ስም ቢያንስ 3 ፊደላት መሆን አለበት",
-  "continue": "ቀጥል",
-  "cancel": "ሰርዝ",
-  "save": "አስቀምጥ",
-  "delete": "ሰርዝ",
-  "edit": "አርትዕ",
-  "close": "ዝጋ",
-  "ok": "እሺ",
-  "yes": "አዎ",
-  "no": "አይ",
-  "loading": "እየተጫነ...",
-  "retry": "እንደገና ሞክር",
-  "refresh": "አድስ"
+  "@passwordHint": {
+    "description": "Password field hint text"
+  },
+  
+  "loginButtonLabel": "ግባ",
+  "@loginButtonLabel": {
+    "description": "Login button text"
+  },
+  
+  "forgotPasswordLabel": "የይለፍ ቃልዎን ረሱት?",
+  "@forgotPasswordLabel": {
+    "description": "Forgot password link text"
+  },
+  
+  "signupRedirectPrefix": "መለያ የለዎትም?",
+  "@signupRedirectPrefix": {
+    "description": "Text before signup link"
+  },
+  
+  "signupRedirectAction": "ተመዝገቡ",
+  "@signupRedirectAction": {
+    "description": "Signup link text"
+  },
+  
+  "loginAsRole": "እንደ ግባ",
+  "@loginAsRole": {
+    "description": "Role selection header text"
+  },
+  
+  "serviceSeekerLabel": "የአገልግሎት ፈላጊ",
+  "@serviceSeekerLabel": {
+    "description": "Service seeker role label"
+  },
+  
+  "serviceProviderLabel": "የአገልግሎት አቅራቢ",
+  "@serviceProviderLabel": {
+    "description": "Service provider role label"
+  },
+  
+  "createAccountTitle": "መለያ ፍጠር",
+  "@createAccountTitle": {
+    "description": "Create account page title"
+  },
+  
+  "signupSubtitle": "ዛሬ ሰርቭኢዝ ይቀላቀሉ",
+  "@signupSubtitle": {
+    "description": "Signup page subtitle"
+  },
+  
+  "nameLabel": "ሙሉ ስም",
+  "@nameLabel": {
+    "description": "Name field label"
+  },
+  
+  "nameValidation": "እባክዎ ሙሉ ስምዎን ያስገቡ",
+  "@nameValidation": {
+    "description": "Name validation message"
+  },
+  
+  "validationNameLength": "ስም ቢያንስ 3 ቁምፊዎች መሆን አለበት",
+  "@validationNameLength": {
+    "description": "Name length validation message"
+  },
+  
+  "confirmPasswordLabel": "የይለፍ ቃል አረጋግጥ",
+  "@confirmPasswordLabel": {
+    "description": "Confirm password field label"
+  },
+  
+  "joinAsLabel": "እንደ ይቀላቀሉ",
+  "@joinAsLabel": {
+    "description": "Role selection header"
+  },
+  
+  "providerInfoNote": "እንደ አቅራቢ፣ አገልግሎቶችን ከማቅረብዎ በፊት የአስተዳዳሪ ፈቃድ ያስፈልግዎታል",
+  "@providerInfoNote": {
+    "description": "Information note for providers"
+  },
+  
+  "signupSubmitLabel": "መለያ ፍጠር",
+  "@signupSubmitLabel": {
+    "description": "Signup submit button text"
+  },
+  
+  "loginRedirectPrefix": "መለያ አለዎት?",
+  "@loginRedirectPrefix": {
+    "description": "Text before login link"
+  },
+  
+  "loginRedirectAction": "ግቡ",
+  "@loginRedirectAction": {
+    "description": "Login link text"
+  }
 }
