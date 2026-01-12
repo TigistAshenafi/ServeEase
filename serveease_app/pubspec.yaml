@@ -53,11 +53,12 @@ dependencies:
   socket_io_client: ^2.0.3+1
   emoji_picker_flutter: ^2.0.0
   flutter_chat_bubble: ^2.0.2
-  image_gallery_saver: ^2.0.3
+  # image_gallery_saver: ^2.0.3+1  # Temporarily disabled due to namespace issue
+  gal: ^2.3.0  # Alternative to image_gallery_saver with better Android support
   photo_view: ^0.14.0
-  flutter_sound: ^9.2.13
-  record: ^5.0.4
-  audioplayers: ^5.2.1
+  # flutter_sound: ^9.2.13  # Temporarily disabled due to compatibility issues
+  # record: ^5.1.2  # Temporarily disabled due to compatibility issues
+  # audioplayers: ^5.2.1  # Temporarily disabled due to compatibility issues
 
   # Icons
   cupertino_icons: ^1.0.5

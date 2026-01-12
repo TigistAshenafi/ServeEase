@@ -26,15 +26,14 @@ class ServiceDetailScreen extends StatelessWidget {
               isThreeLine: true,
               trailing: ElevatedButton(
                 onPressed: () async {
-                  final reqProvider =
-                      context.read<ServiceRequestProvider>();
+                  final reqProvider = context.read<ServiceRequestProvider>();
                   final res = await reqProvider.createRequest(
-                      serviceId: service.id);
+                      serviceId: service.id,
+                      providerId: service.provider?.id ?? '');
                   if (!context.mounted) return;
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text(res.success
-                          ? 'Request created'
-                          : res.message)));
+                      content:
+                          Text(res.success ? 'Request created' : res.message)));
                 },
                 child: const Text('Request'),
               ),
@@ -45,4 +44,3 @@ class ServiceDetailScreen extends StatelessWidget {
     );
   }
 }
-

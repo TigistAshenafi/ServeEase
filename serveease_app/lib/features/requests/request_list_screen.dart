@@ -69,7 +69,8 @@ class _RequestListScreenState extends State<RequestListScreen> {
                       onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => RequestDetailScreen(request: req),
+                          builder: (_) =>
+                              RequestDetailScreen(requestId: req.id),
                         ),
                       ),
                     ),
@@ -80,4 +81,3 @@ class _RequestListScreenState extends State<RequestListScreen> {
     );
   }
 }
-
