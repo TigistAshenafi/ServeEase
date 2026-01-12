@@ -992,5 +992,35 @@
   "loginRedirectAction": "Sign in",
   "@loginRedirectAction": {
     "description": "Login link text"
+  },
+  
+  "forgotPasswordTitle": "Forgot Password",
+  "@forgotPasswordTitle": {
+    "description": "Forgot password page title"
+  },
+  
+  "forgotPasswordSubtitle": "Enter your email to receive a password reset link",
+  "@forgotPasswordSubtitle": {
+    "description": "Forgot password page subtitle"
+  },
+  
+  "sendResetLinkButton": "Send Reset Link",
+  "@sendResetLinkButton": {
+    "description": "Send reset link button text"
+  },
+  
+  "rememberPasswordPrefix": "Remember your password?",
+  "@rememberPasswordPrefix": {
+    "description": "Text before back to login link"
+  },
+  
+  "rememberPasswordAction": "Back to Login",
+  "@rememberPasswordAction": {
+    "description": "Back to login link text"
+  },
+  
+  "resetCodeSentMessage": "Password reset code has been sent to your email",
+  "@resetCodeSentMessage": {
+    "description": "Message shown when reset code is sent"
   }
 }

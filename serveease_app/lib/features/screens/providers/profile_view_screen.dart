@@ -14,8 +14,7 @@ class ProviderProfileViewScreen extends StatefulWidget {
       _ProviderProfileViewScreenState();
 }
 
-class _ProviderProfileViewScreenState
-    extends State<ProviderProfileViewScreen> {
+class _ProviderProfileViewScreenState extends State<ProviderProfileViewScreen> {
   @override
   void initState() {
     super.initState();
@@ -40,20 +39,19 @@ class _ProviderProfileViewScreenState
 
     if (provider.isLoading) {
       return Scaffold(
-        backgroundColor: colors.background,
+        backgroundColor: colors.surface,
         body: const Center(child: CircularProgressIndicator()),
       );
     }
 
     if (profile == null) {
       return Scaffold(
-        backgroundColor: colors.background,
+        backgroundColor: colors.surface,
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.person_off,
-                  size: 90, color: colors.onSurfaceVariant),
+              Icon(Icons.person_off, size: 90, color: colors.onSurfaceVariant),
               const SizedBox(height: 16),
               Text(
                 'No Profile Found',
@@ -79,8 +77,7 @@ class _ProviderProfileViewScreenState
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (_) => CreateProfileScreen()),
+                    MaterialPageRoute(builder: (_) => CreateProfileScreen()),
                   );
                 },
                 child: const Text(
@@ -95,7 +92,7 @@ class _ProviderProfileViewScreenState
     }
 
     return Scaffold(
-      backgroundColor: colors.background,
+      backgroundColor: colors.surface,
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: colors.primary,
         foregroundColor: colors.onPrimary,
@@ -128,15 +125,13 @@ class _ProviderProfileViewScreenState
                     color: colors.surface,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: colors.primary.withOpacity(0.2),
+                      color: colors.primary.withValues(alpha: 0.2),
                     ),
                   ),
                   child: Row(
                     children: [
                       Icon(
-                        profile.isApproved
-                            ? Icons.verified
-                            : Icons.pending,
+                        profile.isApproved ? Icons.verified : Icons.pending,
                         color: colors.primary,
                         size: 28,
                       ),
@@ -158,16 +153,13 @@ class _ProviderProfileViewScreenState
                                   ? 'Your profile is live and visible.'
                                   : 'Waiting for admin approval.',
                               style: theme.textTheme.bodySmall
-                                  ?.copyWith(
-                                      color:
-                                          colors.onSurfaceVariant),
+                                  ?.copyWith(color: colors.onSurfaceVariant),
                             ),
                           ],
                         ),
                       ),
                       StatusBadge(
-                        status:
-                            profile.isApproved ? 'Approved' : 'Pending',
+                        status: profile.isApproved ? 'Approved' : 'Pending',
                         isActive: profile.isApproved,
                       ),
                     ],
@@ -179,12 +171,11 @@ class _ProviderProfileViewScreenState
                   title: 'Business Information',
                   icon: Icons.business,
                   color: colors.surface,
-                  borderColor: colors.primary.withOpacity(0.2),
+                  borderColor: colors.primary.withValues(alpha: 0.2),
                   children: [
-                    _info('Provider Type',
-                        profile.providerType.toUpperCase(), colors),
-                    _info('Business Name',
-                        profile.businessName, colors),
+                    _info('Provider Type', profile.providerType.toUpperCase(),
+                        colors),
+                    _info('Business Name', profile.businessName, colors),
                     _info('Category', profile.category, colors),
                     _info('Location', profile.location, colors),
                     _info('Phone', profile.phone, colors),
@@ -195,7 +186,7 @@ class _ProviderProfileViewScreenState
                   title: 'Service Description',
                   icon: Icons.description,
                   color: colors.surface,
-                  borderColor: colors.primary.withOpacity(0.2),
+                  borderColor: colors.primary.withValues(alpha: 0.2),
                   children: [
                     Text(
                       profile.description,
@@ -209,8 +200,7 @@ class _ProviderProfileViewScreenState
                     title: 'Certificates',
                     icon: Icons.verified,
                     color: colors.surface,
-                    borderColor:
-                        colors.primary.withOpacity(0.2),
+                    borderColor: colors.primary.withValues(alpha: 0.2),
                     children: profile.certificates
                         .map((c) => _certificateChip(c, colors))
                         .toList(),
@@ -220,18 +210,14 @@ class _ProviderProfileViewScreenState
                   title: 'Account Information',
                   icon: Icons.person,
                   color: colors.surface,
-                  borderColor:
-                      colors.primary.withOpacity(0.2),
+                  borderColor: colors.primary.withValues(alpha: 0.2),
                   children: [
                     if (profile.user != null) ...[
                       _info('Name', profile.user!.name, colors),
-                      _info(
-                          'Email', profile.user!.email, colors),
+                      _info('Email', profile.user!.email, colors),
                     ],
-                    _info('Member Since',
-                        _format(profile.createdAt), colors),
-                    _info('Last Updated',
-                        _format(profile.updatedAt), colors),
+                    _info('Member Since', _format(profile.createdAt), colors),
+                    _info('Last Updated', _format(profile.updatedAt), colors),
                   ],
                 ),
 
@@ -263,8 +249,7 @@ class _ProviderProfileViewScreenState
             flex: 3,
             child: Text(
               value,
-              style:
-                  const TextStyle(fontWeight: FontWeight.w500),
+              style: const TextStyle(fontWeight: FontWeight.w500),
             ),
           ),
         ],
@@ -275,8 +260,7 @@ class _ProviderProfileViewScreenState
   Widget _certificateChip(String text, ColorScheme colors) {
     return Container(
       margin: const EdgeInsets.only(right: 8, bottom: 8),
-      padding:
-          const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
         color: colors.primaryContainer,
         borderRadius: BorderRadius.circular(10),

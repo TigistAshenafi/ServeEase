@@ -18,6 +18,45 @@ class AppLocalizationsAm extends AppLocalizations {
   String get login => 'ግባ';
 
   @override
+  String get verifyEmailTitle => 'ኢሜልዎን ያረጋግጡ';
+
+  @override
+  String get verifyEmailInfo => '6-አሃዝ የማረጋገጫ ኮድ ወደ ላክነው:';
+
+  @override
+  String get verificationCodeLabel => '6-አሃዝ ኮድ ያስገቡ';
+
+  @override
+  String get verifyButtonLabel => 'ኢሜል አረጋግጥ';
+
+  @override
+  String get resendCodeLabel => 'ኮድ እንደገና ላክ';
+
+  @override
+  String get backToLoginLabel => 'ወደ መግቢያ ተመለስ';
+
+  @override
+  String get emptyVerificationCode => 'እባክዎ 6-አሃዝ ኮዱን ያስገቡ';
+
+  @override
+  String get emailVerifiedMessage => 'ኢሜል በተሳካ ሁኔታ ተረጋግጧል! ለመቀጠል እባክዎ ይግቡ።';
+
+  @override
+  String get didntReceiveCode => 'ኮዱን አልተቀበሉም? ';
+
+  @override
+  String get tryAnotherEmail => 'ሌላ ኢሜል ይሞክሩ';
+
+  @override
+  String get whatHappensNext => 'ቀጥሎ ምን ይከሰታል?';
+
+  @override
+  String get afterVerificationProvider => 'ከማረጋገጥ በኋላ፣ የአቅራቢ መገለጫ ማዘጋጃዎን ለማጠናቀቅ ይዛወራሉ።';
+
+  @override
+  String get afterVerificationSeeker => 'ከማረጋገጥ በኋላ፣ ወደ ዳሽቦርድዎ ይወሰዳሉ።';
+
+  @override
   String get register => 'ተመዝገብ';
 
   @override
@@ -594,87 +633,23 @@ class AppLocalizationsAm extends AppLocalizations {
   String get loginRedirectPrefix => 'መለያ አለዎት?';
 
   @override
-<<<<<<< HEAD
   String get loginRedirectAction => 'ግቡ';
-=======
-  String get missingEmailError => 'ኢሜል አልተገኘም';
 
   @override
-  String get emailVerifiedMessage => 'ኢሜሉ ተረጋገጠ። እባክዎ ይግቡ።';
+  String get forgotPasswordTitle => 'Forgot Password';
 
   @override
-  String get homeTitle => 'ServeEase መነሻ';
+  String get forgotPasswordSubtitle => 'Enter your email to receive a password reset link';
 
   @override
-  String get homeWelcome => 'እንኳን ወደ ServeEase በደህና መጡ!';
+  String get sendResetLinkButton => 'Send Reset Link';
 
   @override
-  String get homeSubtitle => 'አገልግሎቶችን ይመልከቱ፣ ጥያቄዎችን ያቀርቡ እና መለያዎን ያቆጣጠሩ።';
+  String get rememberPasswordPrefix => 'Remember your password?';
 
   @override
-  String get homeExploreButton => 'አገልግሎቶችን ይመልከቱ';
+  String get rememberPasswordAction => 'Back to Login';
 
   @override
-  String get backToLoginLabel => 'ወደ መግቢያ ተመለስ';
-
-  @override
-  String get emptyVerificationCode => 'የማረጋገጫ ኮድ ያስገቡ';
-
-  @override
-  String get forgotPasswordTitle => 'የምስጢር ቃል ይረሳዎታል?';
-
-  @override
-  String get forgotPasswordSubtitle => 'ኢሜሎን እና አዲስ የምስጢር ቃል መቀየር መመሪያ እንዲልክልዎ ያስገቡ።';
-
-  @override
-  String get sendResetLinkButton => 'የማስመለሻ አገናኝ ላክ';
-
-  @override
-  String get rememberPasswordPrefix => 'የይለፍ ቃልዎን ያስታውሱ? ';
-
-  @override
-  String get rememberPasswordAction => 'ግባ';
-
-  @override
-  String get resetCodeSentMessage => 'የማስመለሻ ኮድ ወደ ኢሜሎዎ ተልኳል።';
-
-  @override
-  String get providerCategoryLabel => 'ምድብ';
-
-  @override
-  String get providerDescriptionValidation => 'ለፈላጊዎች የምታቀርቡትን አገልግሎት ይግለጹ';
-
-  @override
-  String get providerCategoryValidation => 'ምድብ አስፈላጊ ነው';
-
-  @override
-  String get providerProfileSuccess => 'የአቅራቢ መግለጫ በተሳካ ሁኔታ ተፈጥሯል!';
-
-  @override
-  String get providerProfileSetup => 'የአቅራቢ መግለጫ ቅጽ';
-
-  @override
-  String get selectLoginRole => 'እባክዎ የመግቢያ ሚና ይምረጡ';
-
-  @override
-  String get welcome => 'እንኳን ደህና መጡ';
-
-  @override
-  String get loginAsRole => 'እንደ ማን ይግቡ';
-
-  @override
-  String get provider => 'አቅራቢ';
-
-  @override
-  String get seeker => 'ፍለጋ የሚያደርግ';
-
-  @override
-  String get didntReceiveCode => 'ኮዱን አልተቀበሉም? ';
-
-  @override
-  String get resendCodeLabel => 'ኮድ እንደገና ላክ';
-
-  @override
-  String get tryAnotherEmail => 'ሌላ ኢሜል ይሞክሩ';
->>>>>>> bc880ce957d53bbe4cca033a664fa74a78d4ce24
+  String get resetCodeSentMessage => 'Password reset code has been sent to your email';
 }

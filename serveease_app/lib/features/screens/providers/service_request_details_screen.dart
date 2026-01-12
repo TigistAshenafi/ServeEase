@@ -14,16 +14,19 @@ class ServiceRequestDetailsScreen extends StatefulWidget {
   const ServiceRequestDetailsScreen({super.key, required this.request});
 
   @override
-  State<ServiceRequestDetailsScreen> createState() => _ServiceRequestDetailsScreenState();
+  State<ServiceRequestDetailsScreen> createState() =>
+      _ServiceRequestDetailsScreenState();
 }
 
-class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScreen> {
+class _ServiceRequestDetailsScreenState
+    extends State<ServiceRequestDetailsScreen> {
   @override
   void initState() {
     super.initState();
     // Load employees if this is an organization
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final profileProvider = Provider.of<ProviderProfileProvider>(context, listen: false);
+      final profileProvider =
+          Provider.of<ProviderProfileProvider>(context, listen: false);
       if (profileProvider.profile?.providerType == 'organization') {
         Provider.of<EmployeeProvider>(context, listen: false).fetchEmployees();
       }
@@ -39,10 +42,13 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: Consumer3<ServiceRequestProvider, EmployeeProvider, ProviderProfileProvider>(
-        builder: (context, requestProvider, employeeProvider, profileProvider, child) {
-          final providerType = profileProvider.profile?.providerType ?? 'individual';
-          
+      body: Consumer3<ServiceRequestProvider, EmployeeProvider,
+          ProviderProfileProvider>(
+        builder: (context, requestProvider, employeeProvider, profileProvider,
+            child) {
+          final providerType =
+              profileProvider.profile?.providerType ?? 'individual';
+
           return SingleChildScrollView(
             padding: const EdgeInsets.all(20),
             child: Column(
@@ -60,7 +66,7 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
                 ],
                 _buildStatusSection(requestProvider, providerType),
                 const SizedBox(height: 20),
-                if (providerType == 'organization' && 
+                if (providerType == 'organization' &&
                     widget.request.status == 'accepted') ...[
                   _buildEmployeeAssignment(requestProvider, employeeProvider),
                   const SizedBox(height: 20),
@@ -98,7 +104,8 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
             const SizedBox(height: 12),
             Row(
               children: [
-                Icon(Icons.calendar_today, size: 16, color: Colors.grey.shade600),
+                Icon(Icons.calendar_today,
+                    size: 16, color: Colors.grey.shade600),
                 const SizedBox(width: 8),
                 Text(
                   'Requested: ${_formatDate(widget.request.createdAt)}',
@@ -140,10 +147,13 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
               ),
             ),
             const SizedBox(height: 16),
-            _buildDetailRow('Price', '\$${widget.request.service.price.toStringAsFixed(2)}'),
-            _buildDetailRow('Duration', '${widget.request.service.durationHours} hours'),
+            _buildDetailRow('Price',
+                '\$${widget.request.service.price.toStringAsFixed(2)}'),
+            _buildDetailRow(
+                'Duration', '${widget.request.service.durationHours} hours'),
             if (widget.request.assignedEmployeeId != null)
-              _buildDetailRow('Assigned Employee', 'Employee ID: ${widget.request.assignedEmployeeId}'),
+              _buildDetailRow('Assigned Employee',
+                  'Employee ID: ${widget.request.assignedEmployeeId}'),
           ],
         ),
       ),
@@ -211,7 +221,8 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
     );
   }
 
-  Widget _buildStatusSection(ServiceRequestProvider requestProvider, String providerType) {
+  Widget _buildStatusSection(
+      ServiceRequestProvider requestProvider, String providerType) {
     return GlassmorphicCard(
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -234,16 +245,22 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
   }
 
   Widget _buildStatusTimeline() {
-    final statuses = ['pending', 'accepted', 'assigned', 'in_progress', 'completed'];
+    final statuses = [
+      'pending',
+      'accepted',
+      'assigned',
+      'in_progress',
+      'completed'
+    ];
     final currentIndex = statuses.indexOf(widget.request.status);
-    
+
     return Column(
       children: statuses.asMap().entries.map((entry) {
         final index = entry.key;
         final status = entry.value;
         final isCompleted = index <= currentIndex;
         final isCurrent = index == currentIndex;
-        
+
         return Row(
           children: [
             Container(
@@ -251,7 +268,7 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
               height: 24,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: isCompleted 
+                color: isCompleted
                     ? (isCurrent ? Colors.blue : Colors.green)
                     : Colors.grey.shade300,
               ),
@@ -277,7 +294,8 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
     );
   }
 
-  Widget _buildEmployeeAssignment(ServiceRequestProvider requestProvider, EmployeeProvider employeeProvider) {
+  Widget _buildEmployeeAssignment(ServiceRequestProvider requestProvider,
+      EmployeeProvider employeeProvider) {
     return GlassmorphicCard(
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -334,7 +352,8 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
                       Icon(Icons.warning, color: Colors.orange.shade600),
                       const SizedBox(width: 12),
                       const Expanded(
-                        child: Text('No employees available. Add employees first.'),
+                        child: Text(
+                            'No employees available. Add employees first.'),
                       ),
                     ],
                   ),
@@ -343,7 +362,8 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
                 Column(
                   children: employeeProvider.employees
                       .where((e) => e.isActive)
-                      .map((employee) => _buildEmployeeCard(employee, requestProvider))
+                      .map((employee) =>
+                          _buildEmployeeCard(employee, requestProvider))
                       .toList(),
                 ),
             ],
@@ -353,12 +373,14 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
     );
   }
 
-  Widget _buildEmployeeCard(Employee employee, ServiceRequestProvider requestProvider) {
+  Widget _buildEmployeeCard(
+      Employee employee, ServiceRequestProvider requestProvider) {
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
+          backgroundColor:
+              Theme.of(context).primaryColor.withValues(alpha: 0.1),
           child: Text(
             employee.name.isNotEmpty ? employee.name[0].toUpperCase() : 'E',
             style: TextStyle(
@@ -381,7 +403,8 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
     );
   }
 
-  Widget _buildActionButtons(ServiceRequestProvider requestProvider, String providerType) {
+  Widget _buildActionButtons(
+      ServiceRequestProvider requestProvider, String providerType) {
     return Column(
       children: [
         if (widget.request.status == 'pending') ...[
@@ -399,7 +422,8 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
                 child: OutlinedButton.icon(
                   onPressed: () => _updateStatus('cancelled', requestProvider),
                   icon: const Icon(Icons.cancel, color: Colors.red),
-                  label: const Text('DECLINE', style: TextStyle(color: Colors.red)),
+                  label: const Text('DECLINE',
+                      style: TextStyle(color: Colors.red)),
                   style: OutlinedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 50),
                     shape: RoundedRectangleBorder(
@@ -412,15 +436,17 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
             ],
           ),
         ],
-        if (widget.request.status == 'accepted' && providerType == 'individual') ...[
+        if (widget.request.status == 'accepted' &&
+            providerType == 'individual') ...[
           GradientButton(
             onPressed: () => _updateStatus('in_progress', requestProvider),
             text: 'START WORK',
             icon: Icons.play_arrow,
           ),
         ],
-        if (widget.request.status == 'assigned' || 
-            (widget.request.status == 'accepted' && providerType == 'individual')) ...[
+        if (widget.request.status == 'assigned' ||
+            (widget.request.status == 'accepted' &&
+                providerType == 'individual')) ...[
           GradientButton(
             onPressed: () => _updateStatus('in_progress', requestProvider),
             text: 'START WORK',
@@ -491,9 +517,9 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: color.withOpacity(0.3)),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Text(
         status.toUpperCase(),
@@ -527,51 +553,61 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
     }
   }
 
-  Future<void> _updateStatus(String status, ServiceRequestProvider requestProvider) async {
+  Future<void> _updateStatus(
+      String status, ServiceRequestProvider requestProvider) async {
     final result = await requestProvider.updateStatus(
       requestId: widget.request.id,
       status: status,
     );
 
     if (result.success) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Request status updated to $status'),
-          backgroundColor: Colors.green,
-        ),
-      );
-      Navigator.pop(context);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Request status updated to $status'),
+            backgroundColor: Colors.green,
+          ),
+        );
+        Navigator.pop(context);
+      }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Failed to update status: ${result.message}'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to update status: ${result.message}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
-  Future<void> _assignEmployee(String employeeId, ServiceRequestProvider requestProvider) async {
+  Future<void> _assignEmployee(
+      String employeeId, ServiceRequestProvider requestProvider) async {
     final result = await requestProvider.assignEmployee(
       requestId: widget.request.id,
       employeeId: employeeId,
     );
 
     if (result.success) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Employee assigned successfully'),
-          backgroundColor: Colors.green,
-        ),
-      );
-      Navigator.pop(context);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Employee assigned successfully'),
+            backgroundColor: Colors.green,
+          ),
+        );
+        Navigator.pop(context);
+      }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Failed to assign employee: ${result.message}'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to assign employee: ${result.message}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 }
