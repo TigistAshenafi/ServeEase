@@ -58,8 +58,6 @@ const getServicesByCategory = async (req, res) => {
         id: service.id,
         title: service.title,
         description: service.description,
-        price: parseFloat(service.price),
-        durationHours: service.duration_hours,
         categoryId: service.category_id,
         provider: {
           id: service.provider_id,
@@ -133,8 +131,6 @@ const getProviderServices = async (req, res) => {
         id: service.id,
         title: service.title,
         description: service.description,
-        price: parseFloat(service.price),
-        durationHours: service.duration_hours,
         categoryId: service.category_id,
         categoryName: service.category_name,
         categoryIcon: service.category_icon,
@@ -163,7 +159,7 @@ const getProviderServices = async (req, res) => {
 const createService = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { title, description, categoryId, price, durationHours } = req.body;
+    const { title, description, categoryId } = req.body;
 
     // Validate required fields
     if (!title || !description || !categoryId || price == null || durationHours == null) {
@@ -209,10 +205,10 @@ const createService = async (req, res) => {
 
     // Create service
     const result = await query(
-      `INSERT INTO services (provider_id, category_id, title, description, price, duration_hours)
-       VALUES ($1, $2, $3, $4, $5, $6)
+      `INSERT INTO services (provider_id, category_id, title, description)
+       VALUES ($1, $2, $3, $4)
        RETURNING *`,
-      [provider.id, categoryId, title, description, price, durationHours]
+      [provider.id, categoryId, title, description]
     );
 
     const service = result.rows[0];
@@ -224,8 +220,6 @@ const createService = async (req, res) => {
         id: service.id,
         title: service.title,
         description: service.description,
-        price: parseFloat(service.price),
-        durationHours: service.duration_hours,
         categoryId: service.category_id,
         isActive: service.is_active,
         createdAt: service.created_at,
@@ -247,7 +241,7 @@ const updateService = async (req, res) => {
   try {
     const userId = req.user.id;
     const { serviceId } = req.params;
-    const { title, description, categoryId, price, durationHours, isActive } = req.body;
+    const { title, description, categoryId, isActive } = req.body;
 
     // Get provider profile ID
     const providerResult = await query(
@@ -280,10 +274,10 @@ const updateService = async (req, res) => {
     // Update service
     const result = await query(
       `UPDATE services
-       SET title = $1, description = $2, category_id = $3, price = $4, duration_hours = $5, is_active = $6, updated_at = NOW()
-       WHERE id = $7
+       SET title = $1, description = $2, category_id = $3, is_active = $4, updated_at = NOW()
+       WHERE id = $5
        RETURNING *`,
-      [title, description, categoryId, price, durationHours, isActive, serviceId]
+      [title, description, categoryId, isActive, serviceId]
     );
 
     const service = result.rows[0];
@@ -295,8 +289,6 @@ const updateService = async (req, res) => {
         id: service.id,
         title: service.title,
         description: service.description,
-        price: parseFloat(service.price),
-        durationHours: service.duration_hours,
         categoryId: service.category_id,
         isActive: service.is_active,
         createdAt: service.created_at,

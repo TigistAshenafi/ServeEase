@@ -12,7 +12,16 @@ import {
   getDashboardStats,
   getActivityLogs,
   getUserStats,
-  getServiceStats
+  getServiceStats,
+  getAllDocuments,
+  deleteDocument,
+  getAppSettings,
+  updateAppSetting,
+  getAdminPreferences,
+  updateAdminPreferences,
+  updateAdminProfile,
+  changeAdminPassword,
+  getSystemInfo
 } from '../controllers/adminController.js';
 import {
   authenticateToken,
@@ -67,5 +76,43 @@ router.get('/reports/services',
   query('period').optional().isIn(['7d', '30d', '90d', '1y']).withMessage('Invalid period'),
   getServiceStats
 );
+
+// Document management routes
+router.get('/documents', getAllDocuments);
+router.delete('/documents/:documentId', 
+  param('documentId').notEmpty().withMessage('Valid document ID is required'),
+  deleteDocument
+);
+
+// Settings management routes
+router.get('/settings', getAppSettings);
+router.put('/settings/:key', 
+  param('key').notEmpty().withMessage('Setting key is required'),
+  body('value').notEmpty().withMessage('Setting value is required'),
+  updateAppSetting
+);
+
+// Admin preferences routes
+router.get('/preferences', getAdminPreferences);
+router.put('/preferences', 
+  body('preferences').isObject().withMessage('Preferences must be an object'),
+  updateAdminPreferences
+);
+
+// Admin profile routes
+router.put('/profile', 
+  body('name').optional().trim().isLength({ min: 1, max: 255 }).withMessage('Name must be between 1 and 255 characters'),
+  body('email').optional().isEmail().withMessage('Valid email is required'),
+  updateAdminProfile
+);
+
+router.put('/password', 
+  body('currentPassword').notEmpty().withMessage('Current password is required'),
+  body('newPassword').isLength({ min: 6 }).withMessage('New password must be at least 6 characters'),
+  changeAdminPassword
+);
+
+// System information route
+router.get('/system', getSystemInfo);
 
 export default router;

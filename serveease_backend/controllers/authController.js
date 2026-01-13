@@ -298,8 +298,8 @@ const login = async (req, res) => {
       });
     }
 
-    // Check if email is verified
-    if (!user.email_verified) {
+    // Check if email is verified (skip for admin users)
+    if (!user.email_verified && user.role !== 'admin') {
       return res.status(401).json({
         success: false,
         message: 'Please verify your email before logging in'
