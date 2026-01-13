@@ -11,6 +11,7 @@ import {
   WrenchScrewdriverIcon,
   ChartBarIcon,
   DocumentTextIcon,
+  CogIcon,
   ArrowRightOnRectangleIcon,
   Bars3Icon,
   XMarkIcon,
@@ -40,6 +41,7 @@ export default function Layout({ children }: LayoutProps) {
     { name: 'Services', href: '/services', icon: WrenchScrewdriverIcon },
     { name: 'Reports', href: '/reports', icon: ChartBarIcon },
     { name: 'Documents Review', href: '/documents', icon: DocumentTextIcon },
+    { name: 'Settings', href: '/settings', icon: CogIcon },
   ];
 
   useEffect(() => {
@@ -76,7 +78,7 @@ export default function Layout({ children }: LayoutProps) {
           </div>
           <nav className="flex-1 space-y-1 px-2 py-4">
             {navigation.map((item) => {
-              const isActive = pathname === item.href;
+              const isActive = pathname === item.href || pathname === `/en${item.href}` || pathname === `/am${item.href}`;
               return (
                 <Link
                   key={item.name}
@@ -104,7 +106,7 @@ export default function Layout({ children }: LayoutProps) {
           </div>
           <nav className="flex-1 space-y-1 px-2 py-4">
             {navigation.map((item) => {
-              const isActive = pathname === item.href;
+              const isActive = pathname === item.href || pathname === `/en${item.href}` || pathname === `/am${item.href}`;
               return (
                 <Link
                   key={item.name}

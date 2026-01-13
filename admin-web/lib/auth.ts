@@ -4,7 +4,16 @@ import { authAPI } from './api';
 export const AUTH_TOKEN_KEY = 'adminToken';
 
 export const setAuthToken = (token: string) => {
-  Cookies.set(AUTH_TOKEN_KEY, token, { expires: 7 }); // 7 days
+  console.log('Setting auth token in cookie:', !!token);
+  Cookies.set(AUTH_TOKEN_KEY, token, { 
+    expires: 7, // 7 days
+    path: '/',
+    sameSite: 'lax'
+  });
+  
+  // Verify the cookie was set
+  const verification = Cookies.get(AUTH_TOKEN_KEY);
+  console.log('Cookie verification after setting:', !!verification);
 };
 
 export const getAuthToken = () => {
@@ -16,7 +25,9 @@ export const removeAuthToken = () => {
 };
 
 export const isAuthenticated = () => {
-  return !!getAuthToken();
+  const token = getAuthToken();
+  console.log('isAuthenticated check - token exists:', !!token);
+  return !!token;
 };
 
 export const login = async (email: string, password: string) => {

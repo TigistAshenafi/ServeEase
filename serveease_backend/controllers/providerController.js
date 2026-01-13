@@ -132,6 +132,7 @@ const getProfile = async (req, res) => {
         profileImageUrl: profile.profile_image_url,
         documents: profile.documents,
         certificates: profile.certificates,
+        status: profile.status,
         isApproved: profile.is_approved,
         approvalDate: profile.approval_date,
         adminNotes: profile.admin_notes,
@@ -163,9 +164,11 @@ const getAllProviders = async (req, res) => {
     let params = [limit, offset];
 
     if (status === 'pending') {
-      whereClause = 'WHERE pp.is_approved = false';
+      whereClause = 'WHERE pp.status = \'pending\'';
     } else if (status === 'approved') {
-      whereClause = 'WHERE pp.is_approved = true';
+      whereClause = 'WHERE pp.status = \'approved\'';
+    } else if (status === 'rejected') {
+      whereClause = 'WHERE pp.status = \'rejected\'';
     }
 
     const result = await query(
@@ -196,6 +199,7 @@ const getAllProviders = async (req, res) => {
         category: provider.category,
         location: provider.location,
         phone: provider.phone,
+        status: provider.status,
         isApproved: provider.is_approved,
         approvalDate: provider.approval_date,
         adminNotes: provider.admin_notes,
@@ -231,7 +235,7 @@ const approveProvider = async (req, res) => {
 
     const result = await query(
       `UPDATE provider_profiles
-       SET is_approved = true, approval_date = NOW(), admin_notes = $1, updated_at = NOW()
+       SET status = 'approved', is_approved = true, approval_date = NOW(), admin_notes = $1, updated_at = NOW()
        WHERE id = $2
        RETURNING *`,
       [adminNotes, providerId]
@@ -297,7 +301,7 @@ const rejectProvider = async (req, res) => {
 
     const result = await query(
       `UPDATE provider_profiles
-       SET is_approved = false, admin_notes = $1, updated_at = NOW()
+       SET status = 'rejected', is_approved = false, admin_notes = $1, updated_at = NOW()
        WHERE id = $2
        RETURNING *`,
       [adminNotes, providerId]

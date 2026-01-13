@@ -1,6 +1,6 @@
 'use client';
 
-import { useLocale, useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from '@/lib/translations';
 import { useRouter, usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { ChevronDownIcon, LanguageIcon } from '@heroicons/react/24/outline';

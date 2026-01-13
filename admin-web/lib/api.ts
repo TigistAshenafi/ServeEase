@@ -104,3 +104,45 @@ export const reportsAPI = {
   getServiceStats: (period?: string) =>
     api.get('/admin/reports/services', { params: { period } }),
 };
+
+// Documents API
+export const documentsAPI = {
+  getAll: (params?: { page?: number; limit?: number; category?: string }) =>
+    api.get('/admin/documents', { params }),
+  
+  delete: (documentId: string) =>
+    api.delete(`/admin/documents/${documentId}`),
+};
+
+// Settings API
+export const settingsAPI = {
+  getAppSettings: (category?: string) =>
+    api.get('/admin/settings', { params: category ? { category } : {} }),
+  
+  updateAppSetting: (key: string, value: string) =>
+    api.put(`/admin/settings/${key}`, { value }),
+  
+  getPreferences: () =>
+    api.get('/admin/preferences'),
+  
+  updatePreferences: (preferences: any) =>
+    api.put('/admin/preferences', { preferences }),
+  
+  updateProfile: (data: { name?: string; email?: string }) =>
+    api.put('/admin/profile', data),
+  
+  changePassword: (data: { currentPassword: string; newPassword: string }) =>
+    api.put('/admin/password', data),
+  
+  getSystemInfo: () =>
+    api.get('/admin/system'),
+};
+
+// Document API
+export const documentAPI = {
+  getAll: (params?: { page?: number; limit?: number; category?: string }) =>
+    api.get('/admin/documents', { params }),
+  
+  delete: (documentId: string) =>
+    api.delete(`/admin/documents/${documentId}`),
+};

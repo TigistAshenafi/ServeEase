@@ -37,7 +37,8 @@ CREATE TABLE provider_profiles (
     profile_image_url VARCHAR(500),
     documents JSONB, -- Store document URLs or paths
     certificates JSONB, -- Store certificate URLs for individuals
-    is_approved BOOLEAN DEFAULT FALSE,
+    status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
+    is_approved BOOLEAN DEFAULT FALSE, -- Keep for backward compatibility
     approval_date TIMESTAMP,
     admin_notes TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -78,8 +79,6 @@ CREATE TABLE services (
     category_id UUID REFERENCES service_categories(id),
     title VARCHAR(255) NOT NULL,
     description TEXT,
-    price DECIMAL(10,2),
-    duration_hours INTEGER,
     is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
