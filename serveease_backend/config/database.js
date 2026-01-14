@@ -1,15 +1,15 @@
-import pkg from 'pg';
 import dotenv from 'dotenv';
+import pkg from 'pg';
 
 const { Pool } = pkg;
 dotenv.config();
 
 const pool = new Pool({
   host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
+  port: parseInt(process.env.DB_PORT),
   database: process.env.DB_NAME,
   user: process.env.DB_USER,
-  password: process.env.DB_PASS,
+  password: String(process.env.DB_PASS),
   max: 20, // Maximum number of clients in the pool
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 2000,

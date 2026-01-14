@@ -9,6 +9,7 @@ class ServiceService {
     try {
       final res = await ApiService.get('${ApiService.servicesBase}/categories',
           withAuth: false);
+      
       return ApiService.handleResponse<List<ServiceCategory>>(
         res,
         (json) => (json['categories'] as List<dynamic>? ?? [])
@@ -20,12 +21,60 @@ class ServiceService {
     }
   }
 
+  /// Public: get all services (for browsing)
+  static Future<ApiResponse<List<Service>>> fetchAllServices({
+    int page = 1,
+    int limit = 20,
+    String? search,
+    String? location,
+  }) async {
+    try {
+      final params = <String, String>{
+        'page': page.toString(),
+        'limit': limit.toString(),
+      };
+      if (search != null && search.isNotEmpty) params['search'] = search;
+      if (location != null && location.isNotEmpty) params['location'] = location;
+
+      final res = await ApiService.get(
+        '${ApiService.servicesBase}/all',
+        withAuth: false,
+        params: params,
+      );
+      
+      return ApiService.handleResponse<List<Service>>(
+        res,
+        (json) => (json['services'] as List<dynamic>? ?? [])
+            .map((e) => Service.fromJson(e))
+            .toList(),
+      );
+    } catch (e) {
+      return ApiService.handleError<List<Service>>(e);
+    }
+  }
+
+  /// Public: get service details
+  static Future<ApiResponse<Service>> fetchServiceDetails(String serviceId) async {
+    try {
+      final res = await ApiService.get(
+        '${ApiService.servicesBase}/details/$serviceId',
+        withAuth: false,
+      );
+      return ApiService.handleResponse<Service>(
+        res,
+        (json) => Service.fromJson(json['service'] ?? json),
+      );
+    } catch (e) {
+      return ApiService.handleError<Service>(e);
+    }
+  }
+
   /// Public: services by category
   static Future<ApiResponse<List<Service>>> fetchByCategory(
       String categoryId) async {
     try {
       final res =
-          await ApiService.get('${ApiService.servicesBase}/category/$categoryId');
+          await ApiService.get('${ApiService.servicesBase}/category/$categoryId', withAuth: false);
       return ApiService.handleResponse<List<Service>>(
         res,
         (json) => (json['services'] as List<dynamic>? ?? [])

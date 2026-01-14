@@ -26,6 +26,152 @@ const getServiceCategories = async (_req, res) => {
   }
 };
 
+// Get all services (public endpoint for seekers to browse)
+const getAllServices = async (req, res) => {
+  try {
+    const { page = 1, limit = 20, search, location } = req.query;
+    const offset = (page - 1) * limit;
+
+    let whereClause = 'WHERE s.is_active = true AND pp.is_approved = true';
+    const params = [];
+    let paramCount = 1;
+
+    // Add search filter
+    if (search) {
+      whereClause += ` AND (s.title ILIKE $${paramCount} OR s.description ILIKE $${paramCount} OR pp.business_name ILIKE $${paramCount})`;
+      params.push(`%${search}%`);
+      paramCount++;
+    }
+
+    // Add location filter
+    if (location) {
+      whereClause += ` AND pp.location ILIKE $${paramCount}`;
+      params.push(`%${location}%`);
+      paramCount++;
+    }
+
+    const result = await query(
+      `SELECT s.*, pp.business_name, pp.location, pp.provider_type, u.name as provider_name,
+              sc.name as category_name, sc.icon as category_icon
+       FROM services s
+       JOIN provider_profiles pp ON s.provider_id = pp.id
+       JOIN users u ON pp.user_id = u.id
+       JOIN service_categories sc ON s.category_id = sc.id
+       ${whereClause}
+       ORDER BY s.created_at DESC
+       LIMIT $${paramCount} OFFSET $${paramCount + 1}`,
+      [...params, limit, offset]
+    );
+
+    // Get total count
+    const countResult = await query(
+      `SELECT COUNT(*) as total 
+       FROM services s
+       JOIN provider_profiles pp ON s.provider_id = pp.id
+       ${whereClause}`,
+      params
+    );
+
+    const total = parseInt(countResult.rows[0].total);
+
+    res.json({
+      success: true,
+      services: result.rows.map(service => ({
+        id: service.id,
+        title: service.title,
+        description: service.description,
+        price: parseFloat(service.price),
+        durationHours: service.duration_hours,
+        categoryId: service.category_id,
+        categoryName: service.category_name,
+        categoryIcon: service.category_icon,
+        provider: {
+          id: service.provider_id,
+          businessName: service.business_name,
+          location: service.location,
+          name: service.provider_name,
+          providerType: service.provider_type,
+        },
+        createdAt: service.created_at,
+        updatedAt: service.updated_at,
+      })),
+      pagination: {
+        page: parseInt(page),
+        limit: parseInt(limit),
+        total,
+        pages: Math.ceil(total / limit)
+      }
+    });
+
+  } catch (error) {
+    console.error('Get all services error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error'
+    });
+  }
+};
+
+// Get single service details (public endpoint)
+const getServiceDetails = async (req, res) => {
+  try {
+    const { serviceId } = req.params;
+
+    const result = await query(
+      `SELECT s.*, pp.business_name, pp.location, pp.provider_type, pp.phone,
+              u.name as provider_name, u.email as provider_email,
+              sc.name as category_name, sc.icon as category_icon
+       FROM services s
+       JOIN provider_profiles pp ON s.provider_id = pp.id
+       JOIN users u ON pp.user_id = u.id
+       JOIN service_categories sc ON s.category_id = sc.id
+       WHERE s.id = $1 AND s.is_active = true AND pp.is_approved = true`,
+      [serviceId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'Service not found or unavailable'
+      });
+    }
+
+    const service = result.rows[0];
+
+    res.json({
+      success: true,
+      service: {
+        id: service.id,
+        title: service.title,
+        description: service.description,
+        price: parseFloat(service.price),
+        durationHours: service.duration_hours,
+        categoryId: service.category_id,
+        categoryName: service.category_name,
+        categoryIcon: service.category_icon,
+        provider: {
+          id: service.provider_id,
+          businessName: service.business_name,
+          location: service.location,
+          name: service.provider_name,
+          email: service.provider_email,
+          phone: service.phone,
+          providerType: service.provider_type,
+        },
+        createdAt: service.created_at,
+        updatedAt: service.updated_at,
+      }
+    });
+
+  } catch (error) {
+    console.error('Get service details error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error'
+    });
+  }
+};
+
 // Get services by category
 const getServicesByCategory = async (req, res) => {
   try {
@@ -34,11 +180,11 @@ const getServicesByCategory = async (req, res) => {
     const offset = (page - 1) * limit;
 
     const result = await query(
-      `SELECT s.*, pp.business_name, pp.location, u.name as provider_name
+      `SELECT s.*, pp.business_name, pp.location, pp.provider_type, u.name as provider_name
        FROM services s
        JOIN provider_profiles pp ON s.provider_id = pp.id
        JOIN users u ON pp.user_id = u.id
-       WHERE s.category_id = $1 AND s.is_active = true
+       WHERE s.category_id = $1 AND s.is_active = true AND pp.is_approved = true
        ORDER BY s.created_at DESC
        LIMIT $2 OFFSET $3`,
       [categoryId, limit, offset]
@@ -46,7 +192,10 @@ const getServicesByCategory = async (req, res) => {
 
     // Get total count
     const countResult = await query(
-      'SELECT COUNT(*) as total FROM services WHERE category_id = $1 AND is_active = true',
+      `SELECT COUNT(*) as total 
+       FROM services s
+       JOIN provider_profiles pp ON s.provider_id = pp.id
+       WHERE s.category_id = $1 AND s.is_active = true AND pp.is_approved = true`,
       [categoryId]
     );
 
@@ -64,6 +213,7 @@ const getServicesByCategory = async (req, res) => {
           businessName: service.business_name,
           location: service.location,
           name: service.provider_name,
+          providerType: service.provider_type,
         },
         createdAt: service.created_at,
         updatedAt: service.updated_at,
@@ -354,7 +504,12 @@ const deleteService = async (req, res) => {
 };
 
 export {
-  createService, deleteService, getProviderServices, getServiceCategories,
-  getServicesByCategory, updateService
+    createService,
+    deleteService,
+    getAllServices,
+    getProviderServices,
+    getServiceCategories,
+    getServiceDetails,
+    getServicesByCategory,
+    updateService
 };
-

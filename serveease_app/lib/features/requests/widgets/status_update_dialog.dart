@@ -16,236 +16,164 @@ class StatusUpdateDialog extends StatefulWidget {
 }
 
 class _StatusUpdateDialogState extends State<StatusUpdateDialog> {
-  String? _selectedStatus;
+  String? selectedStatus;
   final _notesController = TextEditingController();
   final _reasonController = TextEditingController();
   DateTime? _scheduledDate;
   DateTime? _completionDate;
-  bool _isUpdating = false;
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    _selectedStatus = widget.request.status;
-    _scheduledDate = widget.request.scheduledDate;
-    _completionDate = widget.request.completionDate;
-  }
-
-  @override
-  void dispose() {
-    _notesController.dispose();
-    _reasonController.dispose();
-    super.dispose();
+    selectedStatus = widget.request.status;
   }
 
   @override
   Widget build(BuildContext context) {
-    final validTransitions = _getValidTransitions(widget.request.status);
-
+    final availableStatuses = _getAvailableStatuses();
+    
     return AlertDialog(
-      title: const Text('Update Status'),
+      title: const Row(
+        children: [
+          Icon(Icons.update, color: Colors.indigo),
+          SizedBox(width: 8),
+          Text('Update Status'),
+        ],
+      ),
       content: SizedBox(
         width: double.maxFinite,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Current status
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: _getStatusColor(widget.request.status)
-                      .withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(8),
-                  border:
-                      Border.all(color: _getStatusColor(widget.request.status)),
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      _getStatusIcon(widget.request.status),
-                      color: _getStatusColor(widget.request.status),
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      'Current: ${_getStatusDisplayName(widget.request.status)}',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: _getStatusColor(widget.request.status),
-                      ),
-                    ),
-                  ],
-                ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Service: ${widget.request.service.title}',
+              style: const TextStyle(
+                fontWeight: FontWeight.w500,
               ),
-              const SizedBox(height: 16),
-
-              // Status selection
-              const Text(
-                'New Status',
-                style: TextStyle(fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(height: 16),
+            
+            // Current status
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.grey.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    _getStatusIcon(widget.request.status),
+                    color: _getStatusColor(widget.request.status),
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Current: ${_getStatusDisplayName(widget.request.status)}',
+                    style: const TextStyle(fontWeight: FontWeight.w500),
+                  ),
+                ],
+              ),
+            ),
+            
+            const SizedBox(height: 16),
+            
+            // Status selection
+            const Text(
+              'New Status:',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(height: 8),
+            
+            DropdownButtonFormField<String>(
+              initialValue: selectedStatus,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              ),
+              items: availableStatuses.map((status) {
+                return DropdownMenuItem(
+                  value: status,
+                  child: Row(
+                    children: [
+                      Icon(
+                        _getStatusIcon(status),
+                        color: _getStatusColor(status),
+                        size: 20,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(_getStatusDisplayName(status)),
+                    ],
+                  ),
+                );
+              }).toList(),
+              onChanged: (value) {
+                setState(() {
+                  selectedStatus = value;
+                });
+              },
+            ),
+            
+            const SizedBox(height: 16),
+            
+            // Date fields based on status
+            if (selectedStatus == 'accepted' || selectedStatus == 'assigned') ...[
+              ListTile(
+                leading: const Icon(Icons.schedule),
+                title: Text(_scheduledDate != null
+                    ? 'Scheduled: ${_formatDate(_scheduledDate!)}'
+                    : 'Set scheduled date (optional)'),
+                onTap: () => _selectScheduledDate(context),
+                contentPadding: EdgeInsets.zero,
               ),
               const SizedBox(height: 8),
-              if (validTransitions.isEmpty) ...[
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Colors.grey.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: const Text(
-                      'No status transitions available from current state'),
-                ),
-              ] else ...[
-                DropdownButtonFormField<String>(
-                  initialValue: validTransitions.contains(_selectedStatus)
-                      ? _selectedStatus
-                      : null,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Select new status',
-                  ),
-                  items: validTransitions
-                      .map((status) => DropdownMenuItem(
-                            value: status,
-                            child: Row(
-                              children: [
-                                Icon(
-                                  _getStatusIcon(status),
-                                  color: _getStatusColor(status),
-                                  size: 16,
-                                ),
-                                const SizedBox(width: 8),
-                                Text(_getStatusDisplayName(status)),
-                              ],
-                            ),
-                          ))
-                      .toList(),
-                  onChanged: (value) => setState(() => _selectedStatus = value),
-                ),
-              ],
-
-              const SizedBox(height: 16),
-
-              // Conditional fields based on selected status
-              if (_selectedStatus != null) ...[
-                // Scheduled date for accepted status
-                if (_selectedStatus == 'accepted') ...[
-                  const Text(
-                    'Scheduled Date (Optional)',
-                    style: TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                  const SizedBox(height: 8),
-                  InkWell(
-                    onTap: _selectScheduledDate,
-                    child: Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Row(
-                        children: [
-                          const Icon(Icons.event),
-                          const SizedBox(width: 8),
-                          Text(
-                            _scheduledDate != null
-                                ? _formatDateTime(_scheduledDate!)
-                                : 'Select scheduled date',
-                          ),
-                          const Spacer(),
-                          if (_scheduledDate != null)
-                            IconButton(
-                              icon: const Icon(Icons.clear),
-                              onPressed: () =>
-                                  setState(() => _scheduledDate = null),
-                            ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                ],
-
-                // Completion date for completed status
-                if (_selectedStatus == 'completed') ...[
-                  const Text(
-                    'Completion Date',
-                    style: TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                  const SizedBox(height: 8),
-                  InkWell(
-                    onTap: _selectCompletionDate,
-                    child: Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Row(
-                        children: [
-                          const Icon(Icons.event_available),
-                          const SizedBox(width: 8),
-                          Text(
-                            _completionDate != null
-                                ? _formatDateTime(_completionDate!)
-                                : 'Select completion date',
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                ],
-
-                // Reason for rejected/cancelled status
-                if (_selectedStatus == 'rejected' ||
-                    _selectedStatus == 'cancelled') ...[
-                  const Text(
-                    'Reason (Required)',
-                    style: TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                  const SizedBox(height: 8),
-                  TextField(
-                    controller: _reasonController,
-                    decoration: InputDecoration(
-                      hintText: _selectedStatus == 'rejected'
-                          ? 'Why are you rejecting this request?'
-                          : 'Why is this request being cancelled?',
-                      border: const OutlineInputBorder(),
-                    ),
-                    maxLines: 2,
-                  ),
-                  const SizedBox(height: 16),
-                ],
-              ],
-
-              // Notes
-              const Text(
-                'Notes (Optional)',
-                style: TextStyle(fontWeight: FontWeight.w600),
-              ),
-              const SizedBox(height: 8),
-              TextField(
-                controller: _notesController,
-                decoration: const InputDecoration(
-                  hintText: 'Add any additional notes...',
-                  border: OutlineInputBorder(),
-                ),
-                maxLines: 3,
-              ),
             ],
-          ),
+            
+            if (selectedStatus == 'completed') ...[
+              ListTile(
+                leading: const Icon(Icons.event_available),
+                title: Text(_completionDate != null
+                    ? 'Completed: ${_formatDate(_completionDate!)}'
+                    : 'Set completion date (optional)'),
+                onTap: () => _selectCompletionDate(context),
+                contentPadding: EdgeInsets.zero,
+              ),
+              const SizedBox(height: 8),
+            ],
+            
+            // Notes/Reason field
+            TextField(
+              controller: selectedStatus == 'cancelled' || selectedStatus == 'rejected'
+                  ? _reasonController
+                  : _notesController,
+              decoration: InputDecoration(
+                labelText: selectedStatus == 'cancelled' || selectedStatus == 'rejected'
+                    ? 'Reason (Required)'
+                    : 'Notes (Optional)',
+                hintText: selectedStatus == 'cancelled' || selectedStatus == 'rejected'
+                    ? 'Please provide a reason...'
+                    : 'Any additional information...',
+                border: const OutlineInputBorder(),
+              ),
+              maxLines: 3,
+            ),
+          ],
         ),
       ),
       actions: [
         TextButton(
-          onPressed: _isUpdating ? null : () => Navigator.pop(context),
+          onPressed: _isLoading ? null : () => Navigator.pop(context),
           child: const Text('Cancel'),
         ),
         ElevatedButton(
-          onPressed: _canUpdate() && !_isUpdating ? _updateStatus : null,
-          child: _isUpdating
+          onPressed: _isLoading || !_canUpdate()
+              ? null
+              : () => _updateStatus(context),
+          child: _isLoading
               ? const SizedBox(
                   width: 16,
                   height: 16,
@@ -257,124 +185,115 @@ class _StatusUpdateDialogState extends State<StatusUpdateDialog> {
     );
   }
 
+  List<String> _getAvailableStatuses() {
+    switch (widget.request.status) {
+      case 'pending':
+        return ['pending', 'accepted', 'rejected', 'cancelled'];
+      case 'accepted':
+        return ['accepted', 'assigned', 'in_progress', 'cancelled'];
+      case 'assigned':
+        return ['assigned', 'in_progress', 'cancelled'];
+      case 'in_progress':
+        return ['in_progress', 'completed', 'cancelled'];
+      case 'completed':
+        return ['completed']; // Cannot change from completed
+      case 'cancelled':
+      case 'rejected':
+        return [widget.request.status]; // Cannot change from final states
+      default:
+        return [widget.request.status];
+    }
+  }
+
   bool _canUpdate() {
-    if (_selectedStatus == null || _selectedStatus == widget.request.status) {
+    if (selectedStatus == null || selectedStatus == widget.request.status) {
       return false;
     }
-
-    // Check if reason is required and provided
-    if ((_selectedStatus == 'rejected' || _selectedStatus == 'cancelled') &&
+    
+    // Require reason for cancellation/rejection
+    if ((selectedStatus == 'cancelled' || selectedStatus == 'rejected') &&
         _reasonController.text.trim().isEmpty) {
       return false;
     }
-
+    
     return true;
   }
 
-  Future<void> _updateStatus() async {
-    setState(() => _isUpdating = true);
-
-    final provider = context.read<ServiceRequestProvider>();
-    final result = await provider.updateStatus(
-      requestId: widget.request.id,
-      status: _selectedStatus!,
-      scheduledDate: _scheduledDate,
-      completionDate: _completionDate,
-      notes: _notesController.text.trim().isEmpty
-          ? null
-          : _notesController.text.trim(),
-      reason: _reasonController.text.trim().isEmpty
-          ? null
-          : _reasonController.text.trim(),
-    );
-
-    setState(() => _isUpdating = false);
-
-    if (mounted) {
-      Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-              result.success ? 'Status updated successfully!' : result.message),
-          backgroundColor: result.success ? Colors.green : Colors.red,
-        ),
-      );
-    }
-  }
-
-  Future<void> _selectScheduledDate() async {
+  Future<void> _selectScheduledDate(BuildContext context) async {
     final date = await showDatePicker(
       context: context,
-      initialDate:
-          _scheduledDate ?? DateTime.now().add(const Duration(days: 1)),
+      initialDate: _scheduledDate ?? DateTime.now().add(const Duration(days: 1)),
       firstDate: DateTime.now(),
-      lastDate: DateTime.now().add(const Duration(days: 365)),
+      lastDate: DateTime.now().add(const Duration(days: 90)),
     );
-
-    if (date != null && mounted) {
-      final time = await showTimePicker(
-        context: context,
-        initialTime: TimeOfDay.fromDateTime(_scheduledDate ?? DateTime.now()),
-      );
-
-      if (time != null) {
-        setState(() {
-          _scheduledDate = DateTime(
-            date.year,
-            date.month,
-            date.day,
-            time.hour,
-            time.minute,
-          );
-        });
-      }
+    if (date != null) {
+      setState(() => _scheduledDate = date);
     }
   }
 
-  Future<void> _selectCompletionDate() async {
+  Future<void> _selectCompletionDate(BuildContext context) async {
     final date = await showDatePicker(
       context: context,
       initialDate: _completionDate ?? DateTime.now(),
-      firstDate: widget.request.createdAt,
-      lastDate: DateTime.now().add(const Duration(days: 1)),
+      firstDate: DateTime.now().subtract(const Duration(days: 30)),
+      lastDate: DateTime.now(),
     );
+    if (date != null) {
+      setState(() => _completionDate = date);
+    }
+  }
 
-    if (date != null && mounted) {
-      final time = await showTimePicker(
-        context: context,
-        initialTime: TimeOfDay.fromDateTime(_completionDate ?? DateTime.now()),
+  Future<void> _updateStatus(BuildContext context) async {
+    if (!_canUpdate()) return;
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final provider = context.read<ServiceRequestProvider>();
+      final result = await provider.updateStatus(
+        requestId: widget.request.id,
+        status: selectedStatus!,
+        scheduledDate: _scheduledDate,
+        completionDate: _completionDate,
+        notes: _notesController.text.trim().isEmpty 
+            ? null 
+            : _notesController.text.trim(),
+        reason: _reasonController.text.trim().isEmpty 
+            ? null 
+            : _reasonController.text.trim(),
       );
 
-      if (time != null) {
+      if (context.mounted) {
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(result.message),
+            backgroundColor: result.success ? Colors.green : Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error updating status: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
         setState(() {
-          _completionDate = DateTime(
-            date.year,
-            date.month,
-            date.day,
-            time.hour,
-            time.minute,
-          );
+          _isLoading = false;
         });
       }
     }
   }
 
-  List<String> _getValidTransitions(String currentStatus) {
-    const validTransitions = {
-      'pending': ['accepted', 'rejected', 'cancelled'],
-      'accepted': ['assigned', 'in_progress', 'cancelled'],
-      'assigned': ['in_progress', 'cancelled'],
-      'in_progress': ['completed', 'cancelled'],
-      'completed': <String>[], // Terminal state
-      'rejected': <String>[], // Terminal state
-      'cancelled': <String>[], // Terminal state
-    };
-
-    return validTransitions[currentStatus] ?? <String>[];
-  }
-
-  String _formatDateTime(DateTime dateTime) {
-    return '${dateTime.day}/${dateTime.month}/${dateTime.year} ${dateTime.hour}:${dateTime.minute.toString().padLeft(2, '0')}';
+  String _formatDate(DateTime date) {
+    return '${date.day}/${date.month}/${date.year}';
   }
 
   IconData _getStatusIcon(String status) {
@@ -438,5 +357,12 @@ class _StatusUpdateDialogState extends State<StatusUpdateDialog> {
       default:
         return status.toUpperCase();
     }
+  }
+
+  @override
+  void dispose() {
+    _notesController.dispose();
+    _reasonController.dispose();
+    super.dispose();
   }
 }

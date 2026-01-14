@@ -38,13 +38,17 @@ class ChatProvider extends ChangeNotifier {
   // Initialize chat service
   Future<void> initialize(String baseUrl) async {
     try {
+      print('ChatProvider: Initializing with baseUrl: $baseUrl');
       await _chatService.initialize(baseUrl);
+      print('ChatProvider: Service initialized, attempting to connect...');
       await _chatService.connect();
       _isConnected = _chatService.isConnected;
+      print('ChatProvider: Connection status: $_isConnected');
       
       _setupStreamListeners();
       notifyListeners();
     } catch (e) {
+      print('ChatProvider: Initialization error: $e');
       _error = e.toString();
       notifyListeners();
     }
@@ -75,8 +79,14 @@ class ChatProvider extends ChangeNotifier {
 
   // Handle new message
   void _handleNewMessage(Message message) {
+    print('ChatProvider: Received new message: ${message.id}');
+    print('ChatProvider: Message content: ${message.content}');
+    print('ChatProvider: Current conversation: ${_currentConversation?.id}');
+    print('ChatProvider: Message conversation: ${message.conversationId}');
+    
     // Update current messages if viewing this conversation
     if (_currentConversation?.id == message.conversationId) {
+      print('ChatProvider: Adding message to current messages');
       _currentMessages.add(message);
       
       // Mark message as read if conversation is active
@@ -282,6 +292,32 @@ class ChatProvider extends ChangeNotifier {
     }
   }
 
+  // Create conversation for service request
+  Future<Conversation?> createConversationForServiceRequest(String serviceRequestId) async {
+    try {
+      print('ChatProvider: Creating conversation for service request: $serviceRequestId');
+      _isLoading = true;
+      notifyListeners();
+
+      final conversation = await _chatService.createConversationForServiceRequest(serviceRequestId);
+      print('ChatProvider: Conversation created successfully: ${conversation.id}');
+
+      // Add to conversations list if not already present
+      if (!_conversations.any((c) => c.id == conversation.id)) {
+        _conversations.insert(0, conversation);
+      }
+
+      return conversation;
+    } catch (e) {
+      print('ChatProvider: Error creating conversation: $e');
+      _error = e.toString();
+      return null;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
   // Send message
   Future<void> sendMessage({
     required String conversationId,
@@ -290,33 +326,11 @@ class ChatProvider extends ChangeNotifier {
     String? replyToMessageId,
   }) async {
     try {
-      // Create temporary message for immediate UI update
-      final tempMessage = Message(
-        id: 'temp_${DateTime.now().millisecondsSinceEpoch}',
-        conversationId: conversationId,
-        senderId: 'current_user', // Replace with actual user ID
-        messageType: messageType,
-        content: content,
-        isRead: false,
-        isEdited: false,
-        createdAt: DateTime.now(),
-        sender: ChatUser(
-          id: 'current_user',
-          name: 'You',
-          email: '',
-        ),
-        readCount: 0,
-        isFromMe: true,
-        status: MessageStatus.sending,
-      );
-
-      // Add to current messages immediately
-      if (_currentConversation?.id == conversationId) {
-        _currentMessages.add(tempMessage);
-        notifyListeners();
-      }
-
-      // Send via real-time socket
+      print('ChatProvider: Sending message to conversation: $conversationId');
+      print('ChatProvider: Message content: $content');
+      print('ChatProvider: Socket connected: ${_chatService.isConnected}');
+      
+      // Send via real-time socket first
       _chatService.sendMessageRealtime(
         conversationId: conversationId,
         content: content,
@@ -324,13 +338,25 @@ class ChatProvider extends ChangeNotifier {
         replyToMessageId: replyToMessageId,
       );
 
-      // Remove temporary message (real message will come via socket)
-      if (_currentConversation?.id == conversationId) {
-        _currentMessages.removeWhere((m) => m.id == tempMessage.id);
-        notifyListeners();
+      // If socket fails, try HTTP fallback
+      if (!_chatService.isConnected) {
+        print('ChatProvider: Socket not connected, using HTTP fallback');
+        final message = await _chatService.sendMessage(
+          conversationId: conversationId,
+          content: content,
+          messageType: messageType,
+          replyToMessageId: replyToMessageId,
+        );
+        
+        // Add message to current messages if viewing this conversation
+        if (_currentConversation?.id == conversationId) {
+          _currentMessages.add(message);
+          notifyListeners();
+        }
       }
 
     } catch (e) {
+      print('ChatProvider: Error sending message: $e');
       _error = e.toString();
       notifyListeners();
     }

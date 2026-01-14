@@ -1,7 +1,7 @@
-import { query } from '../config/database.js';
 import { validationResult } from 'express-validator';
-import path from 'path';
 import fs from 'fs';
+import path from 'path';
+import { query } from '../config/database.js';
 
 // Get user's conversations
 export const getConversations = async (req, res) => {
@@ -210,8 +210,14 @@ export const getConversation = async (req, res) => {
 // Create new conversation
 export const createConversation = async (req, res) => {
   try {
+    console.log('Chat: Received createConversation request');
+    console.log('Chat: Request body:', req.body);
+    console.log('Chat: User ID:', req.user?.id);
+    console.log('Chat: Headers:', req.headers);
+    
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      console.log('Chat: Validation errors:', errors.array());
       return res.status(400).json({
         success: false,
         message: 'Validation error',
@@ -254,9 +260,12 @@ export const createConversation = async (req, res) => {
     let seekerId, providerId;
     
     if (serviceRequestId) {
-      // Get service request details
+      // Get service request details with provider user ID
       const serviceRequestResult = await query(
-        'SELECT seeker_id, provider_id FROM service_requests WHERE id = $1',
+        `SELECT sr.seeker_id, pp.user_id as provider_user_id 
+         FROM service_requests sr
+         JOIN provider_profiles pp ON sr.provider_id = pp.id
+         WHERE sr.id = $1`,
         [serviceRequestId]
       );
       
@@ -268,10 +277,13 @@ export const createConversation = async (req, res) => {
       }
       
       seekerId = serviceRequestResult.rows[0].seeker_id;
-      providerId = serviceRequestResult.rows[0].provider_id;
+      providerId = serviceRequestResult.rows[0].provider_user_id;
+      
+      console.log('Chat: Service request participants:', { seekerId, providerId, currentUserId: userId });
       
       // Verify user is part of this service request
       if (userId !== seekerId && userId !== providerId) {
+        console.log('Chat: User not authorized for this service request');
         return res.status(403).json({
           success: false,
           message: 'Not authorized to create conversation for this service request'

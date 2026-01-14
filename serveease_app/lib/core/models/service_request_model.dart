@@ -109,23 +109,23 @@ class ServiceRequest {
         title: json['service']?['title'] ??
             json['service_title'] ??
             json['serviceName'] ??
-            '',
-        price: (json['service']?['price'] ??
+            'Unknown Service',
+        price: ((json['service']?['price'] ??
                 json['service_price'] ??
                 json['price'] ??
-                0)
+                0) as num)
             .toDouble(),
-        durationHours: json['service']?['durationHours'] ??
+        durationHours: (json['service']?['durationHours'] ??
             json['duration_hours'] ??
             json['duration'] ??
-            0,
+            0) as int,
       ),
       seeker: PartyInfo(
-        name: json['seeker']?['name'] ?? json['seeker_name'] ?? '',
+        name: json['seeker']?['name'] ?? json['seeker_name'] ?? 'Unknown Seeker',
         email: json['seeker']?['email'] ?? json['seeker_email'],
       ),
       provider: PartyInfo(
-        name: json['provider']?['name'] ?? json['provider_name'] ?? '',
+        name: json['provider']?['name'] ?? json['provider_name'] ?? 'Unknown Provider',
         email: json['provider']?['email'] ?? json['provider_email'],
         businessName:
             json['provider']?['businessName'] ?? json['provider_business_name'],

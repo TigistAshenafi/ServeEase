@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logging/logging.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
 import '../models/conversation.dart';
@@ -16,7 +16,6 @@ class ChatService {
 
   final Dio _dio = Dio();
   io.Socket? _socket;
-  final FlutterSecureStorage _storage = const FlutterSecureStorage();
   
   // Stream controllers for real-time events
   final StreamController<Message> _newMessageController = StreamController<Message>.broadcast();
@@ -41,21 +40,31 @@ class ChatService {
     _baseUrl = baseUrl;
     
     // Configure Dio
-    _dio.options.baseUrl = '$baseUrl/api/chat';
+    final chatApiUrl = '$baseUrl/api/chat';
+    _dio.options.baseUrl = chatApiUrl;
     _dio.options.connectTimeout = const Duration(seconds: 10);
     _dio.options.receiveTimeout = const Duration(seconds: 10);
+    
+    _logger.info('ChatService: Initialized with base URL: $chatApiUrl');
     
     // Add auth interceptor
     _dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
-        final token = await _storage.read(key: 'auth_token');
+        _logger.info('ChatService: Making request to: ${options.baseUrl}${options.path}');
+        final prefs = await SharedPreferences.getInstance();
+        final token = prefs.getString('access_token');
         if (token != null) {
           options.headers['Authorization'] = 'Bearer $token';
+          _logger.info('ChatService: Added auth header with token: ${token.substring(0, 20)}...');
+        } else {
+          _logger.severe('ChatService: No access token found!');
         }
         handler.next(options);
       },
       onError: (error, handler) {
         _logger.severe('Chat API Error: ${error.message}');
+        _logger.severe('Chat API Error Response: ${error.response?.data}');
+        _logger.severe('Chat API Error Status: ${error.response?.statusCode}');
         handler.next(error);
       },
     ));
@@ -63,14 +72,19 @@ class ChatService {
 
   Future<void> connect() async {
     if (_socket != null && _socket!.connected) {
+      _logger.info('Socket already connected');
       return;
     }
 
     try {
-      final token = await _storage.read(key: 'auth_token');
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('access_token');
       if (token == null) {
         throw Exception('No auth token found');
       }
+
+      _logger.info('Connecting to chat socket at: $_baseUrl');
+      _logger.info('Using token: ${token.substring(0, 20)}...');
 
       _socket = io.io(_baseUrl, 
         io.OptionBuilder()
@@ -81,7 +95,7 @@ class ChatService {
       );
 
       _socket!.onConnect((_) {
-        _logger.info('Chat socket connected');
+        _logger.info('Chat socket connected successfully');
         _isConnected = true;
       });
 
@@ -98,6 +112,7 @@ class ChatService {
       // Listen for new messages
       _socket!.on('new_message', (data) {
         try {
+          _logger.info('Received new message: $data');
           final message = Message.fromJson(data);
           _newMessageController.add(message);
         } catch (e) {
@@ -152,6 +167,11 @@ class ChatService {
         });
       });
 
+      // Listen for errors
+      _socket!.on('error', (data) {
+        _logger.severe('Socket error: $data');
+      });
+
       _socket!.connect();
     } catch (e) {
       _logger.severe('Error connecting to chat socket: $e');
@@ -168,8 +188,14 @@ class ChatService {
 
   // Join a conversation room
   void joinConversation(String conversationId) {
+    _logger.info('Attempting to join conversation: $conversationId');
+    _logger.info('Socket connected: ${_socket?.connected}');
+    
     if (_socket != null && _socket!.connected) {
+      _logger.info('Emitting join_conversation event');
       _socket!.emit('join_conversation', {'conversationId': conversationId});
+    } else {
+      _logger.severe('Socket not connected, cannot join conversation');
     }
   }
 
@@ -231,6 +257,39 @@ class ChatService {
     }
   }
 
+  // Create conversation for service request
+  Future<Conversation> createConversationForServiceRequest(String serviceRequestId) async {
+    try {
+      print('ChatService: Creating conversation for service request: $serviceRequestId');
+      print('ChatService: Base URL is: ${_dio.options.baseUrl}');
+      print('ChatService: Full URL will be: ${_dio.options.baseUrl}/conversations');
+      
+      final response = await _dio.post('/conversations', data: {
+        'serviceRequestId': serviceRequestId,
+      });
+
+      print('ChatService: Create conversation response: ${response.data}');
+
+      if (response.data['success']) {
+        // Get the full conversation details
+        final conversationId = response.data['conversation']['id'];
+        print('ChatService: Getting conversation details for: $conversationId');
+        return await getConversation(conversationId);
+      } else {
+        throw Exception(response.data['message'] ?? 'Failed to create conversation');
+      }
+    } catch (e) {
+      print('ChatService: Error creating conversation: $e');
+      if (e is DioException) {
+        print('ChatService: Error response data: ${e.response?.data}');
+        print('ChatService: Error status code: ${e.response?.statusCode}');
+        print('ChatService: Error request URL: ${e.requestOptions.uri}');
+      }
+      _logger.severe('Error creating conversation for service request: $e');
+      rethrow;
+    }
+  }
+
   // Create conversation
   Future<Conversation> createConversation({
     String? serviceRequestId,
@@ -284,7 +343,13 @@ class ChatService {
     int? fileSize,
     String? replyToMessageId,
   }) {
+    _logger.info('Attempting to send message via Socket.IO');
+    _logger.info('Socket connected: ${_socket?.connected}');
+    _logger.info('Conversation ID: $conversationId');
+    _logger.info('Content: $content');
+    
     if (_socket != null && _socket!.connected) {
+      _logger.info('Emitting send_message event');
       _socket!.emit('send_message', {
         'conversationId': conversationId,
         'content': content,
@@ -294,6 +359,8 @@ class ChatService {
         'fileSize': fileSize,
         'replyToMessageId': replyToMessageId,
       });
+    } else {
+      _logger.severe('Socket not connected, cannot send message');
     }
   }
 
@@ -305,11 +372,18 @@ class ChatService {
     String? replyToMessageId,
   }) async {
     try {
+      _logger.info('Sending message via HTTP API');
+      _logger.info('Conversation ID: $conversationId');
+      _logger.info('Content: $content');
+      _logger.info('Message Type: ${messageType.name}');
+      
       final response = await _dio.post('/conversations/$conversationId/messages', data: {
         'content': content,
         'messageType': messageType.name,
         'replyToMessageId': replyToMessageId,
       });
+
+      _logger.info('HTTP API Response: ${response.data}');
 
       if (response.data['success']) {
         return Message.fromJson(response.data['message']);
@@ -317,7 +391,11 @@ class ChatService {
         throw Exception(response.data['message'] ?? 'Failed to send message');
       }
     } catch (e) {
-      _logger.severe('Error sending message: $e');
+      _logger.severe('Error sending message via HTTP: $e');
+      if (e is DioException) {
+        _logger.severe('Response data: ${e.response?.data}');
+        _logger.severe('Status code: ${e.response?.statusCode}');
+      }
       rethrow;
     }
   }

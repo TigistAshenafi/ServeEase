@@ -46,20 +46,41 @@ class ServiceRequestProvider extends ChangeNotifier {
 
   // Get single request with full details
   Future<void> fetchRequestDetails(String requestId) async {
-    isLoading = true;
-    error = null;
-    notifyListeners();
-
-    final res = await ServiceRequestService.getRequest(requestId);
-
-    isLoading = false;
-    if (res.success && res.data != null) {
-      selectedRequest = res.data!;
+    try {
+      _logger.info('Fetching request details for ID: $requestId');
+      isLoading = true;
       error = null;
-      // Also fetch status history
-      await fetchStatusHistory(requestId);
-    } else {
-      error = res.message;
+      notifyListeners();
+
+      // Validate request ID
+      if (requestId.isEmpty) {
+        throw Exception('Request ID cannot be empty');
+      }
+
+      _logger.info('Making API call to: ${ApiService.serviceRequestBase}/$requestId');
+      final res = await ServiceRequestService.getRequest(requestId);
+      _logger.info('API Response: success=${res.success}, message=${res.message}');
+
+      isLoading = false;
+      if (res.success && res.data != null) {
+        selectedRequest = res.data!;
+        error = null;
+        _logger.info('Request loaded successfully: ${selectedRequest!.service.title}');
+        // Also fetch status history
+        try {
+          await fetchStatusHistory(requestId);
+        } catch (historyError) {
+          _logger.warning('Failed to load status history: $historyError');
+          // Don't fail the whole request if history fails
+        }
+      } else {
+        error = res.message.isNotEmpty ? res.message : 'Failed to load request details';
+        _logger.warning('Failed to load request: ${res.message}');
+      }
+    } catch (e) {
+      isLoading = false;
+      error = 'Error loading request: ${e.toString()}';
+      _logger.severe('Exception in fetchRequestDetails: $e');
     }
     notifyListeners();
   }

@@ -3,10 +3,11 @@ import 'package:provider/provider.dart';
 import 'package:serveease_app/core/models/service_request_model.dart';
 import 'package:serveease_app/providers/service_request_provider.dart';
 import 'package:serveease_app/providers/auth_provider.dart';
+import 'package:serveease_app/providers/provider_profile_provider.dart';
 import 'package:serveease_app/features/requests/widgets/status_timeline_widget.dart';
 import 'package:serveease_app/features/requests/widgets/rating_dialog.dart';
 import 'package:serveease_app/features/requests/widgets/employee_assignment_dialog.dart';
-import 'package:serveease_app/features/requests/widgets/status_update_dialog.dart';
+import 'package:serveease_app/features/requests/widgets/request_action_buttons.dart';
 
 class RequestDetailScreen extends StatefulWidget {
   final String requestId;
@@ -21,10 +22,39 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context
+      _loadRequestDetails();
+    });
+  }
+
+  @override
+  void dispose() {
+    // Clear the selected request when leaving the screen
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        context.read<ServiceRequestProvider>().clearSelectedRequest();
+      }
+    });
+    super.dispose();
+  }
+
+  Future<void> _loadRequestDetails() async {
+    try {
+      print('RequestDetailScreen: Loading request details for ID: ${widget.requestId}');
+      await context
           .read<ServiceRequestProvider>()
           .fetchRequestDetails(widget.requestId);
-    });
+      print('RequestDetailScreen: Request details loaded successfully');
+    } catch (e) {
+      print('RequestDetailScreen: Error loading request details: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to load request: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 
   @override
@@ -38,17 +68,166 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> {
           );
         }
 
+        if (provider.error != null) {
+          return Scaffold(
+            appBar: AppBar(title: const Text('Request Details')),
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.error_outline,
+                    size: 64,
+                    color: Colors.red[300],
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Error Loading Request',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.red[700],
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 32),
+                    child: Text(
+                      provider.error!,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 32),
+                    child: Text(
+                      'Request ID: ${widget.requestId}',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey[500],
+                        fontFamily: 'monospace',
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton.icon(
+                        onPressed: () async {
+                          provider.clearError();
+                          await _loadRequestDetails();
+                        },
+                        icon: const Icon(Icons.refresh),
+                        label: const Text('Retry'),
+                      ),
+                      const SizedBox(width: 16),
+                      OutlinedButton.icon(
+                        onPressed: () => Navigator.pop(context),
+                        icon: const Icon(Icons.arrow_back),
+                        label: const Text('Go Back'),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+
         if (provider.selectedRequest == null) {
           return Scaffold(
             appBar: AppBar(title: const Text('Request Details')),
-            body: const Center(child: Text('Request not found')),
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.search_off,
+                    size: 64,
+                    color: Colors.grey[400],
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Request Not Found',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 32),
+                    child: Text(
+                      'The requested service request could not be found or you don\'t have permission to view it.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 32),
+                    child: Text(
+                      'Request ID: ${widget.requestId}',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey[500],
+                        fontFamily: 'monospace',
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton.icon(
+                        onPressed: () async {
+                          await _loadRequestDetails();
+                        },
+                        icon: const Icon(Icons.refresh),
+                        label: const Text('Retry'),
+                      ),
+                      const SizedBox(width: 16),
+                      OutlinedButton.icon(
+                        onPressed: () => Navigator.pop(context),
+                        icon: const Icon(Icons.arrow_back),
+                        label: const Text('Go Back'),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
           );
         }
 
         final request = provider.selectedRequest!;
         final currentUser = context.watch<AuthProvider>().user;
-        final isProvider = currentUser?.id == request.providerId;
+        final providerProfile = context.watch<ProviderProfileProvider>().profile;
+        
+        // Debug logging
+        print('RequestDetailScreen Debug:');
+        print('  Current User ID: ${currentUser?.id}');
+        print('  Current User Role: ${currentUser?.role}');
+        print('  Provider Profile ID: ${providerProfile?.id}');
+        print('  Request Provider ID: ${request.providerId}');
+        print('  Request Seeker ID: ${request.seekerId}');
+        
+        // Check if current user is the provider by comparing provider profile ID
+        final isProvider = currentUser?.role == 'provider' && 
+                          providerProfile?.id == request.providerId;
         final isSeeker = currentUser?.id == request.seekerId;
+        
+        print('  Is Provider: $isProvider');
+        print('  Is Seeker: $isSeeker');
 
         return Scaffold(
           appBar: AppBar(
@@ -68,7 +247,7 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> {
             ],
           ),
           body: RefreshIndicator(
-            onRefresh: () => provider.fetchRequestDetails(widget.requestId),
+            onRefresh: () => _loadRequestDetails(),
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(16),
               child: Column(
@@ -95,7 +274,11 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> {
                     const SizedBox(height: 16),
 
                   // Action Buttons
-                  _buildActionButtons(context, request, isProvider, isSeeker),
+                  RequestActionButtons(
+                    request: request,
+                    isProvider: isProvider,
+                    isSeeker: isSeeker,
+                  ),
                   const SizedBox(height: 16),
 
                   // Rating Section
@@ -338,87 +521,6 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> {
     );
   }
 
-  Widget _buildActionButtons(BuildContext context, ServiceRequest request,
-      bool isProvider, bool isSeeker) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Row(
-              children: [
-                Icon(Icons.touch_app, color: Colors.indigo),
-                SizedBox(width: 8),
-                Text(
-                  'Actions',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                // Provider actions
-                if (isProvider) ...[
-                  if (request.isPending) ...[
-                    ElevatedButton.icon(
-                      icon: const Icon(Icons.check),
-                      label: const Text('Accept'),
-                      onPressed: () => _acceptRequest(context, request),
-                    ),
-                    OutlinedButton.icon(
-                      icon: const Icon(Icons.close),
-                      label: const Text('Reject'),
-                      onPressed: () => _rejectRequest(context, request),
-                    ),
-                  ],
-                  if (request.status == 'accepted' ||
-                      request.status == 'assigned') ...[
-                    ElevatedButton.icon(
-                      icon: const Icon(Icons.play_arrow),
-                      label: const Text('Start Work'),
-                      onPressed: () => _startWork(context, request),
-                    ),
-                  ],
-                  if (request.isInProgress) ...[
-                    ElevatedButton.icon(
-                      icon: const Icon(Icons.check_circle),
-                      label: const Text('Complete'),
-                      onPressed: () => _completeRequest(context, request),
-                    ),
-                  ],
-                ],
-
-                // Common actions
-                if ((isProvider || isSeeker) &&
-                    !['completed', 'rejected', 'cancelled']
-                        .contains(request.status)) ...[
-                  OutlinedButton.icon(
-                    icon: const Icon(Icons.cancel),
-                    label: const Text('Cancel'),
-                    onPressed: () => _cancelRequest(context, request),
-                  ),
-                ],
-
-                // Status update action
-                if (isProvider) ...[
-                  OutlinedButton.icon(
-                    icon: const Icon(Icons.update),
-                    label: const Text('Update Status'),
-                    onPressed: () => _showStatusUpdateDialog(context, request),
-                  ),
-                ],
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _buildRatingCard(
       ServiceRequest request, bool isProvider, bool isSeeker) {
     return Card(
@@ -516,99 +618,12 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> {
     );
   }
 
-  // Action methods
-  Future<void> _acceptRequest(
-      BuildContext context, ServiceRequest request) async {
-    final provider = context.read<ServiceRequestProvider>();
-    final result = await provider.acceptRequest(requestId: request.id);
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(result.message)),
-      );
-    }
-  }
-
-  Future<void> _rejectRequest(
-      BuildContext context, ServiceRequest request) async {
-    final reason = await _showReasonDialog(
-        context, 'Reject Request', 'Please provide a reason for rejection:');
-    if (reason != null && reason.isNotEmpty && context.mounted) {
-      final provider = context.read<ServiceRequestProvider>();
-      final result =
-          await provider.rejectRequest(requestId: request.id, reason: reason);
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(result.message)),
-        );
-      }
-    }
-  }
-
-  Future<void> _startWork(BuildContext context, ServiceRequest request) async {
-    final provider = context.read<ServiceRequestProvider>();
-    final result = await provider.startWork(requestId: request.id);
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(result.message)),
-      );
-    }
-  }
-
-  Future<void> _completeRequest(
-      BuildContext context, ServiceRequest request) async {
-    final provider = context.read<ServiceRequestProvider>();
-    final result = await provider.completeRequest(
-      requestId: request.id,
-      actualCompletionDate: DateTime.now(),
-    );
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(result.message)),
-      );
-    }
-  }
-
-  Future<void> _cancelRequest(
-      BuildContext context, ServiceRequest request) async {
-    final reason = await _showReasonDialog(
-        context, 'Cancel Request', 'Please provide a reason for cancellation:');
-    if (reason != null && reason.isNotEmpty && context.mounted) {
-      final provider = context.read<ServiceRequestProvider>();
-      final result =
-          await provider.cancelRequest(requestId: request.id, reason: reason);
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(result.message)),
-        );
-      }
-    }
-  }
-
-  Future<void> _toggleNotifications(
-      BuildContext context, ServiceRequest request, bool enabled) async {
-    final provider = context.read<ServiceRequestProvider>();
-    final result = await provider.toggleNotifications(
-        requestId: request.id, enabled: enabled);
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(result.message)),
-      );
-    }
-  }
-
   // Dialog methods
   void _showEmployeeAssignmentDialog(
       BuildContext context, ServiceRequest request) {
     showDialog(
       context: context,
       builder: (context) => EmployeeAssignmentDialog(request: request),
-    );
-  }
-
-  void _showStatusUpdateDialog(BuildContext context, ServiceRequest request) {
-    showDialog(
-      context: context,
-      builder: (context) => StatusUpdateDialog(request: request),
     );
   }
 
@@ -623,30 +638,16 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> {
     );
   }
 
-  Future<String?> _showReasonDialog(
-      BuildContext context, String title, String hint) async {
-    final controller = TextEditingController();
-    return showDialog<String>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(title),
-        content: TextField(
-          controller: controller,
-          decoration: InputDecoration(hintText: hint),
-          maxLines: 3,
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context, controller.text),
-            child: const Text('Confirm'),
-          ),
-        ],
-      ),
-    );
+  Future<void> _toggleNotifications(
+      BuildContext context, ServiceRequest request, bool enabled) async {
+    final provider = context.read<ServiceRequestProvider>();
+    final result = await provider.toggleNotifications(
+        requestId: request.id, enabled: enabled);
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(result.message)),
+      );
+    }
   }
 
   // Helper methods

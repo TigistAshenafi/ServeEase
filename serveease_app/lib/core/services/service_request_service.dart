@@ -66,14 +66,39 @@ class ServiceRequestService {
   static Future<ApiResponse<ServiceRequest>> getRequest(
       String requestId) async {
     try {
+      // Validate request ID
+      if (requestId.isEmpty) {
+        return ApiResponse<ServiceRequest>(
+          success: false,
+          message: 'Request ID cannot be empty',
+        );
+      }
+
+      print('ServiceRequestService: Making request to ${ApiService.serviceRequestBase}/$requestId');
       final res = await ApiService.get(
         '${ApiService.serviceRequestBase}/$requestId',
       );
+      
+      print('ServiceRequestService: Response status: ${res.statusCode}');
+      print('ServiceRequestService: Response body: ${res.body}');
+      
       return ApiService.handleResponse<ServiceRequest>(
         res,
-        (json) => ServiceRequest.fromJson(json['request'] ?? json),
+        (json) {
+          try {
+            // Handle both possible response formats
+            final requestData = json['request'] ?? json;
+            if (requestData == null) {
+              throw Exception('No request data found in response');
+            }
+            return ServiceRequest.fromJson(requestData);
+          } catch (e) {
+            throw Exception('Error parsing ServiceRequest: $e');
+          }
+        },
       );
     } catch (e) {
+      print('ServiceRequestService: Exception: $e');
       return ApiService.handleError<ServiceRequest>(e);
     }
   }

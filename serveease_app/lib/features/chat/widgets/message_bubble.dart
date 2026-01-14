@@ -1,10 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:photo_view/photo_view.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../models/conversation.dart';
 
@@ -24,17 +21,16 @@ class MessageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isMe = message.isFromMe;
-    
+    final isFromMe = message.isFromMe;
+
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
+      margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
       child: Row(
-        mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+        mainAxisAlignment: isFromMe ? MainAxisAlignment.end : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          if (!isMe) _buildAvatar(),
-          if (!isMe) SizedBox(width: 8.w),
-          
+          if (!isFromMe) _buildAvatar(),
+          if (!isFromMe) SizedBox(width: 8.w),
           Flexible(
             child: GestureDetector(
               onLongPress: () => _showMessageOptions(context),
@@ -42,84 +38,109 @@ class MessageBubble extends StatelessWidget {
                 constraints: BoxConstraints(
                   maxWidth: MediaQuery.of(context).size.width * 0.75,
                 ),
-                child: Column(
-                  crossAxisAlignment: isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-                  children: [
-                    // Reply preview
-                    if (message.replyTo != null) _buildReplyPreview(context),
-                    
-                    // Message content
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-                      decoration: BoxDecoration(
-                        color: isMe 
-                            ? Theme.of(context).primaryColor 
-                            : Colors.grey[200],
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(16.r),
-                          topRight: Radius.circular(16.r),
-                          bottomLeft: Radius.circular(isMe ? 16.r : 4.r),
-                          bottomRight: Radius.circular(isMe ? 4.r : 16.r),
-                        ),
-                      ),
-                      child: _buildMessageContent(context),
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                decoration: BoxDecoration(
+                  gradient: isFromMe 
+                      ? LinearGradient(
+                          colors: [
+                            Colors.blue.shade500,
+                            Colors.purple.shade500,
+                          ],
+                        )
+                      : null,
+                  color: isFromMe ? null : Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20.r),
+                    topRight: Radius.circular(20.r),
+                    bottomLeft: Radius.circular(isFromMe ? 20.r : 6.r),
+                    bottomRight: Radius.circular(isFromMe ? 6.r : 20.r),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: isFromMe 
+                          ? Colors.blue.withValues(alpha: 0.2)
+                          : Colors.grey.withValues(alpha: 0.1),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
                     ),
-                    
-                    // Message info
-                    SizedBox(height: 2.h),
-                    _buildMessageInfo(context),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (message.replyTo != null) _buildReplyPreview(),
+                    _buildMessageContent(isFromMe),
+                    SizedBox(height: 6.h),
+                    _buildMessageInfo(isFromMe),
                   ],
                 ),
               ),
             ),
           ),
-          
-          if (isMe) SizedBox(width: 8.w),
-          if (isMe) _buildAvatar(),
+          if (isFromMe) SizedBox(width: 8.w),
+          if (isFromMe) _buildAvatar(),
         ],
       ),
     );
   }
 
   Widget _buildAvatar() {
-    return CircleAvatar(
-      radius: 12.r,
-      backgroundColor: Colors.grey[300],
-      backgroundImage: message.sender.avatarUrl != null
-          ? CachedNetworkImageProvider(message.sender.avatarUrl!)
-          : null,
-      child: message.sender.avatarUrl == null
-          ? Text(
-              message.sender.name.isNotEmpty
-                  ? message.sender.name[0].toUpperCase()
-                  : '?',
-              style: TextStyle(
-                fontSize: 10.sp,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            )
-          : null,
+    return Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withValues(alpha: 0.3),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: CircleAvatar(
+        radius: 18.r,
+        backgroundColor: Colors.grey[300],
+        backgroundImage: message.sender.avatarUrl != null
+            ? CachedNetworkImageProvider(message.sender.avatarUrl!)
+            : null,
+        child: message.sender.avatarUrl == null
+            ? Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.blue.shade300,
+                      Colors.purple.shade300,
+                    ],
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    message.sender.name.isNotEmpty
+                        ? message.sender.name[0].toUpperCase()
+                        : '?',
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              )
+            : null,
+      ),
     );
   }
 
-  Widget _buildReplyPreview(BuildContext context) {
-    final reply = message.replyTo!;
-    final isMe = message.isFromMe;
-    
+  Widget _buildReplyPreview() {
     return Container(
-      margin: EdgeInsets.only(bottom: 4.h),
-      padding: EdgeInsets.all(8.w),
+      margin: EdgeInsets.only(bottom: 8.h),
+      padding: EdgeInsets.all(10.w),
       decoration: BoxDecoration(
-        color: isMe 
-            ? Theme.of(context).primaryColor.withValues(alpha: 0.1)
-            : Colors.grey[100],
-        borderRadius: BorderRadius.circular(8.r),
+        color: Colors.black.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(12.r),
         border: Border(
           left: BorderSide(
-            color: isMe 
-                ? Colors.white 
-                : Theme.of(context).primaryColor,
+            color: message.isFromMe ? Colors.white70 : Colors.blue.shade400,
             width: 3.w,
           ),
         ),
@@ -128,23 +149,19 @@ class MessageBubble extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            reply.senderName,
+            message.replyTo!.senderName,
             style: TextStyle(
               fontSize: 12.sp,
               fontWeight: FontWeight.w600,
-              color: isMe 
-                  ? Colors.white.withValues(alpha: 0.8)
-                  : Theme.of(context).primaryColor,
+              color: message.isFromMe ? Colors.white70 : Colors.blue.shade600,
             ),
           ),
-          SizedBox(height: 2.h),
+          SizedBox(height: 4.h),
           Text(
-            reply.content,
+            message.replyTo!.content,
             style: TextStyle(
-              fontSize: 12.sp,
-              color: isMe 
-                  ? Colors.white.withValues(alpha: 0.7)
-                  : Colors.grey[600],
+              fontSize: 13.sp,
+              color: message.isFromMe ? Colors.white70 : Colors.grey[600],
             ),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
@@ -154,164 +171,106 @@ class MessageBubble extends StatelessWidget {
     );
   }
 
-  Widget _buildMessageContent(BuildContext context) {
+  Widget _buildMessageContent(bool isFromMe) {
     switch (message.messageType) {
       case MessageType.text:
-        return _buildTextMessage(context);
+        return Text(
+          message.content,
+          style: TextStyle(
+            fontSize: 15.sp,
+            fontWeight: FontWeight.w400,
+            color: isFromMe ? Colors.white : Colors.black87,
+            height: 1.4,
+          ),
+        );
       case MessageType.image:
-        return _buildImageMessage(context);
+        return _buildImageMessage();
       case MessageType.file:
-        return _buildFileMessage(context);
-      case MessageType.location:
-        return _buildLocationMessage(context);
+        return _buildFileMessage(isFromMe);
       case MessageType.system:
-        return _buildSystemMessage(context);
+        return Text(
+          message.content,
+          style: TextStyle(
+            fontSize: 12.sp,
+            fontStyle: FontStyle.italic,
+            color: isFromMe ? Colors.white70 : Colors.grey[600],
+          ),
+        );
+      default:
+        return Text(
+          message.content,
+          style: TextStyle(
+            fontSize: 14.sp,
+            color: isFromMe ? Colors.white : Colors.black87,
+          ),
+        );
     }
   }
 
-  Widget _buildTextMessage(BuildContext context) {
-    return Text(
-      message.content,
-      style: TextStyle(
-        fontSize: 14.sp,
-        color: message.isFromMe ? Colors.white : Colors.black87,
-      ),
-    );
-  }
-
-  Widget _buildImageMessage(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (message.content.isNotEmpty)
-          Padding(
-            padding: EdgeInsets.only(bottom: 8.h),
-            child: Text(
-              message.content,
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: message.isFromMe ? Colors.white : Colors.black87,
-              ),
-            ),
-          ),
-        GestureDetector(
-          onTap: () => _showImageViewer(context),
-          child: Container(
-            constraints: BoxConstraints(
-              maxWidth: 200.w,
-              maxHeight: 200.h,
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8.r),
-              color: Colors.grey[300],
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8.r),
-              child: message.fileUrl != null
-                  ? CachedNetworkImage(
-                      imageUrl: message.fileUrl!,
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) => SizedBox(
-                        height: 100.h,
-                        child: const Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                      ),
-                      errorWidget: (context, url, error) => SizedBox(
-                        height: 100.h,
-                        child: const Center(
-                          child: Icon(Icons.error),
-                        ),
-                      ),
-                    )
-                  : SizedBox(
-                      height: 100.h,
-                      child: const Center(
-                        child: Icon(Icons.image),
-                      ),
-                    ),
-            ),
+  Widget _buildImageMessage() {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(8.r),
+      child: CachedNetworkImage(
+        imageUrl: message.fileUrl!,
+        width: 200.w,
+        height: 200.h,
+        fit: BoxFit.cover,
+        placeholder: (context, url) => Container(
+          width: 200.w,
+          height: 200.h,
+          color: Colors.grey[300],
+          child: const Center(
+            child: CircularProgressIndicator(),
           ),
         ),
-      ],
-    );
-  }
-
-  Widget _buildFileMessage(BuildContext context) {
-    return GestureDetector(
-      onTap: () => _openFile(),
-      child: Container(
-        padding: EdgeInsets.all(12.w),
-        decoration: BoxDecoration(
-          color: message.isFromMe 
-              ? Colors.white.withValues(alpha: 0.1)
-              : Colors.grey[100],
-          borderRadius: BorderRadius.circular(8.r),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.insert_drive_file,
-              color: message.isFromMe ? Colors.white : Colors.grey[600],
-              size: 24.r,
-            ),
-            SizedBox(width: 8.w),
-            Flexible(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    message.fileName ?? 'File',
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
-                      color: message.isFromMe ? Colors.white : Colors.black87,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  if (message.fileSize != null)
-                    Text(
-                      _formatFileSize(message.fileSize!),
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: message.isFromMe 
-                            ? Colors.white.withValues(alpha: 0.7)
-                            : Colors.grey[600],
-                      ),
-                    ),
-                ],
-              ),
-            ),
-          ],
+        errorWidget: (context, url, error) => Container(
+          width: 200.w,
+          height: 200.h,
+          color: Colors.grey[300],
+          child: const Icon(Icons.error),
         ),
       ),
     );
   }
 
-  Widget _buildLocationMessage(BuildContext context) {
+  Widget _buildFileMessage(bool isFromMe) {
     return Container(
-      padding: EdgeInsets.all(12.w),
+      padding: EdgeInsets.all(8.w),
       decoration: BoxDecoration(
-        color: message.isFromMe 
-            ? Colors.white.withValues(alpha: 0.1)
-            : Colors.grey[100],
+        color: Colors.black.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8.r),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
-            Icons.location_on,
-            color: message.isFromMe ? Colors.white : Colors.red,
-            size: 24.r,
+            Icons.attach_file,
+            size: 20.r,
+            color: isFromMe ? Colors.white70 : Colors.grey[600],
           ),
           SizedBox(width: 8.w),
-          Text(
-            'Location',
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: message.isFromMe ? Colors.white : Colors.black87,
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  message.fileName ?? 'File',
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w600,
+                    color: isFromMe ? Colors.white : Colors.black87,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+                if (message.fileSize != null)
+                  Text(
+                    _formatFileSize(message.fileSize!),
+                    style: TextStyle(
+                      fontSize: 10.sp,
+                      color: isFromMe ? Colors.white70 : Colors.grey[600],
+                    ),
+                  ),
+              ],
             ),
           ),
         ],
@@ -319,23 +278,10 @@ class MessageBubble extends StatelessWidget {
     );
   }
 
-  Widget _buildSystemMessage(BuildContext context) {
-    return Text(
-      message.content,
-      style: TextStyle(
-        fontSize: 12.sp,
-        color: Colors.grey[600],
-        fontStyle: FontStyle.italic,
-      ),
-      textAlign: TextAlign.center,
-    );
-  }
-
-  Widget _buildMessageInfo(BuildContext context) {
+  Widget _buildMessageInfo(bool isFromMe) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // Edited indicator
         if (message.isEdited)
           Padding(
             padding: EdgeInsets.only(right: 4.w),
@@ -343,31 +289,54 @@ class MessageBubble extends StatelessWidget {
               'edited',
               style: TextStyle(
                 fontSize: 10.sp,
-                color: Colors.grey[500],
                 fontStyle: FontStyle.italic,
+                color: isFromMe ? Colors.white70 : Colors.grey[500],
               ),
             ),
           ),
-        
-        // Time
         Text(
           DateFormat('HH:mm').format(message.createdAt),
           style: TextStyle(
             fontSize: 10.sp,
-            color: Colors.grey[500],
+            color: isFromMe ? Colors.white70 : Colors.grey[500],
           ),
         ),
-        
-        // Read status (for sent messages)
-        if (message.isFromMe) ...[
+        if (isFromMe) ...[
           SizedBox(width: 4.w),
-          Icon(
-            message.readCount > 0 ? Icons.done_all : Icons.done,
-            size: 12.r,
-            color: message.readCount > 0 ? Colors.blue : Colors.grey[500],
-          ),
+          _buildMessageStatus(),
         ],
       ],
+    );
+  }
+
+  Widget _buildMessageStatus() {
+    IconData icon;
+    Color color = Colors.white70;
+
+    switch (message.status) {
+      case MessageStatus.sending:
+        icon = Icons.access_time;
+        break;
+      case MessageStatus.sent:
+        icon = Icons.check;
+        break;
+      case MessageStatus.delivered:
+        icon = Icons.done_all;
+        break;
+      case MessageStatus.read:
+        icon = Icons.done_all;
+        color = Colors.blue;
+        break;
+      case MessageStatus.failed:
+        icon = Icons.error;
+        color = Colors.red;
+        break;
+    }
+
+    return Icon(
+      icon,
+      size: 12.r,
+      color: color,
     );
   }
 
@@ -388,20 +357,7 @@ class MessageBubble extends StatelessWidget {
                   onReply!();
                 },
               ),
-            
-            ListTile(
-              leading: const Icon(Icons.copy),
-              title: const Text('Copy'),
-              onTap: () {
-                Navigator.pop(context);
-                Clipboard.setData(ClipboardData(text: message.content));
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Message copied')),
-                );
-              },
-            ),
-            
-            if (message.isFromMe && onEdit != null && message.messageType == MessageType.text)
+            if (message.isFromMe && onEdit != null)
               ListTile(
                 leading: const Icon(Icons.edit),
                 title: const Text('Edit'),
@@ -410,7 +366,6 @@ class MessageBubble extends StatelessWidget {
                   _showEditDialog(context);
                 },
               ),
-            
             if (message.isFromMe && onDelete != null)
               ListTile(
                 leading: const Icon(Icons.delete, color: Colors.red),
@@ -439,6 +394,7 @@ class MessageBubble extends StatelessWidget {
             hintText: 'Enter new message...',
           ),
           maxLines: null,
+          autofocus: true,
         ),
         actions: [
           TextButton(
@@ -472,45 +428,15 @@ class MessageBubble extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
-              Navigator.pop(context);
               onDelete!();
+              Navigator.pop(context);
             },
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
             child: const Text('Delete'),
           ),
         ],
       ),
     );
-  }
-
-  void _showImageViewer(BuildContext context) {
-    if (message.fileUrl == null) return;
-    
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => Scaffold(
-          backgroundColor: Colors.black,
-          appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            iconTheme: const IconThemeData(color: Colors.white),
-          ),
-          body: PhotoView(
-            imageProvider: CachedNetworkImageProvider(message.fileUrl!),
-            minScale: PhotoViewComputedScale.contained,
-            maxScale: PhotoViewComputedScale.covered * 2,
-          ),
-        ),
-      ),
-    );
-  }
-
-  void _openFile() async {
-    if (message.fileUrl != null) {
-      final uri = Uri.parse(message.fileUrl!);
-      if (await canLaunchUrl(uri)) {
-        await launchUrl(uri);
-      }
-    }
   }
 
   String _formatFileSize(int bytes) {
