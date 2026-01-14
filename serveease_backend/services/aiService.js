@@ -1,10 +1,13 @@
 import OpenAI from 'openai';
 import { query } from '../config/database.js';
 
-// Initialize OpenAI client
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Initialize OpenAI client only if API key is provided
+let openai = null;
+if (process.env.OPENAI_API_KEY) {
+  openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+  });
+}
 
 class AIService {
   constructor() {
@@ -117,6 +120,16 @@ Always maintain context about ServeEase being a service marketplace platform.`;
 
   async generateResponse(userMessage, userId = null, conversationHistory = []) {
     try {
+      // Check if OpenAI is available
+      if (!openai) {
+        return {
+          response: "AI features are currently unavailable. Please contact support for assistance with: " + userMessage,
+          actions: [],
+          context: {},
+          error: "OpenAI API key not configured"
+        };
+      }
+
       const contextInfo = await this.getContextualInfo(userId);
 
       // Build context-aware prompt
