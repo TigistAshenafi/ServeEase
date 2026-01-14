@@ -1,24 +1,24 @@
 import express from 'express';
 import { body, param, query as queryValidator } from 'express-validator';
-import {
-  getConversations,
-  getConversation,
-  createConversation,
-  getMessages,
-  sendMessage,
-  markMessagesAsRead,
-  deleteMessage,
-  editMessage,
-  uploadChatFile,
-  getConversationParticipants,
-  archiveConversation,
-  blockConversation
-} from '../controllers/chatController.js';
-import {
-  authenticateToken
-} from '../middleware/auth.js';
 import multer from 'multer';
 import path from 'path';
+import {
+    archiveConversation,
+    blockConversation,
+    createConversation,
+    deleteMessage,
+    editMessage,
+    getConversation,
+    getConversationParticipants,
+    getConversations,
+    getMessages,
+    markMessagesAsRead,
+    sendMessage,
+    uploadChatFile
+} from '../controllers/chatController.js';
+import {
+    authenticateToken
+} from '../middleware/auth.js';
 
 const router = express.Router();
 
@@ -55,6 +55,14 @@ const upload = multer({
 // All chat routes require authentication
 router.use(authenticateToken);
 
+// Add debugging middleware
+router.use((req, res, next) => {
+  console.log(`Chat Route: ${req.method} ${req.path}`);
+  console.log('Chat Route Body:', req.body);
+  console.log('Chat Route User:', req.user?.id);
+  next();
+});
+
 // Conversation routes
 router.get('/conversations', getConversations);
 router.get('/conversations/:conversationId', 
@@ -63,7 +71,13 @@ router.get('/conversations/:conversationId',
 );
 router.post('/conversations',
   body('serviceRequestId').optional().isUUID().withMessage('Valid service request ID is required'),
-  body('participantId').isUUID().withMessage('Valid participant ID is required'),
+  body('participantId').optional().isUUID().withMessage('Valid participant ID is required'),
+  body().custom((value) => {
+    if (!value.serviceRequestId && !value.participantId) {
+      throw new Error('Either serviceRequestId or participantId is required');
+    }
+    return true;
+  }),
   createConversation
 );
 

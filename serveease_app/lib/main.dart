@@ -3,16 +3,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:serveease_app/core/localization/locale_provider.dart';
-
 import 'package:serveease_app/core/services/api_service.dart';
 import 'package:serveease_app/core/theme/app_theme.dart';
-import 'package:serveease_app/l10n/app_localizations.dart';
-
 import 'package:serveease_app/features/admin/provider_approvals_screen.dart';
 import 'package:serveease_app/features/ai/ai_chat_screen.dart';
 import 'package:serveease_app/features/auth/presentation/email_verification_screen.dart';
@@ -21,15 +18,17 @@ import 'package:serveease_app/features/auth/presentation/home_screen.dart';
 import 'package:serveease_app/features/auth/presentation/login_screen.dart';
 import 'package:serveease_app/features/auth/presentation/reset_password_screen.dart';
 import 'package:serveease_app/features/auth/presentation/signup_screen.dart';
+import 'package:serveease_app/features/chat/providers/chat_provider.dart';
+import 'package:serveease_app/features/chat/screens/chat_screen.dart';
+import 'package:serveease_app/features/chat/screens/conversations_screen.dart';
 import 'package:serveease_app/features/employees/employee_list_screen.dart';
+import 'package:serveease_app/features/requests/request_detail_screen.dart';
 import 'package:serveease_app/features/requests/request_list_screen.dart';
 import 'package:serveease_app/features/screens/providers/create_profile_screen.dart';
 import 'package:serveease_app/features/screens/providers/profile_view_screen.dart';
 import 'package:serveease_app/features/services/my_services_screen.dart';
 import 'package:serveease_app/features/services/service_catalog_screen.dart';
-import 'package:serveease_app/features/chat/screens/conversations_screen.dart';
-import 'package:serveease_app/features/chat/screens/chat_screen.dart';
-
+import 'package:serveease_app/l10n/app_localizations.dart';
 import 'package:serveease_app/providers/admin_provider.dart';
 import 'package:serveease_app/providers/ai_provider.dart';
 import 'package:serveease_app/providers/auth_provider.dart';
@@ -37,7 +36,6 @@ import 'package:serveease_app/providers/employee_provider.dart';
 import 'package:serveease_app/providers/provider_profile_provider.dart';
 import 'package:serveease_app/providers/service_provider.dart';
 import 'package:serveease_app/providers/service_request_provider.dart';
-import 'package:serveease_app/features/chat/providers/chat_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -135,6 +133,16 @@ class MyApp extends StatelessWidget {
                           ChatScreen(conversationId: conversationId),
                     );
                   }
+                  
+                  // Handle dynamic routes like /requests/:requestId
+                  if (settings.name?.startsWith('/requests/') == true) {
+                    final requestId = settings.name!.split('/')[2];
+                    return MaterialPageRoute(
+                      builder: (context) =>
+                          RequestDetailScreen(requestId: requestId),
+                    );
+                  }
+                  
                   return null;
                 },
               );
@@ -169,18 +177,24 @@ class _AuthWrapperState extends State<AuthWrapper> {
       // Initialize chat service and AI when user is authenticated
       final authProvider = context.read<AuthProvider>();
       if (authProvider.isAuthenticated) {
-        _initializeChat();
-        _initializeAI();
+        await _initializeChat();
+        await _initializeAI();
       }
     });
   }
 
-  void _initializeChat() async {
-    final baseUrl = dotenv.env['API_BASE_URL'] ?? 'http://localhost:5000';
-    await context.read<ChatProvider>().initialize(baseUrl);
+  Future<void> _initializeChat() async {
+    try {
+      final baseUrl = dotenv.env['API_BASE_URL'] ?? 'http://localhost:3000';
+      print('AuthWrapper: Initializing chat with baseUrl: $baseUrl');
+      await context.read<ChatProvider>().initialize(baseUrl);
+      print('AuthWrapper: Chat initialization completed');
+    } catch (e) {
+      print('AuthWrapper: Chat initialization error: $e');
+    }
   }
 
-  void _initializeAI() async {
+  Future<void> _initializeAI() async {
     final authProvider = context.read<AuthProvider>();
     final aiProvider = context.read<AiProvider>();
 
@@ -200,11 +214,6 @@ class _AuthWrapperState extends State<AuthWrapper> {
     }
 
     if (auth.isAuthenticated) {
-      // Initialize chat and AI when authenticated
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _initializeChat();
-        _initializeAI();
-      });
       return const HomeScreen();
     }
 

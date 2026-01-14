@@ -32,7 +32,8 @@ class ApiService {
   // Base URLs
   static String get _baseHost {
     try {
-      return dotenv.env['API_BASE_URL'] ?? 'http://localhost:3000';
+      final url = dotenv.env['API_BASE_URL'] ?? 'http://localhost:3000';
+      return url;
     } catch (e) {
       // Fallback if dotenv is not initialized
       _logger.warning('dotenv not initialized, using fallback URL');
@@ -89,6 +90,9 @@ class ApiService {
     };
     if (withAuth && _accessToken != null) {
       headers['Authorization'] = 'Bearer $_accessToken';
+      print('ApiService: Adding auth header with token: ${_accessToken?.substring(0, 20)}...');
+    } else if (withAuth) {
+      print('ApiService: No access token available for authenticated request');
     }
     if (_refreshTokenCookie != null) {
       headers['Cookie'] = _refreshTokenCookie!;

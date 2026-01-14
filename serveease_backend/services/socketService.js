@@ -8,14 +8,18 @@ export const initializeSocket = (io) => {
   // Authentication middleware for Socket.IO
   io.use(async (socket, next) => {
     try {
+      console.log('Socket: Authentication attempt');
       const token = socket.handshake.auth.token;
       
       if (!token) {
-        return next(new Error('Authentication error'));
+        console.log('Socket: No token provided');
+        return next(new Error('Authentication error: No token provided'));
       }
 
+      console.log('Socket: Token received:', token.substring(0, 20) + '...');
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       const userId = decoded.userId;
+      console.log('Socket: Decoded user ID:', userId);
 
       // Verify user exists and is active
       const userResult = await query(
@@ -24,20 +28,22 @@ export const initializeSocket = (io) => {
       );
 
       if (userResult.rows.length === 0 || !userResult.rows[0].is_active) {
+        console.log('Socket: User not found or inactive');
         return next(new Error('User not found or inactive'));
       }
 
       socket.userId = userId;
       socket.user = userResult.rows[0];
+      console.log('Socket: Authentication successful for user:', socket.user.name);
       next();
     } catch (error) {
       console.error('Socket authentication error:', error);
-      next(new Error('Authentication error'));
+      next(new Error('Authentication error: ' + error.message));
     }
   });
 
   io.on('connection', (socket) => {
-    console.log(`User ${socket.user.name} connected: ${socket.id}`);
+    console.log(`Socket: User ${socket.user.name} (ID: ${socket.userId}) connected with socket ID: ${socket.id}`);
     
     // Store user connection
     connectedUsers.set(socket.userId, socket.id);
@@ -45,6 +51,7 @@ export const initializeSocket = (io) => {
 
     // Join user to their personal room
     socket.join(`user_${socket.userId}`);
+    console.log(`Socket: User ${socket.userId} joined personal room: user_${socket.userId}`);
 
     // Emit online status to contacts
     socket.broadcast.emit('user_online', {
@@ -56,6 +63,7 @@ export const initializeSocket = (io) => {
     socket.on('join_conversation', async (data) => {
       try {
         const { conversationId } = data;
+        console.log('Socket: User', socket.userId, 'attempting to join conversation:', conversationId);
         
         // Verify user is participant in this conversation
         const participantCheck = await query(
@@ -66,7 +74,7 @@ export const initializeSocket = (io) => {
 
         if (participantCheck.rows.length > 0) {
           socket.join(`conversation_${conversationId}`);
-          console.log(`User ${socket.userId} joined conversation ${conversationId}`);
+          console.log(`Socket: User ${socket.userId} successfully joined conversation ${conversationId}`);
           
           // Mark messages as read
           await markMessagesAsRead(conversationId, socket.userId);
@@ -77,9 +85,12 @@ export const initializeSocket = (io) => {
             userId: socket.userId,
             readAt: new Date().toISOString()
           });
+        } else {
+          console.log('Socket: User', socket.userId, 'not authorized for conversation:', conversationId);
+          socket.emit('error', { message: 'Not authorized to join this conversation' });
         }
       } catch (error) {
-        console.error('Error joining conversation:', error);
+        console.error('Socket: Error joining conversation:', error);
         socket.emit('error', { message: 'Failed to join conversation' });
       }
     });
@@ -94,6 +105,9 @@ export const initializeSocket = (io) => {
     // Handle sending messages
     socket.on('send_message', async (data) => {
       try {
+        console.log('Socket: Received send_message event from user:', socket.userId);
+        console.log('Socket: Message data:', data);
+        
         const {
           conversationId,
           content,
@@ -112,9 +126,12 @@ export const initializeSocket = (io) => {
         );
 
         if (participantCheck.rows.length === 0) {
+          console.log('Socket: User not authorized for conversation:', conversationId);
           socket.emit('error', { message: 'Not authorized to send messages in this conversation' });
           return;
         }
+
+        console.log('Socket: User authorized, inserting message into database');
 
         // Insert message into database
         const messageResult = await query(
@@ -125,6 +142,7 @@ export const initializeSocket = (io) => {
         );
 
         const message = messageResult.rows[0];
+        console.log('Socket: Message inserted with ID:', message.id);
 
         // Get sender info
         const senderInfo = {
@@ -149,6 +167,9 @@ export const initializeSocket = (io) => {
           sender: senderInfo
         };
 
+        console.log('Socket: Broadcasting message to conversation room:', `conversation_${conversationId}`);
+        console.log('Socket: Message data to broadcast:', messageData);
+
         // Broadcast message to all participants in the conversation
         io.to(`conversation_${conversationId}`).emit('new_message', messageData);
 
@@ -156,7 +177,7 @@ export const initializeSocket = (io) => {
         await sendPushNotificationToOfflineUsers(conversationId, socket.userId, messageData);
 
       } catch (error) {
-        console.error('Error sending message:', error);
+        console.error('Socket: Error sending message:', error);
         socket.emit('error', { message: 'Failed to send message' });
       }
     });

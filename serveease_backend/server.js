@@ -56,6 +56,30 @@ app.get('/', (req, res) => {
   });
 });
 
+// Test route to check if request exists
+app.get('/test/request/:requestId', async (req, res) => {
+  try {
+    const { requestId } = req.params;
+    const { query } = await import('./config/database.js');
+    
+    const result = await query(
+      'SELECT id, status, seeker_id, provider_id FROM service_requests WHERE id = $1',
+      [requestId]
+    );
+    
+    res.json({
+      success: true,
+      requestExists: result.rows.length > 0,
+      request: result.rows[0] || null
+    });
+  } catch (error) {
+    res.json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
 // Health check route
 app.get('/health', (req, res) => {
   res.json({ status: 'OK', timestamp: new Date().toISOString() });

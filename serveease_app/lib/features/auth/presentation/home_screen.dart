@@ -14,6 +14,7 @@ import 'package:serveease_app/providers/auth_provider.dart';
 import 'package:serveease_app/providers/provider_profile_provider.dart';
 import 'package:serveease_app/providers/service_provider.dart';
 import 'package:serveease_app/providers/service_request_provider.dart';
+import 'package:serveease_app/shared/widgets/app_bar_language_toggle.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -182,7 +183,18 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void _onItemTapped(int index) {
+  void _onItemTapped(int index) async {
+    // If navigating to Services tab (index 1 for seekers), refresh data
+    if (index == 1) {
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      if (authProvider.user?.role == 'seeker') {
+        final serviceProvider = context.read<ServiceProvider>();
+        serviceProvider.clearCache();
+        await serviceProvider.loadCategories();
+        await serviceProvider.loadAllServices();
+      }
+    }
+    
     setState(() {
       _selectedIndex = index;
     });
@@ -213,6 +225,13 @@ class _HomeScreenState extends State<HomeScreen> {
             backgroundColor: Colors.blue[700],
             elevation: 2,
             actions: [
+              const Padding(
+                padding: EdgeInsets.only(right: 8.0),
+                child: AppBarLanguageToggle(
+                  iconColor: Colors.white,
+                  textColor: Colors.white,
+                ),
+              ),
               if (_loading)
                 Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -407,33 +426,24 @@ class _SeekerDashboardTabState extends State<SeekerDashboardTab> {
   }
 
   Future<void> _loadData() async {
-    // Load service requests
-    context.read<ServiceRequestProvider>().fetchRequests();
+    // Load service requests for seeker
+    final requestProvider = context.read<ServiceRequestProvider>();
+    await requestProvider.fetchRequests(role: 'seeker');
     
-    // Load service categories
-    await _loadServiceCategories();
-  }
-
-  Future<void> _loadServiceCategories() async {
-    try {
-      final response = await ApiService.get('${ApiService.servicesBase}/categories');
-      if (response.statusCode == 200) {
-        final apiResponse = ApiService.handleResponse<Map<String, dynamic>>(
-          response,
-          (json) => json as Map<String, dynamic>,
-        );
-        if (apiResponse.success && apiResponse.data != null) {
-          setState(() {
-            _categories = List<Map<String, dynamic>>.from(apiResponse.data!['categories'] ?? []);
-            _loadingCategories = false;
-          });
-        }
-      }
-    } catch (e) {
-      setState(() {
-        _loadingCategories = false;
-      });
-    }
+    // Load service categories using ServiceProvider
+    final serviceProvider = context.read<ServiceProvider>();
+    await serviceProvider.loadCategories();
+    
+    // Update local categories from ServiceProvider
+    setState(() {
+      _categories = serviceProvider.categories.map((cat) => {
+        'id': cat.id,
+        'name': cat.name,
+        'description': cat.description,
+        'icon': cat.icon,
+      }).toList();
+      _loadingCategories = false;
+    });
   }
 
   @override
@@ -618,8 +628,22 @@ class _SeekerDashboardTabState extends State<SeekerDashboardTab> {
           return Card(
             elevation: 2,
             child: InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, '/services/catalog');
+              onTap: () async {
+                // Refresh services before navigating
+                final serviceProvider = context.read<ServiceProvider>();
+                serviceProvider.clearCache();
+                await serviceProvider.loadCategories();
+                await serviceProvider.loadAllServices();
+                
+                // Navigate to ServiceCatalogScreen
+                if (mounted) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ServiceCatalogScreen(),
+                    ),
+                  );
+                }
               },
               borderRadius: BorderRadius.circular(8),
               child: Column(
@@ -645,8 +669,22 @@ class _SeekerDashboardTabState extends State<SeekerDashboardTab> {
         return Card(
           elevation: 2,
           child: InkWell(
-            onTap: () {
-              Navigator.pushNamed(context, '/services/catalog');
+            onTap: () async {
+              // Refresh services before navigating
+              final serviceProvider = context.read<ServiceProvider>();
+              serviceProvider.clearCache();
+              await serviceProvider.loadCategories();
+              await serviceProvider.loadAllServices();
+              
+              // Navigate to ServiceCatalogScreen
+              if (mounted) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ServiceCatalogScreen(),
+                  ),
+                );
+              }
             },
             borderRadius: BorderRadius.circular(8),
             child: Column(
@@ -798,8 +836,10 @@ class _ProviderDashboardTabState extends State<ProviderDashboardTab> {
   }
 
   Future<void> _loadData() async {
-    // Load service requests
-    context.read<ServiceRequestProvider>().fetchRequests();
+    // Load service requests for provider
+    final requestProvider = context.read<ServiceRequestProvider>();
+    await requestProvider.fetchRequests(role: 'provider');
+    
     // Load provider services
     context.read<ServiceProvider>().loadMyServices();
   }

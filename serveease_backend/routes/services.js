@@ -1,12 +1,14 @@
 import express from 'express';
 import { body, param } from 'express-validator';
 import {
-  getServiceCategories,
-  getServicesByCategory,
-  getProviderServices,
-  createService,
-  updateService,
-  deleteService
+    createService,
+    deleteService,
+    getAllServices,
+    getProviderServices,
+    getServiceCategories,
+    getServiceDetails,
+    getServicesByCategory,
+    updateService
 } from '../controllers/serviceController.js';
 import { authenticateToken, requireProvider } from '../middleware/auth.js';
 
@@ -65,8 +67,10 @@ const updateServiceValidation = [
     .withMessage('isActive must be a boolean')
 ];
 
-// Public routes
+// Public routes (no authentication required for browsing)
 router.get('/categories', getServiceCategories);
+router.get('/all', getAllServices);
+router.get('/details/:serviceId', getServiceDetails);
 router.get('/category/:categoryId', getServicesByCategory);
 
 // Provider routes (require authentication)

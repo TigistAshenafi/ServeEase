@@ -7,16 +7,61 @@ class ServiceProvider extends ChangeNotifier {
   List<ServiceCategory> categories = [];
   List<Service> myServices = [];
   List<Service> categoryServices = [];
+  List<Service> allServices = [];
   bool isLoading = false;
   String? error;
 
+  /// Clear all cached data to force refresh
+  void clearCache() {
+    categories.clear();
+    myServices.clear();
+    categoryServices.clear();
+    allServices.clear();
+    error = null;
+    notifyListeners();
+  }
+
   Future<void> loadCategories() async {
     isLoading = true;
+    error = null;
     notifyListeners();
+    
     final res = await ServiceService.fetchCategories();
+    
     isLoading = false;
     if (res.success && res.data != null) {
       categories = res.data!;
+      error = null;
+    } else {
+      error = res.message;
+    }
+    notifyListeners();
+  }
+
+  Future<void> loadAllServices({
+    int page = 1,
+    int limit = 20,
+    String? search,
+    String? location,
+  }) async {
+    isLoading = true;
+    error = null;
+    notifyListeners();
+    
+    final res = await ServiceService.fetchAllServices(
+      page: page,
+      limit: limit,
+      search: search,
+      location: location,
+    );
+    
+    isLoading = false;
+    if (res.success && res.data != null) {
+      if (page == 1) {
+        allServices = res.data!;
+      } else {
+        allServices.addAll(res.data!);
+      }
       error = null;
     } else {
       error = res.message;
@@ -36,6 +81,10 @@ class ServiceProvider extends ChangeNotifier {
       error = res.message;
     }
     notifyListeners();
+  }
+
+  Future<ApiResponse<Service>> getServiceDetails(String serviceId) async {
+    return await ServiceService.fetchServiceDetails(serviceId);
   }
 
   Future<ApiResponse<Service>> createService({
