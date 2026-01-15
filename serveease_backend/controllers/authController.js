@@ -63,10 +63,10 @@ const register = async (req, res) => {
     const verificationExpires = new Date(Date.now() + 20 * 60 * 1000); // 20 min
 
     const result = await query(
-      `INSERT INTO users (name, email, password_hash, role, email_verification_code, email_verification_expires)
-       VALUES ($1, $2, $3, $4, $5, $6)
+      `INSERT INTO users (name, email, password_hash, role, email_verified, email_verification_code, email_verification_expires)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)
        RETURNING id, name, email, role, email_verified`,
-      [name, email, passwordHash, role, verificationCode, verificationExpires]
+      [name, email, passwordHash, role, true, verificationCode, verificationExpires] // Set email_verified to true
     );
 
     const user = result.rows[0];

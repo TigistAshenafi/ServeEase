@@ -287,6 +287,8 @@ export const initializeSocket = (io) => {
   });
 
   // Clean up typing indicators periodically
+  // Commented out until chat schema is applied
+  /*
   setInterval(async () => {
     try {
       await query('SELECT cleanup_typing_indicators()');
@@ -294,6 +296,7 @@ export const initializeSocket = (io) => {
       console.error('Error cleaning up typing indicators:', error);
     }
   }, 30000); // Every 30 seconds
+  */
 };
 
 // Helper function to mark messages as read
